@@ -1,0 +1,41 @@
+.caltitle{
+font-family: 'MBC1961GulimM';
+text-align:center;
+}
+.table_list{
+margin-left:4%;
+margin:0 auto;
+}
+@font-face {
+font-family: 'MBC1961GulimM';
+src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-01@1.0/MBC1961GulimM.woff2') format('woff2');
+font-weight: normal;
+font-style: normal;
+}
+.search_container{
+  position: relative;
+}
+.searchinput{
+border:1px solid black;
+border-radius:5px;
+font-size:1.5rem;
+}
+.fa-search{
+font-size:2rem;
+}
+.searchlist{
+margin:0 auto;
+}
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{border-color:black;border-style:solid;border-width:1px;font-family: 'MBC1961GulimM';font-size:1.3rem;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{border-color:black;border-style:solid;border-width:1px;font-family: 'MBC1961GulimM';font-size:1.5rem;
+  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-l8qj{background-color:#ffffff;font-size:1.5rem;text-align:center;vertical-align:top}
+.tg .tg-0lax{text-align:center;vertical-align:top}
+.tg .tg-zd5i{border-color:inherit;font-size:1.3rem;text-align:center;vertical-align:top}
+.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
+.tg .tg-uqo3{background-color:#efefef;text-align:center;vertical-align:top}
+.tg .tg-2xpi{background-color:#efefef;border-color:inherit;font-size:14px;text-align:center;vertical-align:top}
+.tg .tg-i81m{background-color:#ffffff;text-align:center;vertical-align:top}
+.tg .tg-3xi5{background-color:#ffffff;border-color:inherit;text-align:center;vertical-align:top}

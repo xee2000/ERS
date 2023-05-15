@@ -1,0 +1,76 @@
+th,td{
+text-align:center;
+}
+.search_container{
+  position: relative;
+}
+.search_bar_main{
+margin-left:7%;
+}
+.searchinput{
+border:1px solid black;
+border-radius:5px;
+font-size:2rem;
+}
+.keywordoption{
+border:1px solid black;
+border-radius:5px;
+font-size:2rem;
+}
+.buttens{
+text-align:end
+}
+.backbtn{
+margin-right:80%;
+}
+.dateselectbar{
+font-size:2rem;
+}
+.tg-nqa4,.tg-73oq {
+font-size:1.5rem;
+}
+.date{
+display: inline-block; 
+white-space: nowrap;
+margin-left:7%;
+margin-top:30px;
+font-size:2rem;
+}
+.date_select{
+font-size:2.5rem;
+}
+input[type="date"]::-webkit-datetime-edit-fields-wrapper,
+input[type="date"]::-webkit-datetime-edit-text {
+font-size:2rem;
+}
+.keywordoption{
+height:49.33px;
+margin-right:10px;
+font-size:2.5rem;
+}
+.dash{
+font-size:3.5rem;
+}
+.fa-search{
+font-size:2rem;
+}
+.category_date_menubar{
+margin-left:6%;
+}
+.emergancylist_title{
+text-align:center;
+font-family: 'MBC1961GulimM';
+font-size:2.5rem;
+}
+
+.tg  {border-collapse:collapse;border-color:#bbb;border-spacing:0;}
+.tg td{background-color:#E0FFEB;border-bottom-width:1px;border-color:#bbb;border-style:solid;border-top-width:1px;
+  border-width:0px;color:#594F4F;font-family:Arial, sans-serif;font-size:1.5rem;overflow:hidden;padding:10px 5px;
+  word-break:normal;}
+.tg th{background-color:#fe0000;border-bottom-width:1px;border-color:#bbb;border-style:solid;border-top-width:1px;
+  border-width:0px;color:white;font-family:Arial, sans-serif;font-size:1.5rem;font-weight:normal;overflow:hidden;
+  padding:10px 5px;word-break:normal;}
+.tg .tg-yj5y{background-color:#efefef;border-color:inherit;text-align:center;vertical-align:middle}
+.tg .tg-3xi5{background-color:#ffffff;border-color:inherit;text-align:center;vertical-align:middle}
+.tg .tg-73oq{background-color:#ffffff;border-color:inherit;text-align:center;vertical-align:middle}
+.tg .tg-nqa4{font-family: 'NanumSquareNeo-Variable';font-weight:bold;background-color:#E2A9F3;color:black;height:54px;vertical-align:middle;text-align:center;}

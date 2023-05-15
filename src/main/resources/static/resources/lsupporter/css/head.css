@@ -1,0 +1,70 @@
+@font-face {
+font-family: 'TheJamsil5Bold';
+src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Bold.woff2') format('woff2');
+font-weight: 700;
+font-style: normal;
+}
+@font-face {
+    font-family: 'NanumSquareNeo-Variable';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/NanumSquareNeo-Variable.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'MICEGothic Bold';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2206-01@1.0/MICEGothic Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+@font-face{
+  font-family:'bitbit';
+  src:url('//cdn.df.nexon.com/img/common/font/DNFBitBit-Regular.woff'),url('//cdn.df.nexon.com/img/common/font/DNFBitBit-Regular.woff2') ;
+}
+@font-face {
+    font-family: 'establishRetrosansOTF';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2112@1.0/establishRetrosansOTF.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+.header_main{
+width: 100%;
+background-color: #7187CFFF;
+border-radius: 5px;
+}
+li, .item_bar{
+margin-right: 20px;
+text-align: -webkit-center;
+}
+
+.header_menu_name{
+font-size:1.2rem;
+text-align:center;
+font-weight: bold;
+font-family: 'MBC1961GulimM';
+}
+@font-face {
+    font-family: 'TheJamsil5Bold';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+@font-face {
+font-family: 'MBC1961GulimM';
+src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-01@1.0/MBC1961GulimM.woff2') format('woff2');
+font-weight: normal;
+font-style: normal;
+}
+.brand_text{
+font-size:2.5rem;
+font-weight:bold;
+color:white;
+}
+.head_title{
+margin-left: 14%;
+font-size: 1.7rem;
+font-weight: bold;
+font-family: 'MBC1961GulimM';
+}
+.main-header{
+    padding: 0px;
+}

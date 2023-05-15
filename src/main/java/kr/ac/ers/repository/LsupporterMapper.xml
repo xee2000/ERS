@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper	namespace="kr.ac.ers.repository.LsupporterMapper">
+
+	<select id="selectLsupportBywid" resultType="LsupporterVO" parameterType="String">
+		select *
+		from lsupporter
+		where wid = #{wid}
+	</select>
+	
+	<select id="selectcountemail" resultType="int" parameterType="String">
+	select count(*)
+	from fieldstaff
+	where email = #{email} and name = #{name}
+	</select>
+	<select id="selectLsupportByemail" resultType="LsupporterVO" parameterType="String">
+	select l.wid
+	from fieldstaff f, lsupporter l
+	where f.email = #{email}
+	</select>
+	
+	<select id="selectLsupportBypwd" resultType="int" >
+	select count(*)
+	from fieldstaff f, lsupporter l
+	where f.name = #{name} and f.email = #{email} and l.wid = #{wid}
+	</select>
+	
+	<sql id="search">	
+		<if test="cri.searchType == 'n'.toString()">
+			and m.name like '%'||#{cri.keyword}||'%'			
+		</if>
+		<if test="cri.searchType == 'nbg'.toString()">
+			and (
+			m.name like '%'||#{cri.keyword}||'%'
+			or
+			m.birth like '%'||#{cri.keyword}||'%'		
+			or
+			m.gender like '%'||#{cri.keyword}||'%'		
+			)			
+		</if>
+		<if test="cri.searchType == 'b'.toString()">
+			and m.birth like '%'||#{cri.keyword}||'%'			
+		</if>
+		<if test="cri.searchType == 'g'.toString()">
+			and m.gender like '%'||#{cri.keyword}||'%'			
+		</if>
+		<if test="cri.searchType == 'r'.toString()">
+			and retype like '%'||#{cri.keyword}||'%'			
+		</if>
+		<if test="cri.searchType == 'rd'.toString()">
+			and regdate like '%'||#{cri.keyword}||'%'			
+		</if>	
+		<if test="cri.searchType == 'vc'.toString()">
+			and viewcheck like '%'||#{cri.keyword}||'%'			
+		</if>		
+	</sql>	
+	
+	<select id="selectSearchMemberList" resultType="MemberVO" >
+		select *
+		from member m , report r , lsupporter l
+		where m.id = r.id and m.wid = l.wid and l.wid=#{wid} and m.id is not null
+		<include refid="search" />
+		order by m.id desc
+	</select>
+	
+	<select id="selectSearchMemberListCount" resultType="int" >
+	select count(*)
+	from member m, fieldstaff fs, lsupporter l
+	where m.wid = l.wid and fs.wcode = l.wcode and l.wid  #{wid} and m.id is not null
+	<include refid="search" />
+	</select>
+	
+	<select id="selectSearchLsupporterMemberListCount" resultType="int" >
+	select count(*)
+	from member m , report r , lsupporter l
+	where m.id = r.id and m.wid = l.wid and l.wid=#{wid} and m.id is not null
+		<include refid="search" />
+	</select>
+	
+	<select id="selectLsupporterMemberList" resultType="MemberVO" parameterType="String">
+	select *
+	from member m, fieldstaff fs, lsupporter l
+	where m.wid = l.wid and fs.wcode = l.wcode and l.wid = #{wid} and m.id is not null
+
+		<include refid="search" />
+	</select>
+	
+ 
+
+<select id="selectlsupporterStatus" parameterType="String" resultType="LsupporterStatusVO">
+    SELECT *
+    FROM fieldstaff fs
+    LEFT JOIN lsupporter l ON l.wcode = fs.wcode
+    WHERE l.wid = #{wid}
+</select>
+
+
+
+</mapper>
