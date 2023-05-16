@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -76,7 +75,7 @@ public class LsupporterController {
 	}
 	
 	
-	@RequestMapping("/ers/lsupporter/nonmemberreportForm")
+	@GetMapping("/ers/lsupporter/nonmemberreportForm")
 	public String ShownonmemberreportForm(@RequestParam(defaultValue = "0")int gubun, String searchType, String keyword, String perPageNumParam, String pageParam, Model model, HttpSession session, HttpServletRequest request) {
 		SearchCriteria cri = new SearchCriteria();
 		if(perPageNumParam == null || perPageNumParam.isEmpty())perPageNumParam="5";
@@ -95,6 +94,36 @@ public class LsupporterController {
 		return "lsupporter/nonmemberreportForm";
 	}
 	
+	@GetMapping("/ers/lsupporter/nonmemberreportFormAction")
+	@ResponseBody
+	public String ShownonmemberreportFormAction(@RequestParam(defaultValue = "0")int gubun, String searchType, String keyword, String perPageNumParam, String pageParam, Model model, HttpSession session, HttpServletRequest request) {
+		SearchCriteria cri = new SearchCriteria();
+		if(perPageNumParam == null || perPageNumParam.isEmpty())perPageNumParam="5";
+		if(pageParam == null || pageParam.isEmpty())pageParam="1";
+		if(searchType == null) searchType="";
+		if(keyword==null) keyword="";
+		cri.setPage(pageParam);
+		cri.setPerPageNum(perPageNumParam);
+		cri.setSearchType(searchType);
+		cri.setKeyword(keyword);
+		session= request.getSession();
+		 LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");
+		 Map<String,Object> dataMap = lsupporterService.getLsupporterMemberList(loginUser.getWid(), cri);
+		 model.addAttribute("dataMap",dataMap);
+		 model.addAttribute("gubun", gubun);
+		return "lsupporter/nonmemberreportForm";
+	}
+	
+	/*
+	 * @GetMapping()
+	 * 
+	 * @ResponseBody public List<MemberVO>
+	 * ShownonmemberreportAction(@RequestParam(defaultValue = "0")int gubun, String
+	 * searchType, String keyword, String perPageNumParam, String pageParam, Model
+	 * model, HttpSession session, HttpServletRequest request) {
+	 * 
+	 * return "/lsupporter/nonmemberreportFormAction"; }
+	 */
 	
 	@GetMapping("/ers/lsupporter/lsupporterstatus")
 	public String showLsupporterStatus(Model model, HttpSession session, HttpServletRequest request) {
@@ -105,6 +134,26 @@ public class LsupporterController {
 	    model.addAttribute("lsupporter", lsupporter);
 	    return "lsupporter/lsupporterstatus";
 	}
+	
+	@GetMapping("/ers/lsupporter/lsupporterstatusForm")
+	public String showLsupporterStatus() {
+		
+	    return "lsupporter/lsupporterstatusForm";
+	}
+	
+	/*
+	 * @PostMapping("/ers/lsupporter/lsupporterstatusAction") public String
+	 * showLsupporterStatusAction(String name, String birth, String email, String
+	 * address, String pwd, Model model, HttpSession session, HttpServletRequest
+	 * request) { session= request.getSession(); LsupporterVO loginUser =
+	 * (LsupporterVO) session.getAttribute("loginUser"); String
+	 * url="redirect:/lsupporter/lsupporterstatus?wid="+loginUser.getWid();
+	 * 
+	 * LsupporterVO lsupporter.add lsupporterService.LsupporterModify(lsupporter);
+	 * lsupporterService.FieldstaffModify(fieldstaff); return "url"; }
+	 */
+
+
 
 	
 	@RequestMapping("/ers/lsupporter/reportlist")

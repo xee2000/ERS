@@ -29,5 +29,7 @@ public interface LsupporterMapper {
 	List<MemberVO> selectLsupporterMemberList(SearchCriteria cri, String wid);
 
 	int selectSearchLsupporterMemberListCount(SearchCriteria cri, String wid);
+
+	void LsupporterModify(LsupporterStatusVO lsupporter);
 	
 }

@@ -7,12 +7,13 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class MemberReportVO {
+public class MemberReportLsupporterVO {
 	private String id;
 	private String name;
 	private String birth;
 	private String address;
 	private String phone;
+	private String gender;
 	private String picture;
 	private String mentalstatus;
 	private String fam_rel;
@@ -29,9 +30,19 @@ public class MemberReportVO {
 	private String allergy;
 	private String equipment;
 	private String afNo;
-	private String rNo;
+	private String manId;
+	
+	private int rNo;
 	private String content;
-	private int wCode;
 	private String reDone;
+	private String viewcheck;
 	private String reType;
+	private Date occurtime;
+	private String occurtype;
+	private String callcheck;
+	
+	private String lNum;
+	private int wCode;
+	private String pwd;
+
 }

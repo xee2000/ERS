@@ -90,4 +90,9 @@ public class LsupporterService {
 		return dataMap;
 	}
 
+	public void LsupporterModify(LsupporterStatusVO lsupporter) {
+		
+		lsupportMapper.LsupporterModify(lsupporter);
+	}
+
 }

@@ -10,5 +10,4 @@ public class LsupporterVO {
 	private String lNum;
 	private int wCode;
 	private String pwd;
-	private FieldstaffVO fieldstaffvo;
 }

@@ -1,31 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper	namespace="kr.ac.ers.repository.LsupporterMapper">
-
-	<select id="selectLsupportBywid" resultType="LsupporterVO" parameterType="String">
-		select *
-		from lsupporter
-		where wid = #{wid}
-	</select>
-	
-	<select id="selectcountemail" resultType="int" parameterType="String">
-	select count(*)
-	from fieldstaff
-	where email = #{email} and name = #{name}
-	</select>
-	<select id="selectLsupportByemail" resultType="LsupporterVO" parameterType="String">
-	select l.wid
-	from fieldstaff f, lsupporter l
-	where f.email = #{email}
-	</select>
-	
-	<select id="selectLsupportBypwd" resultType="int" >
-	select count(*)
-	from fieldstaff f, lsupporter l
-	where f.name = #{name} and f.email = #{email} and l.wid = #{wid}
-	</select>
-	
-	<sql id="search">	
+<sql id="search">	
 		<if test="cri.searchType == 'n'.toString()">
 			and m.name like '%'||#{cri.keyword}||'%'			
 		</if>
@@ -55,31 +31,59 @@
 		</if>		
 	</sql>	
 	
-	<select id="selectSearchMemberList" resultType="MemberVO" >
+	<select id="selectLsupportBywid" resultType="LsupporterVO" parameterType="String">
 		select *
-		from member m , report r , lsupporter l
+		from lsupporter
+		where wid = #{wid}
+	</select>
+	
+	<select id="selectcountemail" resultType="int" parameterType="String">
+	select count(*)
+	from fieldstaff
+	where email = #{email} and name = #{name}
+	</select>
+	<select id="selectLsupportByemail" resultType="LsupporterVO" parameterType="String">
+	select l.wid
+	from fieldstaff f, lsupporter l
+	where f.email = #{email}
+	</select>
+	
+	<select id="selectLsupportBypwd" resultType="int" >
+	select count(*)
+	from fieldstaff f, lsupporter l
+	where f.name = #{name} and f.email = #{email} and l.wid = #{wid}
+	</select>
+	
+	
+	
+	<!--생활지원사에게 배정된 대상자의 보고서 리스트 뽑아주는 쿼리  -->
+	<select id="selectSearchMemberList" resultType="MemberReportLsupporterVO" >
+		select *
+		from memberview m , report r , lsupporter l
 		where m.id = r.id and m.wid = l.wid and l.wid=#{wid} and m.id is not null
 		<include refid="search" />
 		order by m.id desc
 	</select>
 	
+<!--생활지원사에게 배정된 대상자의 보고서 리스트 숫자 뽑아주는 쿼리  -->
 	<select id="selectSearchMemberListCount" resultType="int" >
 	select count(*)
-	from member m, fieldstaff fs, lsupporter l
-	where m.wid = l.wid and fs.wcode = l.wcode and l.wid  #{wid} and m.id is not null
+	from memberview m, fieldstaff fs, lsupporter l
+	where m.wid = l.wid and fs.wcode = l.wcode and l.wid = #{wid} and m.id is not null
 	<include refid="search" />
 	</select>
 	
+	<!--고객과 일치하는 보고서를 데려오는 리스트카운터  -->
 	<select id="selectSearchLsupporterMemberListCount" resultType="int" >
 	select count(*)
-	from member m , report r , lsupporter l
+	from memberview m , report r , lsupporter l
 	where m.id = r.id and m.wid = l.wid and l.wid=#{wid} and m.id is not null
 		<include refid="search" />
 	</select>
 	
 	<select id="selectLsupporterMemberList" resultType="MemberVO" parameterType="String">
 	select *
-	from member m, fieldstaff fs, lsupporter l
+	from memberview m, fieldstaff fs, lsupporter l
 	where m.wid = l.wid and fs.wcode = l.wcode and l.wid = #{wid} and m.id is not null
 
 		<include refid="search" />
@@ -87,13 +91,25 @@
 	
  
 
-<select id="selectlsupporterStatus" parameterType="String" resultType="LsupporterStatusVO">
-    SELECT *
-    FROM fieldstaff fs
-    LEFT JOIN lsupporter l ON l.wcode = fs.wcode
-    WHERE l.wid = #{wid}
-</select>
+		<select id="selectlsupporterStatus" parameterType="String" resultType="LsupporterStatusVO">
+		    SELECT *
+		    FROM fieldstaff fs
+		    LEFT JOIN lsupporter l ON l.wcode = fs.wcode
+		    WHERE l.wid = #{wid}
+		</select>
 
+		<!-- <update id="lsupporterupdate" parameterType="LsupporterVO">
+		update lsupporter l
+		set l.pwd = #{pwd}
+		where l.wid = #{wid}
+		</update>
+		
+		<update id="fieldstaffupdate" parameterType="FieldstaffVO">
+		UPDATe fieldstaff f
+		set f.birth = #{birth}, f.email =#{email}, f.gender = #{gender}, f.name =#{name}, f.phone=#{phone},
+		f.picture=#{picture}
+		where f.wcode =1
+		</update> -->
 
 
 </mapper>

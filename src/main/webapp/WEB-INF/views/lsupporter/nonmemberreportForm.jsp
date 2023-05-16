@@ -44,7 +44,7 @@
     <th>대상자</th>
     <td>
 <div class="search_container flex items-center">
-  <input class="searchinput w-full" type="text" id="검색어" name="q" required>
+  <input onclick="modalopen();" value="" class="searchinput w-full" type="text" id="searchinput" name="q" required>
   <button type="submit" class="absolute right-0 top-0 bottom-0 p-2 right-1.25">
      <i class="fa fa-search" style="padding-left: 120px;" id="popupBtn"></i>
   </button>
@@ -68,7 +68,7 @@
 <col style="width: 150.333333px">
 <col style="width: 300px">
 </colgroup>
-<form method="get" role="form" action="nonmemberreportForm">
+<form onsubmit="return false;" >
 <thead>
   <tr>
     <th class="tg-l8qj" >
@@ -82,7 +82,7 @@
    <th class="tg-l8qj">
   <div class="search_container flex items-center">
   <input type="hidden" name="gubun" value="1">
-    <input class="searchinput w-full" type="text" id="검색어" required="required" name="keyword" value="${cri.keyword}" placeholder="검색어를 입력하세요.">
+    <input class="searchinput w-full" type="text" id="" required="required" name="keyword" value="${cri.keyword}" placeholder="검색어를 입력하세요.">
     <button type="button" class="absolute right-0 top-0 bottom-0 p-2 right-1.25" id="searchButton">
       <i class="fa fa-search" id="searchBtn" data-card-widget="search" onclick="list_go(1);"></i>
     </button>
@@ -121,7 +121,7 @@
     <td class="modal_content">
     ${member.picture }
     </td>
-    <td class="modal_content">
+    <td onclick="membersearch();" class="modal_content" id="modalname">
    ${member.name }
 </td>
     <td class="modal_content">
@@ -149,6 +149,19 @@ ${member.birth }
   </div>
 </td>
   </tr>
+  <tr>
+    <th class="tg-2xpi">보고서 구분</th>
+    <td class="tg-2xpi">
+    <select style="text-align:center;" class="reportmenu">
+    <option name="" value="====">선택</option>
+    <option name="" value="1">고객면담보고서</option>
+    <option name="" value="2">건강상태보고서</option>
+    <option name="" value="3">서비스취소보고서</option>
+    <option name="" value="4">장기부재신청보고서</option>
+    <option name="" value="5">악성대상자신고보고서</option>
+    </select>
+    </td>
+  </tr>
 </tbody>
 </table>
 
@@ -156,7 +169,7 @@ ${member.birth }
 <!--고객면담  -->
 <div class="flex">
   <div class="col-md-12">
-    <div class="card collapsed-card">
+    <div class="card collapsed-card education" id="1">
       <div class="card-header">
         <h3 class="card-title report_title">고객면담보고서</h3>
         <div class="card-tools">
@@ -175,12 +188,12 @@ ${member.birth }
                 <tr>
                     <th style="text-align: center;">상담목적</th>
                     <td>
-            <select name="education_list">
-            <option value="정기상담">정기상담</option>
-            <option value="정기상담">대상자 요청</option>
-            <option value="정기상담">응급발생</option>
-            <option value="정기상담">외출확인</option>
-            </select></td>
+				<select name="education_list">
+				<option value="정기상담">정기상담</option>
+				<option value="정기상담">대상자 요청</option>
+				<option value="정기상담">응급발생</option>
+				<option value="정기상담">외출확인</option>
+				</select></td>
                 </tr>
                 <tr>
                     <th style="text-align: center;">상담경로</th>
@@ -198,7 +211,7 @@ ${member.birth }
                 </tr>
                 <tr>
                     <th style="text-align: center;">상세내용</th>
-                    <td> <textarea class="summernote" rows="3"></textarea></td>
+                    <td> <textarea rows="3"></textarea></td>
                 </tr>
             </table>
             <!-- 추가적인 테이블 내용을 추가할 수 있습니다. -->
@@ -220,7 +233,7 @@ ${member.birth }
 <!--건강상태  -->
 <div class="flex">
 <div class="col-md-12">
-<div class="card  collapsed-card">
+<div class="card  collapsed-card" id="2">
 <div class="card-header">
 <h3 class="card-title report_title">건강상태보고서</h3>
 <div class="card-tools">
@@ -290,7 +303,7 @@ ${member.birth }
 <!--서비스취소  -->
 <div class="flex">
 <div class="col-md-12">
-<div class="card  collapsed-card">
+<div class="card  collapsed-card" id="3">
 <div class="card-header">
 <h3 class="card-title report_title">서비스취소보고서</h3>
 <div class="card-tools">
@@ -329,7 +342,7 @@ ${member.birth }
 <!--장기부재  -->
 <div class="flex">
 <div class="col-md-12">
-<div class="card  collapsed-card">
+<div class="card  collapsed-card" id="4">
 <div class="card-header">
 <h3 class="card-title report_title">장기부재 신청서</h3>
 <div class="card-tools">
@@ -352,12 +365,12 @@ ${member.birth }
 <thead>
   <tr>
  <th>장기부재 사유</th>
-<td style="text-align:center;"colspan="3">
+<th colspan="3">
   <input type="radio" name="chatroad" value="여행" onclick="showTextarea()"/>여행&nbsp;&nbsp;
   <input type="radio" name="chatroad" value="입원" onclick="showTextarea()"/>입원&nbsp;&nbsp;
   <input type="radio" name="chatroad" value="기타" onclick="showTextarea()"/>기타
   <input type="text" name="details" id="detailsInput" style="display: none;" placeholder="기타 사유를 입력하세요..." />
-</td>
+</th>
 </thead>
 <tbody>
   <tr>
@@ -383,7 +396,7 @@ ${member.birth }
 <!--악성대상자 신고 보고서  -->
 <div class="flex">
 <div class="col-md-12">
-<div class="card  collapsed-card">
+<div class="card  collapsed-card" id="5">
 <div class="card-header">
 <h3 class="card-title report_title">악성대상자 신고보고서</h3>
 <div class="card-tools">
@@ -452,23 +465,18 @@ ${member.birth }
 </div>
 
 
-<script>
-$(document).ready(function() {
-  $('.summernote').summernote({
-    height: 150,
-    lang: "en-KR"
-  });
-});
-</script>
 
 <!--모달창 스크립ㅌ  -->
 <script>
   const btn = document.getElementById('popupBtn');
   const modal = document.getElementById('modalWrap');
   const closeBtn = document.getElementById('closeBtn');
-
+  const modalnameElement = document.getElementById('modalname');
+  const modalname = modalnameElement.textContent;
+  const searchinput = document.getElementById('searchinput');
   btn.onclick = function() {
     modal.style.display = 'block';
+    
   }
 
   closeBtn.onclick = function() {
@@ -480,18 +488,46 @@ $(document).ready(function() {
       modal.style.display = 'none';
     }
   }
+  
+  function modalopen(){
+	  modal.style.display = 'block';
+  }
 
   // Hide the modal initially
   modal.style.display = 'none';
+  
+  function membersearch(){
+	  
+	  
+	  modal.style.display = 'none';
+	  searchinput.value = modalname;
+  }
+  
 </script>
 
 
 <script>
+
+
   function list_go(page) {
 	  
-	 var form = $('form[role="form"]');
-		form.submit();
-   
+	   var gubun = $('input[name="gubun"]').val();
+	   var searchType = $('select[name="searchType"]').val();
+	   var keyword = $('input[name="keyword"]').val();
+	   
+	   $.ajax({
+	    	type: "GET", //요청 메소드 방식
+	    	data: 'gubun='+gubun+'&searchType='+searchType+'&keyword='+keyword+'&perPageNumParam=1&pageParam=1',
+	    	url: "/ers/lsupporter/nonmemberreportFormAction",
+	    	dataType:"text", //서버가 요청 URL을 통해서 응답하는 내용의 타입
+	    	success : function(data){
+			alert(data.keyword);
+	    	},
+	    	error : function(data){
+	    		//통신 실패시 발생하는 함수(콜백)
+	    		alert(data.searchType);
+	    	}
+	    });
   }
   
   
@@ -503,6 +539,37 @@ $(document).ready(function() {
 	  }
 	  
   }
+</script>
+
+<script>
+window.addEventListener('DOMContentLoaded', function() {
+  var collapsedCards = document.getElementsByClassName('collapsed-card');
+  
+  for (var i = 0; i < collapsedCards.length; i++) {
+    collapsedCards[i].style.display = 'none';
+  }
+  
+  var reportSelect = document.querySelector('.reportmenu');
+  var previousReportCard = null;
+  
+  reportSelect.addEventListener('change', function() {
+    var selectedReportId = this.value;
+    var selectedReportCard = document.getElementById(selectedReportId);
+    
+    if (previousReportCard && previousReportCard !== selectedReportCard) {
+      previousReportCard.style.display = 'none';
+      previousReportCard.querySelector('.fas').classList.remove('fa-minus');
+      previousReportCard.querySelector('.fas').classList.add('fa-plus');
+    }
+    
+    if (selectedReportCard) {
+      selectedReportCard.style.display = 'block';
+      selectedReportCard.querySelector('.fas').classList.remove('fa-plus');
+      selectedReportCard.querySelector('.fas').classList.add('fa-minus');
+      previousReportCard = selectedReportCard;
+    }
+  });
+});
 </script>
 
 <div style="height:300px;"></div>

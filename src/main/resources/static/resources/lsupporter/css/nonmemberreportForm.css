@@ -1,3 +1,8 @@
+
+.reportmenu{
+	width:100%;
+	
+}
 #closeBtn {
   float:right;
   font-weight: bold;
@@ -59,6 +64,7 @@ border:1px solid black;
 border-radius:5px;
 font-size:2rem;
 height:50px;
+text-align:center;
 }
 .modal_content{
 	text-align:center;
