@@ -35,11 +35,11 @@ public class MemberReportLsupporterVO {
 	private int rNo;
 	private String content;
 	private String reDone;
-	private String viewcheck;
+	private String viewCheck;
 	private String reType;
-	private Date occurtime;
-	private String occurtype;
-	private String callcheck;
+	private Date occurTime;
+	private String occurType;
+	private String callCheck;
 	
 	private String lNum;
 	private int wCode;

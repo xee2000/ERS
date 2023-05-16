@@ -22,6 +22,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import kr.ac.ers.dto.LsupporterStatusVO;
 import kr.ac.ers.dto.LsupporterVO;
+import kr.ac.ers.dto.MemberReportLsupporterVO;
+import kr.ac.ers.dto.MemberVO;
 import kr.ac.ers.dto.SearchCriteria;
 import kr.ac.ers.service.LsupporterService;
 import kr.ac.ers.utils.MailContentSend;
@@ -185,6 +187,15 @@ public class LsupporterController {
 		
 		return "lsupporter/reportlist";
 	}
+	
+	@PostMapping("/ers/lsupporter/reportFormregist")
+	public String regist(MemberReportLsupporterVO reportlsupporter)throws Exception{
+		String url="/ers/lsupporter/regist_success";
+		lsupporterService.reportregist(reportlsupporter);
+		return url;
+	}
+	
+	
 	@RequestMapping("/ers/lsupporter/emergancylist")
 	public String Showemergancylist() {
 		return "lsupporter/emergancylist";

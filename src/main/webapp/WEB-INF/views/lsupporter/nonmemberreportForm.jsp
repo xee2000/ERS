@@ -22,7 +22,7 @@
 <div class="row">
 <div class="col-12 flex justify-end mb-1">
 <button type="button" class="btn btn-dark btn-md backbtn" onclick="location.href='/usr/home/reportlist'">뒤로가기</button>
-<button type="button" class="btn btn-primary btn-md">제출</button>
+<button type="button" class="btn btn-primary btn-md" onclick="regist();">제출</button>
 </div>
 </div>
 
@@ -44,7 +44,7 @@
     <th>대상자</th>
     <td>
 <div class="search_container flex items-center">
-  <input onclick="modalopen();" value="" class="searchinput w-full" type="text" id="searchinput" name="q" required>
+  <input onclick="modalopen();" value="" class="searchinput w-full" type="text" id="searchinput" name="name" required>
   <button type="submit" class="absolute right-0 top-0 bottom-0 p-2 right-1.25">
      <i class="fa fa-search" style="padding-left: 120px;" id="popupBtn"></i>
   </button>
@@ -118,6 +118,7 @@
 <c:forEach var="member" items="${memberList }">
 <tbody>
   <tr>
+  
     <td class="modal_content">
     ${member.picture }
     </td>
@@ -152,13 +153,13 @@ ${member.birth }
   <tr>
     <th class="tg-2xpi">보고서 구분</th>
     <td class="tg-2xpi">
-    <select style="text-align:center;" class="reportmenu">
-    <option name="" value="====">선택</option>
-    <option name="" value="1">고객면담보고서</option>
-    <option name="" value="2">건강상태보고서</option>
-    <option name="" value="3">서비스취소보고서</option>
-    <option name="" value="4">장기부재신청보고서</option>
-    <option name="" value="5">악성대상자신고보고서</option>
+    <select name="reType" style="text-align:center;" class="reportmenu">
+    <option name="reType" disabled value="====">선택</option>
+    <option name="reType" value="1">고객면담보고서</option>
+    <option name="reType" value="2">건강상태보고서</option>
+    <option name="reType" value="3">서비스취소보고서</option>
+    <option name="reType" value="4">장기부재신청보고서</option>
+    <option name="reType" value="5">악성대상자신고보고서</option>
     </select>
     </td>
   </tr>
@@ -180,45 +181,20 @@ ${member.birth }
       </div>
       <div class="card-body" style="display: none;">
         <div class="form-group">
-          <form action="#" method="#">
-   
+          <form action="nonmemberreportregist" method="post" role="form">
+          <input type="hidden" name="id" value="${member.id }">
+   <input type="hidden" name="reType" value="1">
     <div class="report">
         <div class="report-content">
             <table>
                 <tr>
-                    <th style="text-align: center;">상담목적</th>
-                    <td>
-				<select name="education_list">
-				<option value="정기상담">정기상담</option>
-				<option value="정기상담">대상자 요청</option>
-				<option value="정기상담">응급발생</option>
-				<option value="정기상담">외출확인</option>
-				</select></td>
-                </tr>
-                <tr>
-                    <th style="text-align: center;">상담경로</th>
-                    <td>
-    <input type="radio" name="chatroad" value="정상"/>전화&nbsp;&nbsp;
-    <input type="radio" name="chatroad" value="고장"/>방문</td>
-                </tr>
-                <tr>
-                    <th style="text-align: center;">확인내용</th>
-                    <td> <textarea rows="3"></textarea></td>
-                </tr>
-                <tr>
-                    <th style="text-align: center;">약속일자</th>
-                    <td><input type="date" name=""></td>
-                </tr>
-                <tr>
-                    <th style="text-align: center;">상세내용</th>
-                    <td> <textarea rows="3"></textarea></td>
+                    <th style="text-align: center;">특이사항</th>
+                    <td> <textarea name="content" placeholder="면담한 내용을 기록해주세요." rows="3"></textarea></td>
                 </tr>
             </table>
             <!-- 추가적인 테이블 내용을 추가할 수 있습니다. -->
         </div>
     </div>
-
-
 
 </form>
 </div>
@@ -246,8 +222,9 @@ ${member.birth }
 <div class="form-group">
 <div class="report">
         <div class="report-content">
-<form action="#" method="#" >
-
+<form action="reportFormregist" method="post" role="form">
+<input type="hidden" name="id" value="${member.id }">
+ <input type="hidden" name="reType" value="1">
 
 <table style="undefined;table-layout: fixed; width: 100%;">
 <colgroup>
@@ -256,35 +233,12 @@ ${member.birth }
 </colgroup>
 <tbody>
   <tr>
-    <th class="">기존질환</th>
+    <th class="">확인내용</th>
     <td class="">
-    <textarea rows="3"></textarea>
+    <textarea name="content" rows="3"></textarea>
     </td>
   </tr>
-  <tr>
-    <th class="">알레르기</th>
-    <td class="">
-      <textarea rows="3"></textarea>
-    </td>
-  </tr>
-  <tr>
-    <th class="">복용중인 약물</th>
-    <td class="">
-      <textarea rows="3"></textarea>
-    </td>
-  </tr>
-  <tr>
-    <th class="">사용중인 의료기기</th>
-    <td class="">
-      <textarea rows="3"></textarea>
-    </td>
-  </tr>
-  <tr>
-    <th class="">의사와의 진료내용</th>
-    <td class="">
-      <textarea rows="3"></textarea>
-    </td>
-  </tr>
+  
 </tbody>
 </table>
 
@@ -314,7 +268,9 @@ ${member.birth }
 </div>
 <div class="card-body" style="display: none;">
 <div class="form-group">
-<form action="#" method="#" >
+<form action="reportFormregist" method="post" role="form" >
+<input type="hidden" name="id" value="${member.id }">
+ <input type="hidden" name="reType" value="1">
 <table style="undefined;table-layout: fixed; width: 100%;">
 <colgroup>
 <col style="width: 150px;">
@@ -324,7 +280,7 @@ ${member.birth }
   <tr>
     <td class="tg-2xpi">파일첨부</td>
     <td class="tg-l8qj">
-    <input type="file"/>
+    <input type="file" name="filename"/>
     </td>
   </tr>
 </thead>
@@ -353,8 +309,9 @@ ${member.birth }
 </div>
 <div class="card-body" style="display: none;">
 <div class="form-group">
-<form action="#" method="#" >
-
+<form action="reportFormregist" method="post" role="form">
+<input type="hidden" name="id" value="${member.id }">
+ <input type="hidden" name="reType" value="1">
 <table style="undefined;table-layout: fixed; width: 100%;">
 <colgroup>
 <col style="width: 140.333333px">
@@ -366,23 +323,13 @@ ${member.birth }
   <tr>
  <th>장기부재 사유</th>
 <th colspan="3">
-  <input type="radio" name="chatroad" value="여행" onclick="showTextarea()"/>여행&nbsp;&nbsp;
-  <input type="radio" name="chatroad" value="입원" onclick="showTextarea()"/>입원&nbsp;&nbsp;
-  <input type="radio" name="chatroad" value="기타" onclick="showTextarea()"/>기타
-  <input type="text" name="details" id="detailsInput" style="display: none;" placeholder="기타 사유를 입력하세요..." />
+  <input type="radio" name="content" value="여행" onclick="showTextarea()"/>여행&nbsp;&nbsp;
+  <input type="radio" name="content" value="입원" onclick="showTextarea()"/>입원&nbsp;&nbsp;
+  <input type="radio" name="content" value="기타" onclick="showTextarea()"/>기타
+  <input type="text" name="content" id="detailsInput" style="display: none;" placeholder="기타 사유를 입력하세요..." />
 </th>
 </thead>
 <tbody>
-  <tr>
-    <th>부재시작일</th>
-    <td >
-    <input type="date"/>
-    </td>
-    <th>예상복귀일</th>
-    <td>
-    <input type="date"/>
-    </td>
-  </tr>
 </tbody>
 </table>
 </form>
@@ -399,6 +346,7 @@ ${member.birth }
 <div class="card  collapsed-card" id="5">
 <div class="card-header">
 <h3 class="card-title report_title">악성대상자 신고보고서</h3>
+
 <div class="card-tools">
  <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
 <i class="fas fa-plus"></i>
@@ -407,8 +355,9 @@ ${member.birth }
 </div>
 <div class="card-body" style="display: none;">
 <div class="form-group">
-<form action="#" method="#" >
-
+<form action="reportFormregist" method="post" role="form">
+<input type="hidden" name="id" value="${member.id }">
+ <input type="hidden" name="reType" value="1">
 <table style="undefined;table-layout: fixed; width: 100%;">
 <colgroup>
 <col style="width: 190px;">
@@ -418,39 +367,21 @@ ${member.birth }
   <tr>
     <th>발생시간</th>
     <td>
-    <input type="datetime-local"/>
+    <input type="datetime-local" name="occurtime"/>
     </td>
   </tr>
 </thead>
 <tbody>
   <tr>
-    <th>신고사유</th>
+    <th>사건내용</th>
     <td>
-      <textarea rows="3"></textarea>
-    </td>
-  </tr>
-  <tr>
-    <th >사건정보</th>
-    <td >
-      <textarea rows="3"></textarea>
-    </td>
-  </tr>
-  <tr>
-    <th>대응내용</th>
-    <td>
-      <textarea rows="3"></textarea>
-    </td>
-  </tr>
-  <tr>
-    <th>증언자정보</th>
-    <td>
-      <textarea rows="3"></textarea>
+      <textarea name="content" rows="3"></textarea>
     </td>
   </tr>
     <tr>
     <th>파일첨부</th>
     <td >
-     <input type="file" />
+     <input type="file" name="filename" />
     </td>
   </tr>
 </tbody>
@@ -464,6 +395,16 @@ ${member.birth }
 
 </div>
 
+<script>
+function regist() {
+    var collapsedCards = document.getElementsByClassName('collapsed-card');
+    var form = $('form[role="form"]');
+    
+    if (!form.parent().hasClass('collapsed-card')) {
+        form.submit();
+    }
+}
+</script>
 
 
 <!--모달창 스크립ㅌ  -->

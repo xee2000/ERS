@@ -97,6 +97,13 @@
 		    LEFT JOIN lsupporter l ON l.wcode = fs.wcode
 		    WHERE l.wid = #{wid}
 		</select>
+		
+		<update id="insertMemberReport" parameterType="MemberReportLsupporterVO">
+		    insert into
+		    report(rNo, content, id, wCode, reDone, reType,occurType, callCheck)
+		    values(NO_SEQ.NEXTVAL,#{content},#{id},#{wCode},#{reDone},#{reType},#{occurType},#{callCheck})
+    
+		</update>
 
 		<!-- <update id="lsupporterupdate" parameterType="LsupporterVO">
 		update lsupporter l

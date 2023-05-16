@@ -90,7 +90,7 @@ class="btn btn-lg btn-danger delete">삭제</button>
 <tbody>
   <tr>
     <td class="tg-3xi5"> <input type="checkbox" class="text-center check_box checkbox"/></td>
-    <td class="tg-3xi5"> 1</td>
+    <td class="tg-3xi5">${member.rNo }</td>
     <td class="tg-3xi5">
     ${member.picture }
     </td>
@@ -98,7 +98,7 @@ class="btn btn-lg btn-danger delete">삭제</button>
     <td class="tg-3xi5">${member.gender }</td>
     <td class="tg-3xi5">${member.reType }</td>
     <td class="tg-3xi5" onclick="location.href='/usr/home/educationdetail'">${regDate }</td>
-    <td class="tg-3xi5">${member.viewcheck }</td>
+    <td class="tg-3xi5">${member.viewCheck }</td>
   </tr>
 </tbody>
   </c:forEach>

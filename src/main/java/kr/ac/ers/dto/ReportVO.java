@@ -15,11 +15,11 @@ public class ReportVO {
 	private String id;
 	private int wCode;
 	private String reDone;
-	private String viewcheck;
+	private String viewCheck;
 	private String reType;
-	private Date occurtime;
-	private String occurtype;
-	private String callcheck;
+	private Date occurTime;
+	private String occurType;
+	private String callCheck;
 	
 	
 	

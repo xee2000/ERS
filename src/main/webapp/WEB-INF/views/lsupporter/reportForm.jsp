@@ -77,7 +77,7 @@
       </div>
       <div class="card-body" style="display: none;">
         <div class="form-group">
-          <form action="#" method="#">
+          <form action="reportFormregist" method="post">
    
     <div class="report">
         <div class="report-content">
@@ -143,7 +143,7 @@
 <div class="form-group">
 <div class="report">
         <div class="report-content">
-<form action="#" method="#" >
+<form action="reportFormregist" method="post" >
 
 
 <table style="undefined;table-layout: fixed; width: 100%;">
@@ -360,6 +360,10 @@
 <!--악성대상자 신고보고서 끝  -->
 
 </div>
+
+<Script>
+var form = 
+</Script>
 
 <script>
   function showTextarea() {

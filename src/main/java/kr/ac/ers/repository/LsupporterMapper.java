@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import kr.ac.ers.dto.LsupporterStatusVO;
 import kr.ac.ers.dto.LsupporterVO;
+import kr.ac.ers.dto.MemberReportLsupporterVO;
 import kr.ac.ers.dto.MemberVO;
 import kr.ac.ers.dto.SearchCriteria;
 
@@ -31,5 +32,7 @@ public interface LsupporterMapper {
 	int selectSearchLsupporterMemberListCount(SearchCriteria cri, String wid);
 
 	void LsupporterModify(LsupporterStatusVO lsupporter);
+
+	void LsupporterRegist(MemberReportLsupporterVO reportlsupporter);
 	
 }

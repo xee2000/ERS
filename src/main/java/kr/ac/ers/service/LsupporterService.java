@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import kr.ac.ers.dto.LsupporterStatusVO;
 import kr.ac.ers.dto.LsupporterStatusVO;
 import kr.ac.ers.dto.LsupporterVO;
+import kr.ac.ers.dto.MemberReportLsupporterVO;
 import kr.ac.ers.dto.MemberVO;
 import kr.ac.ers.dto.PageMaker;
 import kr.ac.ers.dto.SearchCriteria;
@@ -93,6 +94,10 @@ public class LsupporterService {
 	public void LsupporterModify(LsupporterStatusVO lsupporter) {
 		
 		lsupportMapper.LsupporterModify(lsupporter);
+	}
+
+	public void reportregist(MemberReportLsupporterVO reportlsupporter) {
+		lsupportMapper.LsupporterRegist(reportlsupporter);
 	}
 
 }
