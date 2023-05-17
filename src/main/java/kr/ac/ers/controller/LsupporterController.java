@@ -4,7 +4,11 @@ package kr.ac.ers.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -17,13 +21,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.gson.Gson;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import kr.ac.ers.dto.LsupporterStatusVO;
 import kr.ac.ers.dto.LsupporterVO;
 import kr.ac.ers.dto.MemberReportLsupporterVO;
-import kr.ac.ers.dto.MemberVO;
 import kr.ac.ers.dto.SearchCriteria;
 import kr.ac.ers.service.LsupporterService;
 import kr.ac.ers.utils.MailContentSend;
@@ -77,7 +82,7 @@ public class LsupporterController {
 	}
 	
 	
-	@GetMapping("/ers/lsupporter/nonmemberreportForm")
+	@RequestMapping("/ers/lsupporter/nonmemberreportForm")
 	public String ShownonmemberreportForm(@RequestParam(defaultValue = "0")int gubun, String searchType, String keyword, String perPageNumParam, String pageParam, Model model, HttpSession session, HttpServletRequest request) {
 		SearchCriteria cri = new SearchCriteria();
 		if(perPageNumParam == null || perPageNumParam.isEmpty())perPageNumParam="5";
@@ -98,34 +103,39 @@ public class LsupporterController {
 	
 	@GetMapping("/ers/lsupporter/nonmemberreportFormAction")
 	@ResponseBody
-	public String ShownonmemberreportFormAction(@RequestParam(defaultValue = "0")int gubun, String searchType, String keyword, String perPageNumParam, String pageParam, Model model, HttpSession session, HttpServletRequest request) {
+	public String shownonmemberreportFormAction(String info,@RequestParam(defaultValue = "0") int gubun, String searchType, String keyword, String perPageNumParam, String pageParam, HttpSession session, HttpServletRequest request) {
+		String json = null;
 		SearchCriteria cri = new SearchCriteria();
-		if(perPageNumParam == null || perPageNumParam.isEmpty())perPageNumParam="5";
-		if(pageParam == null || pageParam.isEmpty())pageParam="1";
-		if(searchType == null) searchType="";
-		if(keyword==null) keyword="";
-		cri.setPage(pageParam);
-		cri.setPerPageNum(perPageNumParam);
-		cri.setSearchType(searchType);
-		cri.setKeyword(keyword);
-		session= request.getSession();
-		 LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");
-		 Map<String,Object> dataMap = lsupporterService.getLsupporterMemberList(loginUser.getWid(), cri);
-		 model.addAttribute("dataMap",dataMap);
-		 model.addAttribute("gubun", gubun);
-		return "lsupporter/nonmemberreportForm";
+		  Map<Object, Object> map = new HashMap<Object, Object>();
+	    if (perPageNumParam == null || perPageNumParam.isEmpty()) {
+	        perPageNumParam = "5";
+	    }
+	    if (pageParam == null || pageParam.isEmpty()) {
+	        pageParam = "1";
+	    }
+	    if (searchType == null) {
+	        searchType = "";
+	    }
+	    if (keyword == null) {
+	        keyword = "";
+	    }
+	    Gson gson = new Gson();
+	  
+	    map = (Map<Object, Object>) gson.fromJson(info, map.getClass());
+	    cri.setPage(pageParam);
+	    cri.setPerPageNum(perPageNumParam);
+	    cri.setSearchType(searchType);
+	    cri.setKeyword(keyword);
+	    session = request.getSession();
+	    LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");
+	    Map<String, Object> dataMap = lsupporterService.getLsupporterMemberList(loginUser.getWid(), cri);
+	    dataMap.put("gubun", gubun);
+	    List<Map<String, Object>> result = new ArrayList<>();
+	    result.add(dataMap);
+	    json = gson.toJson(result);
+	    return json;
 	}
 	
-	/*
-	 * @GetMapping()
-	 * 
-	 * @ResponseBody public List<MemberVO>
-	 * ShownonmemberreportAction(@RequestParam(defaultValue = "0")int gubun, String
-	 * searchType, String keyword, String perPageNumParam, String pageParam, Model
-	 * model, HttpSession session, HttpServletRequest request) {
-	 * 
-	 * return "/lsupporter/nonmemberreportFormAction"; }
-	 */
 	
 	@GetMapping("/ers/lsupporter/lsupporterstatus")
 	public String showLsupporterStatus(Model model, HttpSession session, HttpServletRequest request) {

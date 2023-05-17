@@ -21,13 +21,13 @@
 			and m.gender like '%'||#{cri.keyword}||'%'			
 		</if>
 		<if test="cri.searchType == 'r'.toString()">
-			and retype like '%'||#{cri.keyword}||'%'			
+			and reType like '%'||#{cri.keyword}||'%'			
 		</if>
 		<if test="cri.searchType == 'rd'.toString()">
-			and regdate like '%'||#{cri.keyword}||'%'			
+			and regDate like '%'||#{cri.keyword}||'%'			
 		</if>	
 		<if test="cri.searchType == 'vc'.toString()">
-			and viewcheck like '%'||#{cri.keyword}||'%'			
+			and viewCheck like '%'||#{cri.keyword}||'%'			
 		</if>		
 	</sql>	
 	
@@ -59,7 +59,7 @@
 	<!--생활지원사에게 배정된 대상자의 보고서 리스트 뽑아주는 쿼리  -->
 	<select id="selectSearchMemberList" resultType="MemberReportLsupporterVO" >
 		select *
-		from memberview m , report r , lsupporter l
+		from member m , report r , lsupporter l
 		where m.id = r.id and m.wid = l.wid and l.wid=#{wid} and m.id is not null
 		<include refid="search" />
 		order by m.id desc
@@ -68,7 +68,7 @@
 <!--생활지원사에게 배정된 대상자의 보고서 리스트 숫자 뽑아주는 쿼리  -->
 	<select id="selectSearchMemberListCount" resultType="int" >
 	select count(*)
-	from memberview m, fieldstaff fs, lsupporter l
+	from member m, fieldstaff fs, lsupporter l
 	where m.wid = l.wid and fs.wcode = l.wcode and l.wid = #{wid} and m.id is not null
 	<include refid="search" />
 	</select>
@@ -76,14 +76,14 @@
 	<!--고객과 일치하는 보고서를 데려오는 리스트카운터  -->
 	<select id="selectSearchLsupporterMemberListCount" resultType="int" >
 	select count(*)
-	from memberview m , report r , lsupporter l
+	from member m , report r , lsupporter l
 	where m.id = r.id and m.wid = l.wid and l.wid=#{wid} and m.id is not null
 		<include refid="search" />
 	</select>
 	
 	<select id="selectLsupporterMemberList" resultType="MemberVO" parameterType="String">
 	select *
-	from memberview m, fieldstaff fs, lsupporter l
+	from member m, fieldstaff fs, lsupporter l
 	where m.wid = l.wid and fs.wcode = l.wcode and l.wid = #{wid} and m.id is not null
 
 		<include refid="search" />
@@ -101,9 +101,15 @@
 		<update id="insertMemberReport" parameterType="MemberReportLsupporterVO">
 		    insert into
 		    report(rNo, content, id, wCode, reDone, reType,occurType, callCheck)
-		    values(NO_SEQ.NEXTVAL,#{content},#{id},#{wCode},#{reDone},#{reType},#{occurType},#{callCheck})
+		    values(seq.NEXTVAL,#{content},#{id},'1',#{reDone},#{reType},#{occurType},#{callCheck})
     
 		</update>
+		
+		<select id="selectMemberEmergancyList"  resultType="MemberEmergancyReportVO" parameterType="String">
+		select *
+		from emergency e, member m, report r, lsupporter l
+		where e.wid = l.wid and m.wid = l.wid and l.wid = #{wid}   
+		</select>
 
 		<!-- <update id="lsupporterupdate" parameterType="LsupporterVO">
 		update lsupporter l

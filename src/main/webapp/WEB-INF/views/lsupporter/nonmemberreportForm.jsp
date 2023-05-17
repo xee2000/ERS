@@ -44,7 +44,7 @@
     <th>대상자</th>
     <td>
 <div class="search_container flex items-center">
-  <input onclick="modalopen();" value="" class="searchinput w-full" type="text" id="searchinput" name="name" required>
+  <input onclick="modalopen();" value="" class="searchinput searchinput_name w-full" type="text" id="searchinput" name="name" required>
   <button type="submit" class="absolute right-0 top-0 bottom-0 p-2 right-1.25">
      <i class="fa fa-search" style="padding-left: 120px;" id="popupBtn"></i>
   </button>
@@ -413,7 +413,7 @@ function regist() {
   const modal = document.getElementById('modalWrap');
   const closeBtn = document.getElementById('closeBtn');
   const modalnameElement = document.getElementById('modalname');
-  const modalname = modalnameElement.textContent;
+  const modalname = modalnameElement.textContent.trim();
   const searchinput = document.getElementById('searchinput');
   btn.onclick = function() {
     modal.style.display = 'block';
@@ -448,41 +448,56 @@ function regist() {
 
 
 <script>
-
+var data = {
+		  gubun: $('input[name="gubun"]').val(),
+		  searchType: $('select[name="searchType"]').val(),
+		  keyword: $('input[name="keyword"]').val()
+		};
+		
 
   function list_go(page) {
 	  
-	   var gubun = $('input[name="gubun"]').val();
-	   var searchType = $('select[name="searchType"]').val();
-	   var keyword = $('input[name="keyword"]').val();
-	   
 	   $.ajax({
-	    	type: "GET", //요청 메소드 방식
-	    	data: 'gubun='+gubun+'&searchType='+searchType+'&keyword='+keyword+'&perPageNumParam=1&pageParam=1',
-	    	url: "/ers/lsupporter/nonmemberreportFormAction",
-	    	dataType:"text", //서버가 요청 URL을 통해서 응답하는 내용의 타입
-	    	success : function(data){
-			alert(data.keyword);
-	    	},
-	    	error : function(data){
-	    		//통신 실패시 발생하는 함수(콜백)
-	    		alert(data.searchType);
-	    	}
-	    });
-  }
+		   type: "GET",
+		   data:JSON.stringify(data),
+		   url: "/ers/lsupporter/nonmemberreportFormAction",
+		   async: true,
+		   contentType:'application/json',
+		   dataType: "json",
+		   success: function(data) {
+			   alert(data.keyword);
+		   },
+		   error: function(data) {
+		   }
+		 });
+
+  };
+  function updateTable(data) {
+	  var tbody = $('.searchlist tbody');
+	  tbody.empty();
+
+	  $.each(data, function(index, member) {
+	    var row = $('<tr>');
+	    var pictureCell = $('<td>', { class: 'modal_content' }).text(member.picture);
+	    var nameCell = $('<td>', { class: 'modal_content', onclick: 'membersearch();', id: 'modalname' }).text(member.name);
+	    var genderCell = $('<td>', { class: 'modal_content' }).text(member.gender);
+	    var ageCell = $('<td>', { class: 'modal_content' }).text(member.birth);
+
+	    row.append(pictureCell, nameCell, genderCell, ageCell);
+	    tbody.append(row);
+	  });
+	}
   
   
-  window.onload=function(){
 	  if(${gubun} == 1){
 	  const modal = document.getElementById('modalWrap');
 		    modal.style.display = 'block';
 		  
 	  }
-	  
-  }
 </script>
 
 <script>
+
 window.addEventListener('DOMContentLoaded', function() {
   var collapsedCards = document.getElementsByClassName('collapsed-card');
   
