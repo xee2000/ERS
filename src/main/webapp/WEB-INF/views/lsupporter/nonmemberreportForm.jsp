@@ -24,7 +24,7 @@
 <div class="row">
 <div class="col-12 flex justify-end mb-1">
 <button type="button" class="btn btn-dark btn-md backbtn" onclick="location.href='/usr/home/reportlist'">뒤로가기</button>
-<button type="button" class="btn btn-primary btn-md" onclick="regist();">제출</button>
+<button type="submit" class="btn btn-primary btn-md" onclick="regist();">제출</button>
 </div>
 </div>
 
@@ -65,12 +65,13 @@
 </div>
 
 
+
+<form>
 <table class="tg table table_list" style="undefined;table-layout: fixed; width: 100%;">
 <colgroup>
 <col style="width: 150.333333px">
 <col style="width: 300px">
 </colgroup>
-<form>
   <tr>
     <th class="tg-l8qj" >
 <select class="form-control" style="font-size: 1.5rem;height: auto;" name="searchType" id="searchType">
@@ -91,11 +92,9 @@
   </div>
 </th>
   </tr>
-</form>
-<tbody>
-
 </tbody>
 </table>
+</form>
 
 <div class="row">
 <div class="col-12">
@@ -119,7 +118,7 @@
 <c:forEach var="member" items="${memberList }">
 <tbody>
   <tr>
-  <div style="display:none">${member.id }</div>
+  <td style="display:none" class="modal_content" id="memberid">${member.id }</td>
     <td class="modal_content">
     ${member.picture }
     </td>
@@ -182,21 +181,37 @@ ${member.birth }
       </div>
       <div class="card-body" style="display: none;">
         <div class="form-group">
-          <form action="nonmemberreportregist" method="post" role="form">
+          <form action="" name="form" method="post" role="form">
+       	   
         <div class="report-content">
             <table>
+            
                 <tr>
+                
                     <th style="text-align: center;">특이사항</th>
-                    <td> <textarea name="content" placeholder="면담한 내용을 기록해주세요." rows="3"></textarea></td>
+                    
+                    <td> <textarea name="content" id="content" placeholder="면담한 내용을 기록해주세요." rows="3"></textarea></td>
+                </tr>
+                <tr>
+                    <th style="text-align: center;">전화유무</th>
+                    <td> 
+                    <input type="hidden" name="id" value="">
+                    <input type="hidden" name="reType" value="1">
+					<input type="hidden" name="wCode" value="${wCode}">
+					<input type="hidden" name="reDone" value="0">
+					<input type="hidden" name="viewCheck" value="0">
+                    <input type="radio" name="callCheck" value="Y">전화함                    
+                    <input type="radio" name="callCheck" value="N">전화안함    
+                    </td>
                 </tr>
             </table>
             <!-- 추가적인 테이블 내용을 추가할 수 있습니다. -->
         </div>
+        </form>
     </div>
+</div>
 
-</form>
-</div>
-</div>
+
 </div>
 </div>
 </div>
@@ -220,7 +235,11 @@ ${member.birth }
 <div class="form-group">
 <div class="report">
         <div class="report-content">
-<form action="nonmemberreportregist" method="post" role="form">
+<form action="" name="form" method="post" role="form">
+<input type="hidden" name="id" value="">
+<input type="hidden" name="wCode" value="${wCode}">
+<input type="hidden" name="reDone" value="0">
+<input type="hidden" name="viewCheck" value="0">
  <input type="hidden" name="reType" value="2">
 
 <table style="undefined;table-layout: fixed; width: 100%;">
@@ -265,7 +284,11 @@ ${member.birth }
 </div>
 <div class="card-body" style="display: none;">
 <div class="form-group">
-<form action="nonmemberreportregist" method="post" role="form" >
+<form action="" name="form" method="post" role="form" >
+<input type="hidden" name="id" value="">
+<input type="hidden" name="wCode" value="${wCode}">
+<input type="hidden" name="reDone" value="0">
+<input type="hidden" name="viewCheck" value="0">
  <input type="hidden" name="reType" value="3">
 <table style="undefined;table-layout: fixed; width: 100%;">
 <colgroup>
@@ -305,7 +328,11 @@ ${member.birth }
 </div>
 <div class="card-body" style="display: none;">
 <div class="form-group">
-<form action="nonmemberreportregist" method="post" role="form">
+<form action="" name="form" method="post" role="form">
+<input type="hidden" name="id" value="">
+<input type="hidden" name="wCode" value="${wCode}">
+<input type="hidden" name="reDone" value="0">
+<input type="hidden" name="viewCheck" value="0">
  <input type="hidden" name="reType" value="4">
 <table style="undefined;table-layout: fixed; width: 100%;">
 <colgroup>
@@ -350,7 +377,11 @@ ${member.birth }
 </div>
 <div class="card-body" style="display: none;">
 <div class="form-group">
-<form action="nonmemberreportregist" method="post" role="form">
+<form action="" name="form" method="post" role="form">
+<input type="hidden" name="id" value="">
+<input type="hidden" name="wCode" value="${wCode}">
+<input type="hidden" name="reDone" value="0">
+<input type="hidden" name="viewCheck" value="0">
  <input type="hidden" name="reType" value="5">
 <table style="undefined;table-layout: fixed; width: 100%;">
 <colgroup>
@@ -361,7 +392,7 @@ ${member.birth }
   <tr>
     <th>발생시간</th>
     <td>
-    <input type="datetime-local" name="occurtime"/>
+    <input type="date" name="occurTime"/>
     </td>
   </tr>
 </thead>
@@ -388,27 +419,22 @@ ${member.birth }
 <!--악성대상자 신고보고서 끝  -->
 
 </div>
-<input type="hidden" name="selectedName" value="">
-<input type="hidden" name="selectedId" value="">
-<input type="hidden" name="selectedWCode" value="">
+
 
 <script>
-function regist() {
-	  var collapsedCards = document.getElementsByClassName('collapsed-card');
-	 			if(!collapsedCards.css('display','hidden')){
-	            form.submit();
-	 				
-	 			}
-	            return; // Stop iterating after submitting the first opened form
-	          }
-	        }
-	      }
-	    }
+  $('input[name="id"]').val($('#memberid').text());
+  function regist() {
+	  var visibleForm = $('form[role="form"]:visible');
+	  if (visibleForm.length > 0) {
+	    visibleForm.attr({
+	      action: "nonmemberreportregist",
+	      method: "post"
+	    }).submit();
 	  }
 	}
 
-	    // Set the values of the hidden input fields in the form
 </script>
+
 
 
 <!--모달창 스크립ㅌ  -->
@@ -474,7 +500,6 @@ function regist() {
       contentType: 'application/json',
       dataType: "json",
       success: function(response) {
-    	  alert(data.page)
         // Update the table with the search results
         var table = $('.searchlist');
         table.find('tbody').empty(); // Clear existing table body

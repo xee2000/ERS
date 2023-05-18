@@ -97,11 +97,12 @@ public class LsupporterService {
 	}
 
 	public void LsupporterModify(LsupporterStatusVO lsupporter) {
-		
 		lsupportMapper.LsupporterModify(lsupporter);
 	}
 
 	public void reportregist(MemberReportLsupporterVO reportlsupporter) {
+		int rNo = lsupportMapper.selectReportSequenceNextValue();
+		reportlsupporter.setRNo(rNo);
 		lsupportMapper.insertMemberReport(reportlsupporter);
 	}
 

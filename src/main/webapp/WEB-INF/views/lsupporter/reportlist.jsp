@@ -87,18 +87,19 @@ class="btn btn-lg btn-danger delete">삭제</button>
   </tr>
 </thead>
 <c:forEach items="${memberList }" var="member">
+<fmt:formatDate value="${member.regDate}" pattern="yyyy-mm-dd" var="regDate"/>
 <tbody>
   <tr>
     <td class="tg-3xi5"> <input type="checkbox" class="text-center check_box checkbox"/></td>
-    <td class="tg-3xi5">${member.rNo }</td>
+<td class="tg-3xi5">${member.rNo }</td> 
     <td class="tg-3xi5">
     ${member.picture }
     </td>
     <td class="tg-3xi5" onclick="location.href='/ers/lsupporter/memberdetail'">${member.name }</td>
     <td class="tg-3xi5">${member.gender }</td>
-    <td class="tg-3xi5">${member.reType }</td>
+  <td class="tg-3xi5">${member.reType }</td> 
     <td class="tg-3xi5" onclick="location.href='/usr/home/educationdetail'">${regDate }</td>
-    <td class="tg-3xi5">${member.viewCheck }</td>
+ <td class="tg-3xi5">${member.viewCheck }</td>
   </tr>
 </tbody>
   </c:forEach>

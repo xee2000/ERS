@@ -1,7 +1,5 @@
 package kr.ac.ers.dto;
-
 import java.util.Date;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -31,7 +29,6 @@ public class MemberReportLsupporterVO {
 	private String equipment;
 	private String afNo;
 	private String manId;
-	
 	private int rNo;
 	private String content;
 	private String reDone;
@@ -40,9 +37,11 @@ public class MemberReportLsupporterVO {
 	private Date occurTime;
 	private String occurType;
 	private String callCheck;
-	
 	private String lNum;
 	private int wCode;
 	private String pwd;
+	
+	
+	}
+	
 
-}

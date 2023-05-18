@@ -36,5 +36,7 @@ public interface LsupporterMapper {
 	void LsupporterModify(LsupporterStatusVO lsupporter);
 
 	void insertMemberReport(MemberReportLsupporterVO reportlsupporter);
+
+	int selectReportSequenceNextValue();
 	
 }

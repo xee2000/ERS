@@ -90,9 +90,11 @@ public class LsupporterController {
 		cri.setKeyword(keyword);
 		session= request.getSession();
 		 LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");
+		 int wCode = loginUser.getWCode();
 		 Map<String,Object> dataMap = lsupporterService.getLsupporterMemberList(loginUser.getWid(), cri);
 		 model.addAttribute("dataMap",dataMap);
 		 model.addAttribute("gubun", gubun);
+		 model.addAttribute("wCode",wCode);
 		return "lsupporter/nonmemberreportForm";
 	}
 	
@@ -175,7 +177,7 @@ public class LsupporterController {
 	
 	@PostMapping("/ers/lsupporter/nonmemberreportregist")
 	public String regist(MemberReportLsupporterVO reportlsupporter)throws Exception{
-		String url="/ers/lsupporter/reportlist";
+	String url="redirect:/ers/lsupporter/reportlist";
 		lsupporterService.reportregist(reportlsupporter);
 		return url;
 	}
@@ -363,7 +365,7 @@ public class LsupporterController {
 	      case 0: //로그인 성공
 	    	  LsupporterVO loginUser = lsupporterService.getLsupporter(wid);
 	         session.setAttribute("loginUser", loginUser);
-	         session.setMaxInactiveInterval(600 * 30);
+				/* session.setMaxInactiveInterval(600 * 30); */
 	         return url;
 	      case 1: //아이디 불일치
 	         url="redirect:/ers/lsupporter/loginForm";
