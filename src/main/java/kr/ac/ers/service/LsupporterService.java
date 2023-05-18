@@ -5,16 +5,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import kr.ac.ers.dto.LsupporterStatusVO;
+import kr.ac.ers.command.PageMaker;
+import kr.ac.ers.command.SearchCriteria;
 import kr.ac.ers.dto.LsupporterStatusVO;
 import kr.ac.ers.dto.LsupporterVO;
 import kr.ac.ers.dto.MemberReportLsupporterVO;
 import kr.ac.ers.dto.MemberVO;
-import kr.ac.ers.dto.PageMaker;
-import kr.ac.ers.dto.SearchCriteria;
 import kr.ac.ers.repository.LsupporterMapper;
 
 @Service
@@ -81,12 +81,17 @@ public class LsupporterService {
 
 	public Map<String, Object> getLsupporterMemberList(String wid, SearchCriteria cri) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		List<MemberVO> memberList = lsupportMapper.selectLsupporterMemberList(cri,wid);
+		Map<String, Object> returnMap = new HashMap<>();
+		returnMap.put("cri", cri);
+		returnMap.put("wid", wid);
+		RowBounds rowbounds = new RowBounds(cri.getStartRowNum(),cri.getPerPageNum());
+		
+		List<MemberVO> memberList = lsupportMapper.selectLsupporterMemberList(returnMap,rowbounds);
 		dataMap.put("memberList", memberList);
 		
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
-		pageMaker.setTotalCount(lsupportMapper.selectSearchLsupporterMemberListCount(cri, wid));
+		pageMaker.setTotalCount(lsupportMapper.selectSearchLsupporterMemberListCount(returnMap));
 		dataMap.put("pageMaker", pageMaker);
 		return dataMap;
 	}
@@ -97,7 +102,7 @@ public class LsupporterService {
 	}
 
 	public void reportregist(MemberReportLsupporterVO reportlsupporter) {
-		lsupportMapper.LsupporterRegist(reportlsupporter);
+		lsupportMapper.insertMemberReport(reportlsupporter);
 	}
 
 }

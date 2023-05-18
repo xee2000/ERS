@@ -21,13 +21,13 @@
 			and m.gender like '%'||#{cri.keyword}||'%'			
 		</if>
 		<if test="cri.searchType == 'r'.toString()">
-			and reType like '%'||#{cri.keyword}||'%'			
+			and m.reType like '%'||#{cri.keyword}||'%'			
 		</if>
 		<if test="cri.searchType == 'rd'.toString()">
-			and regDate like '%'||#{cri.keyword}||'%'			
+			and m.regDate like '%'||#{cri.keyword}||'%'			
 		</if>	
 		<if test="cri.searchType == 'vc'.toString()">
-			and viewCheck like '%'||#{cri.keyword}||'%'			
+			and m.viewCheck like '%'||#{cri.keyword}||'%'			
 		</if>		
 	</sql>	
 	
@@ -81,12 +81,12 @@
 		<include refid="search" />
 	</select>
 	
-	<select id="selectLsupporterMemberList" resultType="MemberVO" parameterType="String">
+	<select id="selectLsupporterMemberList" resultType="MemberVO">
 	select *
 	from member m, fieldstaff fs, lsupporter l
 	where m.wid = l.wid and fs.wcode = l.wcode and l.wid = #{wid} and m.id is not null
-
-		<include refid="search" />
+	<include refid="search" />
+		<!-- <include refid="search" /> -->
 	</select>
 	
  
@@ -101,7 +101,7 @@
 		<update id="insertMemberReport" parameterType="MemberReportLsupporterVO">
 		    insert into
 		    report(rNo, content, id, wCode, reDone, reType,occurType, callCheck)
-		    values(seq.NEXTVAL,#{content},#{id},'1',#{reDone},#{reType},#{occurType},#{callCheck})
+		    values(seq.NEXTVAL,#{content},#{id},#{wCode},#{reDone},#{reType},#{occurType},#{callCheck})
     
 		</update>
 		

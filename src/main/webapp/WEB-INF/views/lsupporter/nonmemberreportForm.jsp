@@ -5,6 +5,8 @@
 <c:set var="pageMaker" value="${dataMap.pageMaker }" />
 <c:set var="cri" value="${pageMaker.cri }" />
 <%@include file="../include/lsupporter/head.jspf"%>
+
+
 <link rel="stylesheet" href="/resources/lsupporter/css/nonmemberreportForm.css">
 
 
@@ -68,8 +70,7 @@
 <col style="width: 150.333333px">
 <col style="width: 300px">
 </colgroup>
-<form onsubmit="return false;" >
-<thead>
+<form>
   <tr>
     <th class="tg-l8qj" >
 <select class="form-control" style="font-size: 1.5rem;height: auto;" name="searchType" id="searchType">
@@ -82,14 +83,14 @@
    <th class="tg-l8qj">
   <div class="search_container flex items-center">
   <input type="hidden" name="gubun" value="1">
-    <input class="searchinput w-full" type="text" id="" required="required" name="keyword" value="${cri.keyword}" placeholder="검색어를 입력하세요.">
+    <input class="searchinput w-full" type="text" id="search" required="required" name="keyword" value="${cri.keyword}"
+     placeholder="검색어를 입력하세요." onkeyup="enterkey();">
     <button type="button" class="absolute right-0 top-0 bottom-0 p-2 right-1.25" id="searchButton">
       <i class="fa fa-search" id="searchBtn" data-card-widget="search" onclick="list_go(1);"></i>
     </button>
   </div>
 </th>
   </tr>
-</thead>
 </form>
 <tbody>
 
@@ -118,7 +119,7 @@
 <c:forEach var="member" items="${memberList }">
 <tbody>
   <tr>
-  
+  <div style="display:none">${member.id }</div>
     <td class="modal_content">
     ${member.picture }
     </td>
@@ -182,9 +183,6 @@ ${member.birth }
       <div class="card-body" style="display: none;">
         <div class="form-group">
           <form action="nonmemberreportregist" method="post" role="form">
-          <input type="hidden" name="id" value="${member.id }">
-   <input type="hidden" name="reType" value="1">
-    <div class="report">
         <div class="report-content">
             <table>
                 <tr>
@@ -222,9 +220,8 @@ ${member.birth }
 <div class="form-group">
 <div class="report">
         <div class="report-content">
-<form action="reportFormregist" method="post" role="form">
-<input type="hidden" name="id" value="${member.id }">
- <input type="hidden" name="reType" value="1">
+<form action="nonmemberreportregist" method="post" role="form">
+ <input type="hidden" name="reType" value="2">
 
 <table style="undefined;table-layout: fixed; width: 100%;">
 <colgroup>
@@ -268,9 +265,8 @@ ${member.birth }
 </div>
 <div class="card-body" style="display: none;">
 <div class="form-group">
-<form action="reportFormregist" method="post" role="form" >
-<input type="hidden" name="id" value="${member.id }">
- <input type="hidden" name="reType" value="1">
+<form action="nonmemberreportregist" method="post" role="form" >
+ <input type="hidden" name="reType" value="3">
 <table style="undefined;table-layout: fixed; width: 100%;">
 <colgroup>
 <col style="width: 150px;">
@@ -309,9 +305,8 @@ ${member.birth }
 </div>
 <div class="card-body" style="display: none;">
 <div class="form-group">
-<form action="reportFormregist" method="post" role="form">
-<input type="hidden" name="id" value="${member.id }">
- <input type="hidden" name="reType" value="1">
+<form action="nonmemberreportregist" method="post" role="form">
+ <input type="hidden" name="reType" value="4">
 <table style="undefined;table-layout: fixed; width: 100%;">
 <colgroup>
 <col style="width: 140.333333px">
@@ -355,9 +350,8 @@ ${member.birth }
 </div>
 <div class="card-body" style="display: none;">
 <div class="form-group">
-<form action="reportFormregist" method="post" role="form">
-<input type="hidden" name="id" value="${member.id }">
- <input type="hidden" name="reType" value="1">
+<form action="nonmemberreportregist" method="post" role="form">
+ <input type="hidden" name="reType" value="5">
 <table style="undefined;table-layout: fixed; width: 100%;">
 <colgroup>
 <col style="width: 190px;">
@@ -394,16 +388,26 @@ ${member.birth }
 <!--악성대상자 신고보고서 끝  -->
 
 </div>
+<input type="hidden" name="selectedName" value="">
+<input type="hidden" name="selectedId" value="">
+<input type="hidden" name="selectedWCode" value="">
 
 <script>
 function regist() {
-    var collapsedCards = document.getElementsByClassName('collapsed-card');
-    var form = $('form[role="form"]');
-    
-    if (!form.parent().hasClass('collapsed-card')) {
-        form.submit();
-    }
-}
+	  var collapsedCards = document.getElementsByClassName('collapsed-card');
+	 			if(!collapsedCards.css('display','hidden')){
+	            form.submit();
+	 				
+	 			}
+	            return; // Stop iterating after submitting the first opened form
+	          }
+	        }
+	      }
+	    }
+	  }
+	}
+
+	    // Set the values of the hidden input fields in the form
 </script>
 
 
@@ -412,12 +416,10 @@ function regist() {
   const btn = document.getElementById('popupBtn');
   const modal = document.getElementById('modalWrap');
   const closeBtn = document.getElementById('closeBtn');
-  const modalnameElement = document.getElementById('modalname');
-  const modalname = modalnameElement.textContent.trim();
   const searchinput = document.getElementById('searchinput');
+
   btn.onclick = function() {
     modal.style.display = 'block';
-    
   }
 
   closeBtn.onclick = function() {
@@ -429,75 +431,79 @@ function regist() {
       modal.style.display = 'none';
     }
   }
-  
-  function modalopen(){
-	  modal.style.display = 'block';
+
+  function modalopen() {
+    modal.style.display = 'block';
   }
 
   // Hide the modal initially
   modal.style.display = 'none';
-  
-  function membersearch(){
-	  
-	  
-	  modal.style.display = 'none';
-	  searchinput.value = modalname;
+
+  // Add event listener to table rows
+  $(document).on('click', '.modal_content', function() {
+    const modalname = $(this).text().trim();
+    searchinput.value = modalname;
+    modal.style.display = 'none';
+  });
+
+  function membersearch() {
+    modal.style.display = 'none';
+    searchinput.value = modalname;
   }
-  
+</script>
+
+
+
+<script>
+  function list_go(page) {
+	  
+	  
+	  var data = {
+		      "gubun": $('input[name="gubun"]').val(),
+		      "searchType": $('select[name="searchType"]').val(),
+		      "keyword": $('input[name="keyword"]').val(),
+		      "page": page, // Pass the page parameter
+		      "perPageNum": 5 // Hard-coded to 5 for displaying 5 results per page
+		    };
+
+    $.ajax({
+      type: "GET",
+      data: data,
+      url: "/ers/lsupporter/nonmemberreportFormAction",
+      async: true,
+      contentType: 'application/json',
+      dataType: "json",
+      success: function(response) {
+    	  alert(data.page)
+        // Update the table with the search results
+        var table = $('.searchlist');
+        table.find('tbody').empty(); // Clear existing table body
+
+        // Iterate over the search results and generate table rows
+        $.each(response.memberList, function(index, member) {
+          var row = '<tr>' +
+            '<td class="modal_content">' + member.picture + '</td>' +
+            '<td onclick="membersearch();" class="modal_content" id="modalname">' + member.name + '</td>' +
+            '<td class="modal_content">' + member.gender + '</td>' +
+            '<td class="modal_content">' + member.birth + '</td>' +
+            '</tr>';
+          table.find('tbody').append(row); // Append each row to the table body
+        });
+      },
+      error: function(error) {
+        console.log(error);
+      }
+    });
+  };
 </script>
 
 
 <script>
-var data = {
-		  gubun: $('input[name="gubun"]').val(),
-		  searchType: $('select[name="searchType"]').val(),
-		  keyword: $('input[name="keyword"]').val()
-		};
-		
-
-  function list_go(page) {
-	  
-	   $.ajax({
-		   type: "GET",
-		   data:JSON.stringify(data),
-		   url: "/ers/lsupporter/nonmemberreportFormAction",
-		   async: true,
-		   contentType:'application/json',
-		   dataType: "json",
-		   success: function(data) {
-			   alert(data.keyword);
-		   },
-		   error: function(data) {
-		   }
-		 });
-
-  };
-  function updateTable(data) {
-	  var tbody = $('.searchlist tbody');
-	  tbody.empty();
-
-	  $.each(data, function(index, member) {
-	    var row = $('<tr>');
-	    var pictureCell = $('<td>', { class: 'modal_content' }).text(member.picture);
-	    var nameCell = $('<td>', { class: 'modal_content', onclick: 'membersearch();', id: 'modalname' }).text(member.name);
-	    var genderCell = $('<td>', { class: 'modal_content' }).text(member.gender);
-	    var ageCell = $('<td>', { class: 'modal_content' }).text(member.birth);
-
-	    row.append(pictureCell, nameCell, genderCell, ageCell);
-	    tbody.append(row);
-	  });
-	}
-  
-  
-	  if(${gubun} == 1){
+  if(${gubun} == 1){
 	  const modal = document.getElementById('modalWrap');
 		    modal.style.display = 'block';
 		  
 	  }
-</script>
-
-<script>
-
 window.addEventListener('DOMContentLoaded', function() {
   var collapsedCards = document.getElementsByClassName('collapsed-card');
   

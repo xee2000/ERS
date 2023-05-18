@@ -1,4 +1,3 @@
-
 .reportmenu{
 	width:100%;
 	
@@ -43,7 +42,7 @@ margin: 100px auto;
 /* Specific styles for modal body */
 #modalBody {
   width: 600px;
-  height: 600px;
+  height: 650px;
   padding: 30px;
   margin: 0 auto;
   border: 1px solid #777;
@@ -62,7 +61,7 @@ margin: 100px auto;
 .searchinput{
 border:1px solid black;
 border-radius:5px;
-font-size:2rem;
+font-size:1.5rem;
 height:50px;
 text-align:left;
 }
@@ -158,7 +157,6 @@ select {
   border-bottom: 1px solid #ccc;
   padding: 5px;
   color: #333;
-  background-image: url('dropdown-arrow.png');
   background-repeat: no-repeat;
   background-position: right center;
 }

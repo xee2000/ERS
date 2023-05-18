@@ -4,11 +4,7 @@ package kr.ac.ers.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -21,15 +17,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.google.gson.Gson;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import kr.ac.ers.command.SearchCriteria;
 import kr.ac.ers.dto.LsupporterStatusVO;
 import kr.ac.ers.dto.LsupporterVO;
 import kr.ac.ers.dto.MemberReportLsupporterVO;
-import kr.ac.ers.dto.SearchCriteria;
 import kr.ac.ers.service.LsupporterService;
 import kr.ac.ers.utils.MailContentSend;
 
@@ -80,17 +74,18 @@ public class LsupporterController {
 	public String ShowpwcheckForm() {
 		return "lsupporter/pwcheckForm";
 	}
+
 	
 	
 	@RequestMapping("/ers/lsupporter/nonmemberreportForm")
-	public String ShownonmemberreportForm(@RequestParam(defaultValue = "0")int gubun, String searchType, String keyword, String perPageNumParam, String pageParam, Model model, HttpSession session, HttpServletRequest request) {
+	public String ShownonmemberreportForm(@RequestParam(defaultValue = "0")int gubun, String searchType, String keyword, String perPageNum, String page, Model model, HttpSession session, HttpServletRequest request) {
 		SearchCriteria cri = new SearchCriteria();
-		if(perPageNumParam == null || perPageNumParam.isEmpty())perPageNumParam="5";
-		if(pageParam == null || pageParam.isEmpty())pageParam="1";
+		if(perPageNum == null || perPageNum.isEmpty())perPageNum="5";
+		if(page == null || page.isEmpty())page="1";
 		if(searchType == null) searchType="";
 		if(keyword==null) keyword="";
-		cri.setPage(pageParam);
-		cri.setPerPageNum(perPageNumParam);
+		cri.setPage(page);
+		cri.setPerPageNum(perPageNum);
 		cri.setSearchType(searchType);
 		cri.setKeyword(keyword);
 		session= request.getSession();
@@ -103,37 +98,32 @@ public class LsupporterController {
 	
 	@GetMapping("/ers/lsupporter/nonmemberreportFormAction")
 	@ResponseBody
-	public String shownonmemberreportFormAction(String info,@RequestParam(defaultValue = "0") int gubun, String searchType, String keyword, String perPageNumParam, String pageParam, HttpSession session, HttpServletRequest request) {
-		String json = null;
+	public Map<String, Object> shownonmemberreportFormAction(@RequestParam(defaultValue = "0") int gubun, @RequestParam String searchType, @RequestParam String keyword, HttpSession session, HttpServletRequest request) {
+	    
 		SearchCriteria cri = new SearchCriteria();
-		  Map<Object, Object> map = new HashMap<Object, Object>();
-	    if (perPageNumParam == null || perPageNumParam.isEmpty()) {
-	        perPageNumParam = "5";
+		
+		if (cri.getPerPageNum() == 0) {
+	    	
+	        cri.setPerPageNum(5);
 	    }
-	    if (pageParam == null || pageParam.isEmpty()) {
-	        pageParam = "1";
+	    if (cri.getPage()==0) {
+	    	cri.setPage(1);
 	    }
-	    if (searchType == null) {
-	        searchType = "";
+	    if (searchType == null||searchType.isEmpty()) {
+	        cri.setSearchType("");
+	    }else {
+	    	cri.setSearchType(searchType);
+	    	}
+	    if (keyword== null||keyword.isEmpty()) {
+	        cri.setKeyword("");
+	    }else {
+	    	cri.setKeyword(keyword);
 	    }
-	    if (keyword == null) {
-	        keyword = "";
-	    }
-	    Gson gson = new Gson();
-	  
-	    map = (Map<Object, Object>) gson.fromJson(info, map.getClass());
-	    cri.setPage(pageParam);
-	    cri.setPerPageNum(perPageNumParam);
-	    cri.setSearchType(searchType);
-	    cri.setKeyword(keyword);
 	    session = request.getSession();
 	    LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");
 	    Map<String, Object> dataMap = lsupporterService.getLsupporterMemberList(loginUser.getWid(), cri);
 	    dataMap.put("gubun", gubun);
-	    List<Map<String, Object>> result = new ArrayList<>();
-	    result.add(dataMap);
-	    json = gson.toJson(result);
-	    return json;
+	    return dataMap;
 	}
 	
 	
@@ -152,21 +142,6 @@ public class LsupporterController {
 		
 	    return "lsupporter/lsupporterstatusForm";
 	}
-	
-	/*
-	 * @PostMapping("/ers/lsupporter/lsupporterstatusAction") public String
-	 * showLsupporterStatusAction(String name, String birth, String email, String
-	 * address, String pwd, Model model, HttpSession session, HttpServletRequest
-	 * request) { session= request.getSession(); LsupporterVO loginUser =
-	 * (LsupporterVO) session.getAttribute("loginUser"); String
-	 * url="redirect:/lsupporter/lsupporterstatus?wid="+loginUser.getWid();
-	 * 
-	 * LsupporterVO lsupporter.add lsupporterService.LsupporterModify(lsupporter);
-	 * lsupporterService.FieldstaffModify(fieldstaff); return "url"; }
-	 */
-
-
-
 	
 	@RequestMapping("/ers/lsupporter/reportlist")
 	public String Showreportlist(String searchType,String keyword, String perPageNum, String page, Model model, HttpServletRequest request,HttpSession session) {
@@ -198,9 +173,9 @@ public class LsupporterController {
 		return "lsupporter/reportlist";
 	}
 	
-	@PostMapping("/ers/lsupporter/reportFormregist")
+	@PostMapping("/ers/lsupporter/nonmemberreportregist")
 	public String regist(MemberReportLsupporterVO reportlsupporter)throws Exception{
-		String url="/ers/lsupporter/regist_success";
+		String url="/ers/lsupporter/reportlist";
 		lsupporterService.reportregist(reportlsupporter);
 		return url;
 	}
@@ -388,7 +363,7 @@ public class LsupporterController {
 	      case 0: //로그인 성공
 	    	  LsupporterVO loginUser = lsupporterService.getLsupporter(wid);
 	         session.setAttribute("loginUser", loginUser);
-	         session.setMaxInactiveInterval(600 * 100);
+	         session.setMaxInactiveInterval(600 * 30);
 	         return url;
 	      case 1: //아이디 불일치
 	         url="redirect:/ers/lsupporter/loginForm";

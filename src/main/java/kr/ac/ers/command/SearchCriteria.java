@@ -1,4 +1,4 @@
-package kr.ac.ers.dto;
+package kr.ac.ers.command;
 
 public class SearchCriteria {
 	
