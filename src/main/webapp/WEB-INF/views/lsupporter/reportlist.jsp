@@ -23,7 +23,7 @@
   <div class="search_bar search_bar_main flex mb-5">
  <div class="search_bar mb-2 flex">
   <select class="keywordoption"name="searchType" id="searchType" >
-   <option value="">검 색</option>
+   <option value="" disabled>검 색</option>
 <option value="nbg" ${cri.searchType eq 'nbg' ? 'selected':'' }>전체</option>
 <option value="n" ${cri.searchType eq 'n' ? 'selected':'' }>대상자명</option>
 <option value="g" ${cri.searchType eq 'g' ? 'selected':'' }>성별</option>
@@ -32,9 +32,8 @@
 <option value="vc" ${cri.searchType eq 'vc' ? 'selected':'' }>열람여부</option>
   </select>
 <div class="search_container flex items-center">
-  <input class="searchinput w-full" type="text" name="keyword" required="required" value="${cri.keyword }"
-  id="search_keyword" >
-  <button type=submit onkeyup="enterkey();" class="absolute right-0 top-0 bottom-0 p-2 right-1.25" id="button" data-card-widget="search" onclick="list_go(1);">
+  <input class="searchinput w-full" autocomplete="false" type="text" name="keyword" required="required" value="${cri.keyword}" id="search_keyword" onkeyup="handleEnterKey(event)">
+  <button type="button" class="absolute right-0 top-0 bottom-0 p-2 right-1.25" id="button" data-card-widget="search" onclick="list_go(1);">
     <i class="fa fa-search"></i>
   </button>
 </div>
@@ -59,10 +58,10 @@ class="btn btn-lg btn-danger delete">삭제</button>
 </div>
 </div>
 
+<div class="tableContainer">
 <div class="row">
-<div class="col-12 memberlistable">
-<form action="#" method="get">
-<table class="tg memberlistable table">
+<div class="col-12 memberlistable" id="tableContent">
+<table class="tg memberlistable table searchlist">
 <colgroup>
 <col style="width: 23px">
 <col style="width: 23px">
@@ -86,12 +85,12 @@ class="btn btn-lg btn-danger delete">삭제</button>
     <th class="tg-yj5y">열람여부</th>
   </tr>
 </thead>
-<c:forEach items="${memberList }" var="member">
-<fmt:formatDate value="${member.regDate}" pattern="yyyy-mm-dd" var="regDate"/>
 <tbody>
+<c:forEach items="${memberList }" var="member">
+<fmt:formatDate value="${member.regDate}" var="regDate" pattern="yy-MM-dd" />
   <tr>
     <td class="tg-3xi5"> <input type="checkbox" class="text-center check_box checkbox"/></td>
-<td class="tg-3xi5">${member.rNo }</td> 
+<td class="tg-3xi5">${member.RNo }</td> 
     <td class="tg-3xi5">
     ${member.picture }
     </td>
@@ -101,10 +100,10 @@ class="btn btn-lg btn-danger delete">삭제</button>
     <td class="tg-3xi5" onclick="location.href='/usr/home/educationdetail'">${regDate }</td>
  <td class="tg-3xi5">${member.viewCheck }</td>
   </tr>
-</tbody>
   </c:forEach>
+</tbody>
 </table>
-</form>
+</div>
 </div>
 </div>
 
@@ -154,23 +153,21 @@ function enterkey() {
     }
 }
 </script>
-<script>
-function list_go(page,url){
-	
-	if(!url) url="reportlist";
-	
-	$("form#jobForm input[name='page']").val(page);
-	$("form#jobForm input[name='perPageNum']").val($('select[name="perPageNum"]').val());
-	$("form#jobForm input[name='searchType']").val($('select[name="searchType"]').val());
-	$("form#jobForm input[name='keyword']").val($('input[name="keyword"]').val());
-	
-	$('form#jobForm').attr({
-		action:url,
-		method:'get'
-	}).submit();
-	 return false;
-}
-</script>
+<Script>
+function handleEnterKey(event) {
+	  if (event.keyCode === 13) {
+	    list_go(1);
+	    event.preventDefault();
+	  }
+	}
+</Script>
+
+
+
+
+
+
+
 
 
 <%@include file="../include/lsupporter/foot.jspf"%>

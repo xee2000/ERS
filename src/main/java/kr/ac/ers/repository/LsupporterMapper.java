@@ -25,7 +25,7 @@ public interface LsupporterMapper {
 
 	 int selectLsupportBypwd(String name, String email, String wid);	
 	
-	List<MemberVO> selectSearchMemberList(SearchCriteria cri, String wid);
+	List<MemberReportLsupporterVO> selectSearchMemberList(Map<String, Object> returnMap, RowBounds rowbounds);
 	
 	int selectSearchMemberListCount(SearchCriteria cri, String wid);
 

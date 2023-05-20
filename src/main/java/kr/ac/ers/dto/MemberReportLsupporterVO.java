@@ -40,7 +40,7 @@ public class MemberReportLsupporterVO {
 	private String lNum;
 	private int wCode;
 	private String pwd;
-	
+	 private String imageUrl;
 	
 	}
 	

@@ -75,10 +75,11 @@ public class LsupporterController {
 		return "lsupporter/pwcheckForm";
 	}
 
+
 	
 	
 	@RequestMapping("/ers/lsupporter/nonmemberreportForm")
-	public String ShownonmemberreportForm(@RequestParam(defaultValue = "0")int gubun, String searchType, String keyword, String perPageNum, String page, Model model, HttpSession session, HttpServletRequest request) {
+	public String ShownonmemberreportForm(String searchType, String keyword, String perPageNum, String page, Model model, HttpSession session, HttpServletRequest request) {
 		SearchCriteria cri = new SearchCriteria();
 		if(perPageNum == null || perPageNum.isEmpty())perPageNum="5";
 		if(page == null || page.isEmpty())page="1";
@@ -93,14 +94,13 @@ public class LsupporterController {
 		 int wCode = loginUser.getWCode();
 		 Map<String,Object> dataMap = lsupporterService.getLsupporterMemberList(loginUser.getWid(), cri);
 		 model.addAttribute("dataMap",dataMap);
-		 model.addAttribute("gubun", gubun);
 		 model.addAttribute("wCode",wCode);
 		return "lsupporter/nonmemberreportForm";
 	}
 	
 	@GetMapping("/ers/lsupporter/nonmemberreportFormAction")
 	@ResponseBody
-	public Map<String, Object> shownonmemberreportFormAction(@RequestParam(defaultValue = "0") int gubun, @RequestParam String searchType, @RequestParam String keyword, HttpSession session, HttpServletRequest request) {
+	public Map<String, Object> shownonmemberreportFormAction(@RequestParam String searchType, @RequestParam String keyword, HttpSession session, HttpServletRequest request) {
 	    
 		SearchCriteria cri = new SearchCriteria();
 		
@@ -124,7 +124,6 @@ public class LsupporterController {
 	    session = request.getSession();
 	    LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");
 	    Map<String, Object> dataMap = lsupporterService.getLsupporterMemberList(loginUser.getWid(), cri);
-	    dataMap.put("gubun", gubun);
 	    return dataMap;
 	}
 	
@@ -146,17 +145,12 @@ public class LsupporterController {
 	}
 	
 	@RequestMapping("/ers/lsupporter/reportlist")
-	public String Showreportlist(String searchType,String keyword, String perPageNum, String page, Model model, HttpServletRequest request,HttpSession session) {
-		if(perPageNum == null || perPageNum.isEmpty()) perPageNum = "10";
-		if(page == null || page.isEmpty()) page = "1";
-		
-		if(searchType==null) searchType = "";
-		if(keyword==null) keyword = "";
-		if(searchType.equals("")) {
-			searchType = "";
-			keyword="";
-		}
+	public String Showreportlist(String searchType, String keyword, String perPageNum, String page, Model model, HttpSession session, HttpServletRequest request) {
 		SearchCriteria cri = new SearchCriteria();
+		if(perPageNum == null || perPageNum.isEmpty())perPageNum="5";
+		if(page == null || page.isEmpty())page="1";
+		if(searchType == null) searchType="";
+		if(keyword==null) keyword="";
 		cri.setPage(page);
 		cri.setPerPageNum(perPageNum);
 		cri.setSearchType(searchType);
@@ -175,14 +169,46 @@ public class LsupporterController {
 		return "lsupporter/reportlist";
 	}
 	
+	@GetMapping("/ers/lsupporter/reportlistAction")
+	@ResponseBody
+	public Map<String,Object> Showreportlist(String searchType,String keyword, String perPageNum, String page, Model model, HttpServletRequest request,HttpSession session) throws SQLException {
+		 
+		SearchCriteria cri = new SearchCriteria();
+		
+		if (cri.getPerPageNum() == 0) {
+	    	
+	        cri.setPerPageNum(5);
+	    }
+	    if (cri.getPage()==0) {
+	    	cri.setPage(1);
+	    }
+	    if (searchType == null||searchType.isEmpty()) {
+	        cri.setSearchType("");
+	    }else {
+	    	cri.setSearchType(searchType);
+	    	}
+	    if (keyword== null||keyword.isEmpty()) {
+	        cri.setKeyword("");
+	    }else {
+	    	cri.setKeyword(keyword);
+	    }
+		
+			 session= request.getSession();
+			 LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");
+			Map<String, Object> dataMap = lsupporterService.getMemberList(cri,loginUser.getWid());
+		
+		return dataMap;
+	}
+	
 	@PostMapping("/ers/lsupporter/nonmemberreportregist")
-	public String regist(MemberReportLsupporterVO reportlsupporter)throws Exception{
-	String url="redirect:/ers/lsupporter/reportlist";
+	public String regist(MemberReportLsupporterVO reportlsupporter,@RequestParam("content") String content)throws Exception{
+		
+		String url="redirect:/ers/lsupporter/reportlist";
 		lsupporterService.reportregist(reportlsupporter);
 		return url;
 	}
 	
-	
+
 	@RequestMapping("/ers/lsupporter/emergancylist")
 	public String Showemergancylist() {
 		return "lsupporter/emergancylist";

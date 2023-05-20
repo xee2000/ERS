@@ -5,11 +5,9 @@
 <c:set var="pageMaker" value="${dataMap.pageMaker }" />
 <c:set var="cri" value="${pageMaker.cri }" />
 <%@include file="../include/lsupporter/head.jspf"%>
-
-
+   <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
 <link rel="stylesheet" href="/resources/lsupporter/css/nonmemberreportForm.css">
-
-
+   <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
 <div class="tab-pane" id="carewordlist">
 <div class="col-md-12">
 <div class="reportForm">
@@ -84,10 +82,10 @@
    <th class="tg-l8qj">
   <div class="search_container flex items-center">
   <input type="hidden" name="gubun" value="1">
-    <input class="searchinput w-full" type="text" id="search" required="required" name="keyword" value="${cri.keyword}"
+    <input class="searchinput w-full" autocomplete="false" type="text" id="search" required="required" name="keyword" value="${cri.keyword}"
      placeholder="검색어를 입력하세요." onkeyup="enterkey();">
     <button type="button" class="absolute right-0 top-0 bottom-0 p-2 right-1.25" id="searchButton">
-      <i class="fa fa-search" id="searchBtn" data-card-widget="search" onclick="list_go(1);"></i>
+      <i class="fa fa-search" id="searchBtn" data-card-widget="search" onclick="nonlist_go(1);"></i>
     </button>
   </div>
 </th>
@@ -118,7 +116,9 @@
 <c:forEach var="member" items="${memberList }">
 <tbody>
   <tr>
-  <td style="display:none" class="modal_content" id="memberid">${member.id }</td>
+  <td style="display:none" class="modal_content" id="memberid" >
+ <input type="hidden" class="member-id" value="${member.id}" />
+  </td>
     <td class="modal_content">
     ${member.picture }
     </td>
@@ -154,7 +154,7 @@ ${member.birth }
     <th class="tg-2xpi">보고서 구분</th>
     <td class="tg-2xpi">
     <select name="reType" style="text-align:center;" class="reportmenu">
-    <option name="reType" disabled value="====">선택</option>
+    <option name="reType" selected disabled value="====">선택</option>
     <option name="reType" value="1">고객면담보고서</option>
     <option name="reType" value="2">건강상태보고서</option>
     <option name="reType" value="3">서비스취소보고서</option>
@@ -181,7 +181,7 @@ ${member.birth }
       </div>
       <div class="card-body" style="display: none;">
         <div class="form-group">
-          <form action="" name="form" method="post" role="form">
+          <form action="" name="form" method="post" role="form" enctype="multipart/form-data">
        	   
         <div class="report-content">
             <table>
@@ -190,18 +190,22 @@ ${member.birth }
                 
                     <th style="text-align: center;">특이사항</th>
                     
-                    <td> <textarea name="content" id="content" placeholder="면담한 내용을 기록해주세요." rows="3"></textarea></td>
+                   <td>
+    <textarea class="summernote" name="content" id="content"></textarea>
+</td>
                 </tr>
                 <tr>
                     <th style="text-align: center;">전화유무</th>
                     <td> 
                     <input type="hidden" name="id" value="">
-                    <input type="hidden" name="reType" value="1">
+                    <input type="hidden" name="reType" value="2">
 					<input type="hidden" name="wCode" value="${wCode}">
 					<input type="hidden" name="reDone" value="0">
-					<input type="hidden" name="viewCheck" value="0">
+					<input type="hidden" name="viewCheck" value="N">
                     <input type="radio" name="callCheck" value="Y">전화함                    
                     <input type="radio" name="callCheck" value="N">전화안함    
+                    <input type="hidden" name="occurType" value=""> 
+                    <input type="hidden" name="occurTime" value="23/01/01"> 
                     </td>
                 </tr>
             </table>
@@ -240,8 +244,10 @@ ${member.birth }
 <input type="hidden" name="wCode" value="${wCode}">
 <input type="hidden" name="reDone" value="0">
 <input type="hidden" name="viewCheck" value="0">
- <input type="hidden" name="reType" value="2">
-
+ <input type="hidden" name="reType" value="3">
+ <input type="hidden" name="callCheck" value="">                    
+<input type="hidden" name="occurType" value=""> 
+<input type="hidden" name="occurTime" value="23/01/01"> 
 <table style="undefined;table-layout: fixed; width: 100%;">
 <colgroup>
 <col style="width: 150px;">
@@ -251,7 +257,7 @@ ${member.birth }
   <tr>
     <th class="">확인내용</th>
     <td class="">
-    <textarea name="content" rows="3"></textarea>
+    <textarea class="summernote" id="content" name="content" rows="3"></textarea>
     </td>
   </tr>
   
@@ -288,8 +294,12 @@ ${member.birth }
 <input type="hidden" name="id" value="">
 <input type="hidden" name="wCode" value="${wCode}">
 <input type="hidden" name="reDone" value="0">
-<input type="hidden" name="viewCheck" value="0">
- <input type="hidden" name="reType" value="3">
+<input type="hidden" name="viewCheck" value="N">
+<input type="hidden" name="reType" value="4">
+<input type="hidden" name="callCheck" value="">                    
+<input type="hidden" name="occurType" value=""> 
+<input type="hidden" name="content" value=""> 
+<input type="hidden" name="occurTime" value="23/01/01"> 
 <table style="undefined;table-layout: fixed; width: 100%;">
 <colgroup>
 <col style="width: 150px;">
@@ -332,8 +342,11 @@ ${member.birth }
 <input type="hidden" name="id" value="">
 <input type="hidden" name="wCode" value="${wCode}">
 <input type="hidden" name="reDone" value="0">
-<input type="hidden" name="viewCheck" value="0">
- <input type="hidden" name="reType" value="4">
+<input type="hidden" name="viewCheck" value="N">
+<input type="hidden" name="callCheck" value="">                    
+<input type="hidden" name="occurType" value=""> 
+<input type="hidden" name="reType" value="5">
+<input type="hidden" name="occurTime" value="23/01/01"> 
 <table style="undefined;table-layout: fixed; width: 100%;">
 <colgroup>
 <col style="width: 140.333333px">
@@ -381,8 +394,11 @@ ${member.birth }
 <input type="hidden" name="id" value="">
 <input type="hidden" name="wCode" value="${wCode}">
 <input type="hidden" name="reDone" value="0">
-<input type="hidden" name="viewCheck" value="0">
- <input type="hidden" name="reType" value="5">
+<input type="hidden" name="viewCheck" value="N">
+ <input type="hidden" name="reType" value="6">
+ <input type="hidden" name="callCheck" value="">                    
+<input type="hidden" name="occurType" value=""> 
+<input type="hidden" name="occurTime" value="23/01/01"> 
 <table style="undefined;table-layout: fixed; width: 100%;">
 <colgroup>
 <col style="width: 190px;">
@@ -421,8 +437,14 @@ ${member.birth }
 </div>
 
 
+<!--모달창에서 이름검색시 해당 아이디를 각 보고서의 hidden id의 value로 심어주는 스크립트  -->
 <script>
-  $('input[name="id"]').val($('#memberid').text());
+$('.modal_content#modalname').click(function() {
+	  var memberId = $(this).closest('tr').find('.member-id').val();
+	  $('input[name="id"]').val(memberId);
+	});
+
+	/*보고서가 펼쳐진 대상만 submit되도록 해주는 스크립트포함  */
   function regist() {
 	  var visibleForm = $('form[role="form"]:visible');
 	  if (visibleForm.length > 0) {
@@ -462,10 +484,8 @@ ${member.birth }
     modal.style.display = 'block';
   }
 
-  // Hide the modal initially
   modal.style.display = 'none';
 
-  // Add event listener to table rows
   $(document).on('click', '.modal_content', function() {
     const modalname = $(this).text().trim();
     searchinput.value = modalname;
@@ -480,55 +500,11 @@ ${member.birth }
 
 
 
-<script>
-  function list_go(page) {
-	  
-	  
-	  var data = {
-		      "gubun": $('input[name="gubun"]').val(),
-		      "searchType": $('select[name="searchType"]').val(),
-		      "keyword": $('input[name="keyword"]').val(),
-		      "page": page, // Pass the page parameter
-		      "perPageNum": 5 // Hard-coded to 5 for displaying 5 results per page
-		    };
 
-    $.ajax({
-      type: "GET",
-      data: data,
-      url: "/ers/lsupporter/nonmemberreportFormAction",
-      async: true,
-      contentType: 'application/json',
-      dataType: "json",
-      success: function(response) {
-        // Update the table with the search results
-        var table = $('.searchlist');
-        table.find('tbody').empty(); // Clear existing table body
-
-        // Iterate over the search results and generate table rows
-        $.each(response.memberList, function(index, member) {
-          var row = '<tr>' +
-            '<td class="modal_content">' + member.picture + '</td>' +
-            '<td onclick="membersearch();" class="modal_content" id="modalname">' + member.name + '</td>' +
-            '<td class="modal_content">' + member.gender + '</td>' +
-            '<td class="modal_content">' + member.birth + '</td>' +
-            '</tr>';
-          table.find('tbody').append(row); // Append each row to the table body
-        });
-      },
-      error: function(error) {
-        console.log(error);
-      }
-    });
-  };
-</script>
 
 
 <script>
-  if(${gubun} == 1){
-	  const modal = document.getElementById('modalWrap');
-		    modal.style.display = 'block';
-		  
-	  }
+
 window.addEventListener('DOMContentLoaded', function() {
   var collapsedCards = document.getElementsByClassName('collapsed-card');
   
@@ -558,6 +534,92 @@ window.addEventListener('DOMContentLoaded', function() {
   });
 });
 </script>
+
+<script>
+function regist_go(){
+	var form = document.registForm;
+	if(form.title.value==""){
+		alert("제목은 필수입니다.");
+		return;
+	}
+	
+	form.submit();
+}
+</script>
+<script>
+var contextPath="";
+function summernote_go(target,context){
+	contextPath=context;
+	
+	target.summernote({
+		placeholder:'여기에 내용을 적으세요.',
+		lang:'ko-KR',
+		height:250,
+		disableResizeEditor: true,
+		callbacks:{
+			onImageUpload : function(files, editor, welEditable) {
+				//alert("image click");
+				for(var file of files){
+					//alert(file.name);
+					if(file.name.substring(file.name.lastIndexOf(".")+1).toUpperCase() != "JPG"){
+						alert("JPG 이미지형식만 가능합니다.");
+						return;
+					}
+					if(file.size > 1024*1024*1){
+						alert("이미지는 1MB 미만입니다.");
+						return;
+					}	
+				}
+				
+				for (var file of files) {
+					sendFile(file,this);
+				}
+			},
+			onMediaDelete : function(target) {
+				//alert(target[0].src);
+				deleteFile(target[0].src);	
+			}
+	
+		}
+	});    		
+}
+
+function sendFile(file,el){
+	var form_data = new FormData();
+	form_data.append("file", file); 
+	
+	$.ajax({
+		url: contextPath+'/uploadImg.do',
+    	data: form_data,
+    	type: "POST",	    	
+    	contentType: false,	    	
+    	processData: false,
+    	success: function(img_url) {    		
+    		$(el).summernote('editor.insertImage', img_url);
+    	},
+    	error:function(error){
+    		
+    	}
+	});
+}
+
+function deleteFile(src) {	
+	var deleteURL = src.replace("getImg.do","deleteImg.do");
+	$.ajax({
+		url:deleteURL,
+		type:"get",
+		success:function(data){
+			console.log(data);
+		}
+	});
+}
+
+
+
+
+      
+    </script>
+	 	
 
 <div style="height:300px;"></div>
 

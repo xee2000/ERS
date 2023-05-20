@@ -67,10 +67,13 @@ public class LsupporterService {
 
 	public Map<String, Object> getMemberList(SearchCriteria cri, String wid) throws SQLException {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-
-		List<MemberVO> memberList = lsupportMapper.selectSearchMemberList(cri, wid);
+		Map<String, Object> returnMap = new HashMap<>();
+		returnMap.put("cri", cri);		
+		returnMap.put("wid", wid);		
+		RowBounds rowbounds = new RowBounds(cri.getStartRowNum(),cri.getPerPageNum());
+		
+		List<MemberReportLsupporterVO> memberList = lsupportMapper.selectSearchMemberList(returnMap, rowbounds);
 		dataMap.put("memberList", memberList);
-
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
 		pageMaker.setTotalCount(lsupportMapper.selectSearchMemberListCount(cri, wid));
