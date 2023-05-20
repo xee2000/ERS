@@ -54,36 +54,10 @@ function OpenWindow(UrlStr, WinTitle, WinWidth, WinHeight) {
     "perPageNum": 5
   };
 
-  $.ajax({
-    type: "GET",
-    data: data,
-    url: "/ers/lsupporter/reportlistAction",
-    async: true,
-    contentType: 'application/json',
-    dataType: "json",
-    success: function(response) {
-      var rows = $('#tableContent tbody tr'); // Get all existing table rows
 
-      // Iterate over the response data and update the corresponding table rows
-      for (var i = 0; i < response.length; i++) {
-        var member = response[i];
-        var row = rows.eq(i); // Get the current table row
-
-        // Update the content of each cell in the table row
-        row.find('.tg-3xi5:eq(1)').text(member.RNo);
-        row.find('.tg-3xi5:eq(2)').html(member.picture);
-        row.find('.tg-3xi5:eq(3)').text(member.name);
-        // Update other cells in the same way
-
-        // Uncomment the following line if you want to update the row's click event as well
-        // row.attr('onclick', 'location.href=\'/ers/lsupporter/memberdetail\'');
-      }
-    },
-    error: function(error) {
-      console.log(error);
-    }
-  });
 }
+
+
 
 
 //팝업창 닫기
@@ -104,6 +78,75 @@ function MemberPictureThumb(contextPath){
 		target.style.backgroundSize="cover";
 	 }
 }
+
+var contextPath="";
+function summernote_go(target,context){
+	contextPath=context;
+	
+	target.summernote({
+		placeholder:'여기에 내용을 적으세요.',
+		lang:'ko-KR',
+		height:250,
+		disableResizeEditor: true,
+		callbacks:{
+			onImageUpload : function(files, editor, welEditable) {
+				//alert("image click");
+				for(var file of files){
+					//alert(file.name);
+					if(file.name.substring(file.name.lastIndexOf(".")+1).toUpperCase() != "JPG"){
+						alert("JPG 이미지형식만 가능합니다.");
+						return;
+					}
+					if(file.size > 1024*1024*1){
+						alert("이미지는 1MB 미만입니다.");
+						return;
+					}	
+				}
+				
+				for (var file of files) {
+					sendFile(file,this);
+				}
+			},
+			onMediaDelete : function(target) {
+				//alert(target[0].src);
+				deleteFile(target[0].src);	
+			}
+	
+		}
+	});    		
+}
+
+function sendFile(file,el){
+	var form_data = new FormData();
+	form_data.append("file", file); 
+	
+	$.ajax({
+		url: contextPath+'/uploadImg',
+    	data: form_data,
+    	type: "POST",	    	
+    	contentType: false,	    	
+    	processData: false,
+    	success: function(img_url) {    		
+    		$(el).summernote('editor.insertImage', img_url);
+    	},
+    	error:function(error){
+    		
+    	}
+	});
+}
+
+function deleteFile(src) {	
+	var deleteURL = src.replace("getImg","deleteImg");
+	$.ajax({
+		url:deleteURL,
+		type:"get",
+		success:function(data){
+			console.log(data);
+		}
+	});
+}
+
+
 
 	
 

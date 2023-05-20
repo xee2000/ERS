@@ -27,9 +27,8 @@
 <option value="nbg" ${cri.searchType eq 'nbg' ? 'selected':'' }>전체</option>
 <option value="n" ${cri.searchType eq 'n' ? 'selected':'' }>대상자명</option>
 <option value="g" ${cri.searchType eq 'g' ? 'selected':'' }>성별</option>
-<option value="r" ${cri.searchType eq 'r' ? 'selected':'' }>보고서명</option>
-<option value="rd" ${cri.searchType eq 'rd' ? 'selected':'' }>작성일</option>
-<option value="vc" ${cri.searchType eq 'vc' ? 'selected':'' }>열람여부</option>
+<option value="r" ${cri.searchType eq 'r' ? 'selected':'' }>활동여부</option>
+<option value="rd" ${cri.searchType eq 'rd' ? 'selected':'' }>남은정기상담일</option>
   </select>
 <div class="search_container flex items-center">
   <input class="searchinput w-full" autocomplete="false" type="text" name="keyword" required="required" value="${cri.keyword}" id="search_keyword" onkeyup="handleEnterKey(event)">

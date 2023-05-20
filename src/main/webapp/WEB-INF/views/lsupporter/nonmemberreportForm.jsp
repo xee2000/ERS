@@ -22,7 +22,7 @@
 <div class="row">
 <div class="col-12 flex justify-end mb-1">
 <button type="button" class="btn btn-dark btn-md backbtn" onclick="location.href='/usr/home/reportlist'">뒤로가기</button>
-<button type="submit" class="btn btn-primary btn-md" onclick="regist();">제출</button>
+<button type="submit" class="btn btn-primary btn-md" onclick="regist_go();">제출</button>
 </div>
 </div>
 
@@ -181,7 +181,7 @@ ${member.birth }
       </div>
       <div class="card-body" style="display: none;">
         <div class="form-group">
-          <form action="" name="form" method="post" role="form" enctype="multipart/form-data">
+          <form action="nonmemberreportregist" name="form" method="post" role="form" id="registForm">
        	   
         <div class="report-content">
             <table>
@@ -204,7 +204,7 @@ ${member.birth }
 					<input type="hidden" name="viewCheck" value="N">
                     <input type="radio" name="callCheck" value="Y">전화함                    
                     <input type="radio" name="callCheck" value="N">전화안함    
-                    <input type="hidden" name="occurType" value=""> 
+                    <input type="hidden" name="occurType" value="null"> 
                     <input type="hidden" name="occurTime" value="23/01/01"> 
                     </td>
                 </tr>
@@ -239,15 +239,13 @@ ${member.birth }
 <div class="form-group">
 <div class="report">
         <div class="report-content">
-<form action="" name="form" method="post" role="form">
+<form action="nonmemberreportregist" name="form" method="post" role="form" id="registForm">
 <input type="hidden" name="id" value="">
 <input type="hidden" name="wCode" value="${wCode}">
 <input type="hidden" name="reDone" value="0">
 <input type="hidden" name="viewCheck" value="0">
  <input type="hidden" name="reType" value="3">
  <input type="hidden" name="callCheck" value="">                    
-<input type="hidden" name="occurType" value=""> 
-<input type="hidden" name="occurTime" value="23/01/01"> 
 <table style="undefined;table-layout: fixed; width: 100%;">
 <colgroup>
 <col style="width: 150px;">
@@ -290,16 +288,14 @@ ${member.birth }
 </div>
 <div class="card-body" style="display: none;">
 <div class="form-group">
-<form action="" name="form" method="post" role="form" >
+<form action="nonmemberreportregist" name="form" method="post" role="form" id="registForm">
 <input type="hidden" name="id" value="">
 <input type="hidden" name="wCode" value="${wCode}">
 <input type="hidden" name="reDone" value="0">
 <input type="hidden" name="viewCheck" value="N">
 <input type="hidden" name="reType" value="4">
 <input type="hidden" name="callCheck" value="">                    
-<input type="hidden" name="occurType" value=""> 
 <input type="hidden" name="content" value=""> 
-<input type="hidden" name="occurTime" value="23/01/01"> 
 <table style="undefined;table-layout: fixed; width: 100%;">
 <colgroup>
 <col style="width: 150px;">
@@ -338,15 +334,13 @@ ${member.birth }
 </div>
 <div class="card-body" style="display: none;">
 <div class="form-group">
-<form action="" name="form" method="post" role="form">
+<form action="nonmemberreportregist" name="form" method="post" role="form" id="registForm">
 <input type="hidden" name="id" value="">
 <input type="hidden" name="wCode" value="${wCode}">
 <input type="hidden" name="reDone" value="0">
 <input type="hidden" name="viewCheck" value="N">
 <input type="hidden" name="callCheck" value="">                    
-<input type="hidden" name="occurType" value=""> 
 <input type="hidden" name="reType" value="5">
-<input type="hidden" name="occurTime" value="23/01/01"> 
 <table style="undefined;table-layout: fixed; width: 100%;">
 <colgroup>
 <col style="width: 140.333333px">
@@ -390,15 +384,13 @@ ${member.birth }
 </div>
 <div class="card-body" style="display: none;">
 <div class="form-group">
-<form action="" name="form" method="post" role="form">
+<form action="nonmemberreportregist" name="form" method="post" role="form" id="registForm">
 <input type="hidden" name="id" value="">
 <input type="hidden" name="wCode" value="${wCode}">
 <input type="hidden" name="reDone" value="0">
 <input type="hidden" name="viewCheck" value="N">
  <input type="hidden" name="reType" value="6">
  <input type="hidden" name="callCheck" value="">                    
-<input type="hidden" name="occurType" value=""> 
-<input type="hidden" name="occurTime" value="23/01/01"> 
 <table style="undefined;table-layout: fixed; width: 100%;">
 <colgroup>
 <col style="width: 190px;">
@@ -536,90 +528,20 @@ window.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <script>
-function regist_go(){
-	var form = document.registForm;
-	if(form.title.value==""){
-		alert("제목은 필수입니다.");
-		return;
-	}
-	
-	form.submit();
+window.onload=function(){
+	summernote_go($('#content'),'<%=request.getContextPath()%>'); 
+}
+
+function regist_go() {
+    var collapsedCards = document.getElementsByClassName('collapsed-card');
+    var form = $('#registForm');
+    
+    if (!form.parent().hasClass('collapsed-card')) {
+        form.submit();
+        
+    }
 }
 </script>
-<script>
-var contextPath="";
-function summernote_go(target,context){
-	contextPath=context;
-	
-	target.summernote({
-		placeholder:'여기에 내용을 적으세요.',
-		lang:'ko-KR',
-		height:250,
-		disableResizeEditor: true,
-		callbacks:{
-			onImageUpload : function(files, editor, welEditable) {
-				//alert("image click");
-				for(var file of files){
-					//alert(file.name);
-					if(file.name.substring(file.name.lastIndexOf(".")+1).toUpperCase() != "JPG"){
-						alert("JPG 이미지형식만 가능합니다.");
-						return;
-					}
-					if(file.size > 1024*1024*1){
-						alert("이미지는 1MB 미만입니다.");
-						return;
-					}	
-				}
-				
-				for (var file of files) {
-					sendFile(file,this);
-				}
-			},
-			onMediaDelete : function(target) {
-				//alert(target[0].src);
-				deleteFile(target[0].src);	
-			}
-	
-		}
-	});    		
-}
-
-function sendFile(file,el){
-	var form_data = new FormData();
-	form_data.append("file", file); 
-	
-	$.ajax({
-		url: contextPath+'/uploadImg.do',
-    	data: form_data,
-    	type: "POST",	    	
-    	contentType: false,	    	
-    	processData: false,
-    	success: function(img_url) {    		
-    		$(el).summernote('editor.insertImage', img_url);
-    	},
-    	error:function(error){
-    		
-    	}
-	});
-}
-
-function deleteFile(src) {	
-	var deleteURL = src.replace("getImg.do","deleteImg.do");
-	$.ajax({
-		url:deleteURL,
-		type:"get",
-		success:function(data){
-			console.log(data);
-		}
-	});
-}
-
-
-
-
-      
-    </script>
-	 	
 
 <div style="height:300px;"></div>
 

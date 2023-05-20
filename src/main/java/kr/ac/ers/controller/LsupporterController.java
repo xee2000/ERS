@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -24,6 +25,7 @@ import kr.ac.ers.command.SearchCriteria;
 import kr.ac.ers.dto.LsupporterStatusVO;
 import kr.ac.ers.dto.LsupporterVO;
 import kr.ac.ers.dto.MemberReportLsupporterVO;
+import kr.ac.ers.dto.MembereducationVO;
 import kr.ac.ers.service.LsupporterService;
 import kr.ac.ers.utils.MailContentSend;
 
@@ -35,6 +37,7 @@ public class LsupporterController {
 	
 	@RequestMapping("/ers/lsupporter/main")
 	public String Showmain() {
+	
 		return "lsupporter/main";
 	}
 	@RequestMapping("/ers/lsupporter/loginForm")
@@ -51,7 +54,20 @@ public class LsupporterController {
 	}
 
 	@RequestMapping("/ers/lsupporter/carelist")
-	public String Showcarelist() {
+	public String Showcarelist(String searchType,String keyword, String perPageNum, String page, Model model, HttpServletRequest request,HttpSession session) {
+		SearchCriteria cri = new SearchCriteria();
+		if(perPageNum == null || perPageNum.isEmpty())perPageNum="5";
+		if(page == null || page.isEmpty())page="1";
+		if(searchType == null) searchType="";
+		if(keyword==null) keyword="";
+		cri.setPage(page);
+		cri.setPerPageNum(perPageNum);
+		cri.setSearchType(searchType);
+		cri.setKeyword(keyword);
+		 session= request.getSession();
+		 LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");
+		 Map<String, Object> dataMap = lsupporterService.getLsupportercarelist(cri,loginUser.getWid());
+		model.addAttribute("dataMap", dataMap);		
 		return "lsupporter/carelist";
 	}
 	@RequestMapping("/ers/lsupporter/memberdetail")
@@ -201,8 +217,8 @@ public class LsupporterController {
 	}
 	
 	@PostMapping("/ers/lsupporter/nonmemberreportregist")
-	public String regist(MemberReportLsupporterVO reportlsupporter,@RequestParam("content") String content)throws Exception{
-		
+	public String regist(MemberReportLsupporterVO reportlsupporter)throws Exception{
+		System.out.println("asdasdasd");
 		String url="redirect:/ers/lsupporter/reportlist";
 		lsupporterService.reportregist(reportlsupporter);
 		return url;

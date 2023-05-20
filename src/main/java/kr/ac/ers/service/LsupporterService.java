@@ -15,6 +15,7 @@ import kr.ac.ers.dto.LsupporterStatusVO;
 import kr.ac.ers.dto.LsupporterVO;
 import kr.ac.ers.dto.MemberReportLsupporterVO;
 import kr.ac.ers.dto.MemberVO;
+import kr.ac.ers.dto.MembereducationVO;
 import kr.ac.ers.repository.LsupporterMapper;
 
 @Service
@@ -108,5 +109,26 @@ public class LsupporterService {
 		reportlsupporter.setRNo(rNo);
 		lsupportMapper.insertMemberReport(reportlsupporter);
 	}
+
+	public Map<String,Object> getLsupportercarelist(SearchCriteria cri, String wid) {
+		
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		Map<String, Object> returnMap = new HashMap<>();
+		returnMap.put("cri", cri);		
+		returnMap.put("wid", wid);		
+		RowBounds rowbounds = new RowBounds(cri.getStartRowNum(),cri.getPerPageNum());
+		
+		List<MemberReportLsupporterVO> memberList = lsupportMapper.selectmembereducationList(returnMap, rowbounds);
+		dataMap.put("memberList", memberList);
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(lsupportMapper.selectmembereducationListCount(returnMap));
+		dataMap.put("pageMaker", pageMaker);
+
+		return dataMap;
+		
+		
+	}
+	
 
 }

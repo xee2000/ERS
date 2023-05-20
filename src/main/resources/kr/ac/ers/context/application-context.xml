@@ -16,7 +16,7 @@
 	
 	<!-- file upload -->
 	<bean id="fileUploadPath" class="java.lang.String">
-		<constructor-arg value="${pds.upload}" />
+		<constructor-arg value="${reportfile.upload}" />
 	</bean>
 
 

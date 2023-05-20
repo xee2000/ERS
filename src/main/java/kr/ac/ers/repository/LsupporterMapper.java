@@ -11,6 +11,7 @@ import kr.ac.ers.dto.LsupporterStatusVO;
 import kr.ac.ers.dto.LsupporterVO;
 import kr.ac.ers.dto.MemberReportLsupporterVO;
 import kr.ac.ers.dto.MemberVO;
+import kr.ac.ers.dto.MembereducationVO;
 
 @Mapper
 public interface LsupporterMapper {
@@ -38,5 +39,9 @@ public interface LsupporterMapper {
 	void insertMemberReport(MemberReportLsupporterVO reportlsupporter);
 
 	int selectReportSequenceNextValue();
+
+	List<MemberReportLsupporterVO> selectmembereducationList(Map<String, Object> returnMap, RowBounds rowBounds);
+	
+	int selectmembereducationListCount(Map<String, Object> returnMap);
 	
 }
