@@ -7,6 +7,7 @@
 	<input type='hidden' name="perPageNum" value=""/>
 	<input type='hidden' name="searchType" value="" />
 	<input type='hidden' name="keyword" value="" />
+	<input type='hidden' name="id" value="" />
 </form>
 
 

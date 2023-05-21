@@ -73,6 +73,21 @@ function emergancylist_go(page,url){
 	}).submit();
 }
 
+function reportlist_go(page,url){
+	
+	
+	$("form#jobForm input[name='page']").val(page);
+	$("form#jobForm input[name='perPageNum']").val($('select[name="perPageNum"]').val());
+	$("form#jobForm input[name='searchType']").val($('select[name="searchType"]').val());
+	$("form#jobForm input[name='keyword']").val($('input[name="keyword"]').val());
+	$("form#jobForm input[name='id']").val($('input[name="id"]').val());
+	
+	$('form#jobForm').attr({
+		action:url,
+		method:'get'
+	}).submit();
+}
+
 
 
 

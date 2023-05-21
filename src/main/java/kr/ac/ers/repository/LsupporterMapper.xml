@@ -267,14 +267,52 @@ from member m, report r, lsupporter l, emergency e
 where m.wid = l.wid and e.id = m.id and l.wid= #{wid}
 </select>
 	<select id="selectMemberDetail" resultType="MemberDetailVO">
-	SELECT DISTINCT m.id, m.name, m.birth, m.address, m.phone, m.caution, m.pacemaker, m.memtype, m.orgdisease, m.mentalstatus,m.fam_rel,ec.name, ec.phone, ec.relation,mcc.name, mcc.mcode, mc.regdate, mc.changestatus, mc.changedate, ss.activetime  
+	SELECT DISTINCT m.id, m.name, m.birth, m.address, m.phone, m.caution, m.pacemaker, m.memtype, m.orgdisease,m.drug, m.mentalstatus,m.fam_rel  
 	FROM member m
 	JOIN lsupporter l ON m.wid = l.wid
-	JOIN machine mc ON m.id = mc.id
-	JOIN ecall ec ON m.id = ec.id
-	JOIN emergency eg ON m.id = eg.id
-	JOIN machinecode mcc ON mc.mcode = mcc.mcode
-	JOIN sensorck ss ON m.id = ss.id
 	WHERE m.id = #{id} AND l.wid = #{wid}
+    
 	</select>
+	<select id="selectMemberEcall" resultType="MemberDetailVO">
+	select e.name, e.phone,e.relation
+	from member m, ecall e, lsupporter l
+	where m.id = e.id and m.id = #{id} and l.wid = m.wid and l.wid= #{wid}
+	</select>
+	
+	<!--대상자정보페이지 응급카운트  -->
+	<select id="selectemergencyCount" resultType="int">
+	select count(e.id)
+	from member m, emergency e, lsupporter l
+	where m.wid = l.wid and e.scode='1' and l.wid= #{wid} and m.id= #{id}
+	</select>
+	
+	<!--대상자정보페이지 화재카운트  -->
+	<select id="selectfireCount" resultType="int">
+	select count(e.id)
+	from member m, emergency e, lsupporter l
+	where m.wid = l.wid and e.scode='3' and l.wid= #{wid} and m.id= #{id}
+	</select>
+	
+	<select id="selectMemberDetailmachine" resultType="MemberDetailVO">
+	select  mcc.name, mcc.mCode, mc.regDate, mc.changeStatus, mc.changeDate
+	from member m, machine mc, machinecode mcc, lsupporter l
+	where m.id = mc.id and m.wid = l.wid and l.wid= #{wid} and m.id = #{id} and mc.mcode = mcc.mcode
+	</select>
+	
+	<select id="selectReportList" resultType="MemberReportLsupporterVO">
+	select DISTINCT r.rno, r.regdate, fs.name, r.retype, r.viewcheck
+	from member m, report r, lsupporter l, fieldstaff fs
+	where m.wid = l.wid and r.id = m.id and fs.wcode = l.wcode and m.id = #{id}
+	<include refid="search" /> 
+	</select>
+	
+	<select id="selectReportListCount" resultType="int" parameterType="String">
+	select DISTINCT count(r.rno)
+	from member m, report r, lsupporter l, fieldstaff fs
+	where m.wid = l.wid and r.id = m.id and fs.wcode = l.wcode and m.id = #{id}
+	<include refid="search" /> 
+	</select>
+	
+	
+	
 	</mapper>

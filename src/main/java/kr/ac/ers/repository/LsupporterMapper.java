@@ -71,4 +71,16 @@ public interface LsupporterMapper {
 	//여기까지
 
 	MemberDetailVO selectMemberDetail(String wid,String id);
+
+	List<MemberDetailVO> selectMemberEcall(String wid, String id);
+
+	int selectemergencyCount(String wid, String id);
+
+	int selectfireCount(String wid, String id);
+
+	List<MemberDetailVO> selectMemberDetailmachine(String wid, String id);
+
+	List<MemberReportLsupporterVO> selectReportList(Map<String, Object> returnMap, RowBounds rowbounds);
+	
+	int selectReportListCount(Map<String, Object> returnMap);
 }

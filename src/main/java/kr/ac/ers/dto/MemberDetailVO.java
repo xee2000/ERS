@@ -24,8 +24,8 @@ public class MemberDetailVO {
 	private String pacemaker;
 	private Date regDate;
 	private Date equipDate;
+	private String mCode;
 	private String memType;
-	
 	private String status;
 	private String dropstatus;
 	private String dropDate;
@@ -34,7 +34,6 @@ public class MemberDetailVO {
 	private String allergy;
 	private String equipment;
 	private String afNo;
-	
 	private int rNo;
 	private String content;
 	private int wCode;
@@ -44,16 +43,13 @@ public class MemberDetailVO {
 	private Date occurTime;
 	private String occurType;
 	private String callCheck;
-	
     private String relation;
-
 	private int mNum;
 	private String mStatus;
-	private String mCode;
+	
 	private int cNum;
 	private Date asSend;
 	private Date changeDate;
 	private String changeStatus;
 	private String lNum;
-
 }

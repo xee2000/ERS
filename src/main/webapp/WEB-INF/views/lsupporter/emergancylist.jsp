@@ -18,8 +18,8 @@
 		<div class="category_date_menubar">
 		<div class="date">
 		<label class="date_select">날짜조회 :</label>
-		<input type="date" name="keyword" value="${cri.keyword} style="width:250px;border:1px solid black;">&nbsp;&nbsp;<span class="dash">-</span>
-		&nbsp;&nbsp;<input type="date" name="keyword"  value="${cri.keyword} style="width:250px;border:1px solid black;">
+		<input type="date" name="keyword" value="${cri.keyword}" style="width:250px;border:1px solid black;">&nbsp;&nbsp;<span class="dash">-</span>
+		&nbsp;&nbsp;<input type="date" name="keyword"  value="${cri.keyword}" style="width:250px;border:1px solid black;">
 		</div>
   <div class="search_bar search_bar_main flex mb-5">
  <div class="search_bar mb-2 flex">
@@ -49,7 +49,7 @@
 <div class="mt-2 mb-2 button buttens">
 <button type="button" class="btn btn-dark btn-lg mt-2 mb-2 backbtn">뒤로가기</button>
 <button type="button" 
-class="btn btn-lg mr-1 ml-1 btn-primary regist " onclick="location.href='/usr/home/nonmemberreportForm'">등록</button>
+class="btn btn-lg mr-1 ml-1 btn-primary regist " onclick="location.href='/ers/lsupporter/nonmemberreportForm'">등록</button>
 </div>
 </div>
 </div>

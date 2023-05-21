@@ -1,7 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@include file="../include/lsupporter/head.jspf"%>
 <link rel="stylesheet" href="/resources/lsupporter/css/memberdetail.css">
+<c:set value="${dataMap.memberdetail }" var="memberdetail"/>
+<c:set value="${dataMap.memberEcall }" var="memberEcall"/>
+<c:set value="${dataMap.emergencyCount }" var="emergencyCount"/>
+<c:set value="${dataMap.fireCount }" var="fireCount"/>
+<c:set value="${dataMap.machinList }" var="machinList"/>
+<c:set value="${reportListMap.reportList }" var="reportList"/>
 
 
 <div class="row">
@@ -15,10 +23,10 @@
 
 <div class="card card-primary card-outline">
 <div class="card-body box-profile">
-<div class="text-center">
-<img class="profile-user-img img-fluid img-circle" src="/img/노인1.jpg" style="width:200px;height:200px;" alt="">
+<div class="text-center" style="width:300px;height:300px;">
+${memberdetail.picture }
 </div>
-<h3 class="profile-username text-center">김보건</h3>
+<h3 class="profile-username text-center">${memberdetail.name }</h3>
 </div>
 
 </div>
@@ -32,8 +40,8 @@
 <div class="danger"><img class="danger_imgsize" src="/resources/lsupporter/img/사이렌.jpg"/> 
 <span class="danger_status">응급발생정보</span></div><br/>
 <div class="danger_list">
-<span class="dangergo">총 응급출동건수 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ 2건</span><br/>
-<span class="dangergo">총 화재발생건수 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ 2건</span>
+<span class="dangergo">총 응급출동건수 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ ${emergencyCount }건</span><br/>
+<span class="dangergo">총 화재발생건수 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ ${fireCount }건</span>
 </div>
 <hr>
 </div>
@@ -47,7 +55,6 @@
 <div class="card-header p-2">
 <ul class="nav nav-pills justify-around">
 <li class="nav-item"><a class="tab_name" href="#activity" data-toggle="tab">대상자정보</a></li>
-<li class="nav-item"><a class="tab_name" href="#familly" data-toggle="tab">가족정보</a></li>
 <li class="nav-item"><a class="tab_name" href="#systemstatus" data-toggle="tab">서비스정보</a></li>
 <li class="nav-item"><a class="tab_name" href="#carewordlist" data-toggle="tab">보고서</a></li>
 </ul>
@@ -58,41 +65,42 @@
 
 <form class="form-horizontal">
 
-<table class="tg memberdetail" style="undefined;table-layout: fixed; width: 602px">
+<table class="tg type03" style="undefined;table-layout: fixed;">
 <colgroup>
 <col style="width: 210.333333px">
 <col style="width: 480.333333px">
 </colgroup>
 <thead>
   <tr>
-    <th class="tg-c6of">대상자명 </th>
-    <th class="tg-3xi5">${memberdetail.name }</th>
+
+    <th class="tg-0lax" style="color:black;font-weight:normal;">대상자명 </th>
+    <th class="tg-0lax" style=:color:black;>${memberdetail.name }</th>
   </tr>
 </thead>
 <tbody>
   <tr>
-    <td class="tg-c6of">나이</td>
-    <td class="tg-3xi5">${memberdetail.birth }</td>
+    <td class="tg-0lax">나이</td>
+    <td class="tg-0lax">${memberdetail.birth }</td>
   </tr>
   <tr>
-    <td class="tg-c6of">전화번호</td>
-    <td class="tg-3xi5">${memberdetail.phone }</td>
+    <td class="tg-0lax">전화번호</td>
+    <td class="tg-0lax">${memberdetail.phone }</td>
   </tr>
   <tr>
-    <td class="tg-c6of">고위험수준</td>
-    <td class="tg-c6of">${memberdetail.caution }</td>
+    <td class="tg-0lax">고위험수준</td>
+    <td class="tg-0lax">${memberdetail.caution }</td>
   </tr>
   <tr>
-    <td class="tg-c6of">심장박동기 부착여부</td>
-    <td class="tg-c6of">${memberdetail.pacemaker }</td>
+    <td class="tg-0lax">심장박동기 부착여부</td>
+    <td class="tg-0lax">${memberdetail.pacemaker }</td>
   </tr>
     <tr>
-    <td class="tg-c6of">대상자 구분</td>
-    <td class="tg-c6of">${memberdetail.memType }</td>
+    <td class="tg-0lax">대상자 구분</td>
+    <td class="tg-0lax">${memberdetail.memType }</td>
   </tr>
   <tr>
-    <td class="tg-c6of">거주지주소</td>
-    <td class="tg-c6of">${memberdetail.address }</td>
+    <td class="tg-0lax">거주지주소</td>
+    <td class="tg-0lax">${memberdetail.address }</td>
   </tr>
   <tr>
     <td class="tg-0lax">질병정보</td>
@@ -110,19 +118,15 @@
     <td class="tg-0lax">가족과의 친분도</td>
     <td class="tg-0lax">${memberdetail.fam_rel }</td>
   </tr>
+<c:forEach var="ecall" items="${memberEcall}"  varStatus="status">
   <tr>
-    <td class="tg-0lax">긴급연락망1<br/>(이름/관계/연락처)</td>
+    <td class="tg-0lax">긴급연락망${status.index+1 }<br/>(이름/관계/연락처)</td>
     <td class="tg-0lax">
+    ${ecall.name }/${ecall.relation }/${ecall.phone }
 </td>
   </tr>
-  <tr>
-    <td class="tg-0lax">긴급연락망2<br/>(이름/관계/연락처)</td>
-    <td class="tg-0lax">박제성/팀장/010-9898-9081</td>
-  </tr>
-  <tr>
-    <td class="tg-0lax">긴급연락망3<br/>(이름/관계/연락처)</td>
-    <td class="tg-0lax">최재혁/쩔친/010-2422-1517</td>
-  </tr>
+  </c:forEach> 
+  
 </tbody>
 </table>
 </form>
@@ -131,41 +135,10 @@
 
 </div>
 
-<!--세번째 탭  -->
-<div class="tab-pane" id="familly">
-<table class="tg familiy" style="undefined;table-layout: fixed; width: 605px">
-<colgroup>
-<col style="width: 180.333333px">
-<col style="width: 400.333333px">
-</colgroup>
-<thead>
-  <tr>
-    <th class="tg-c6of">가족구성원 정보</th>
-    <th class="tg-3xi5">아들, 딸, 손자, 손녀</th>
-  </tr>
-</thead>
-<tbody>
-  <tr>
-    <td class="tg-c6of">보호자 이름</td>
-    <td class="tg-3xi5">박제성</td>
-  </tr>
-  <tr>
-    <td class="tg-c6of">보호자와의 관계</td>
-    <td class="tg-c6of">동료</td>
-  </tr>
-  <tr>
-    <td class="tg-c6of">보호자 연락처</td>
-    <td class="tg-c6of">010-9898-9081</td>
-  </tr>
-</tbody>
-</table>
-
-
-</div>
 
 <div class="tab-pane" id="systemstatus">
 <div class="form-group row">
-<table class="tg" style="undefined;table-layout: fixed; width: 100%;">
+<table class="tg" style="undefined;table-layout: fixed; width: 100%;margin-left:7%;">
 <colgroup>
 <col style="width: 150.333333px">
 <col style="width: 110.333333px">
@@ -181,43 +154,22 @@
     <th class="tg-baqh">설치일자</th>
     <th class="tg-baqh">교체여부</th>
     <th class="tg-baqh">교체일자</th>
-    <th class="tg-baqh">수신상태</th>
   </tr>
 </thead>
+<c:forEach items="${machinList }" var="machin">
+<fmt:formatDate value="${machin.regDate }" pattern="yy-MM-dd" var="regDate"/>
+<fmt:formatDate value="${machin.changeDate }" pattern="yy-MM-dd" var="changeDate"/>
 <tbody>
   <tr>
-    <td class="tg-0lax">게이트웨이</td>
-    <td class="tg-0lax">GY-1111</td>
-    <td class="tg-0lax">2020-10-10</td>
-    <td class="tg-0lax">교체함</td>
-    <td class="tg-0lax">2020-10-10</td>
-    <td class="tg-0lax">수신양호</td>
+    <td class="tg-0lax">${machin.name }</td>
+    <td class="tg-0lax">${machin.MCode }</td>
+    <td class="tg-0lax">${regDate }</td>
+    <td class="tg-0lax">${machin.changeStatus }</td>
+    <td class="tg-0lax">${changeDate }</td>
   </tr>
-  <tr>
-    <td class="tg-0lax">화재경보기</td>
-    <td class="tg-0lax">FY-1111</td>
-    <td class="tg-0lax">2020-10-10</td>
-    <td class="tg-0lax">교체함</td>
-    <td class="tg-0lax">2020-10-10</td>
-    <td class="tg-0lax">수신양호</td>
-  </tr>
-  <tr>
-    <td class="tg-0lax">활동감지기</td>
-    <td class="tg-0lax">AY-1111</td>
-    <td class="tg-0lax">2020-10-10</td>
-    <td class="tg-0lax">교체함</td>
-    <td class="tg-0lax">2020-10-10</td>
-    <td class="tg-0lax">수신양호</td>
-  </tr>
-  <tr>
-    <td class="tg-0lax">출입문감지기</td>
-    <td class="tg-0lax">GY-1111</td>
-    <td class="tg-0lax">2020-10-10</td>
-    <td class="tg-0lax">교체함</td>
-    <td class="tg-0lax">2020-10-10</td>
-    <td class="tg-0lax">수신양호</td>
-  </tr>
+  
 </tbody>
+</c:forEach>
 </table>
 </div>
 
@@ -229,24 +181,28 @@
 
 <div class="row ">
 		<div class="category_date_menubar">
-		<div class="date flex">
-		<input class="dateselectbar"type="date" name="startday">&nbsp;&nbsp;
-		<input class="dateselectbar" type="date" name="endday">
+		<div class="date mb-2">
+		<input type="date" name="startday" style="width:250px;border:1px solid black;font-size:1.5rem;">&nbsp;&nbsp;<span class="dash">-</span>
+		&nbsp;&nbsp;<input type="date" name="endday" style="width:250px;border:1px solid black;font-size:1.5rem;">
 		</div>
-  <div class="search_bar mb-5 flex">
-  <select class="keywordoption"id="카테고리" name="category">
-    <option value="전체" disabled selected>선택</option>
-      <option value="대상자명">대상자명</option>
-      <option value="수신여부">성별</option>
-      <option value="기타1">활동여부</option>
+  <div class="search_bar search_bar_main flex mb-5">
+ <div class="search_bar mb-2 flex">
+  <select class="keywordoption"name="searchType" id="searchType" >
+   <option value="" disabled>검 색</option>
+<option value="nbg" ${cri.searchType eq 'nbg' ? 'selected':'' }>전체</option>
+<option value="n" ${cri.searchType eq 'n' ? 'selected':'' }>대상자명</option>
+<option value="g" ${cri.searchType eq 'g' ? 'selected':'' }>성별</option>
+<option value="r" ${cri.searchType eq 'r' ? 'selected':'' }>활동여부</option>
+<option value="rd" ${cri.searchType eq 'rd' ? 'selected':'' }>남은정기상담일</option>
   </select>
 <div class="search_container flex items-center">
-  <input class="searchinput w-full" type="text" id="검색어" name="q" required>
-  <button type="submit" class="absolute right-0 top-0 bottom-0 p-2 right-1.25">
+<input type="hidden" name="id" value="${memberdetail.id }">
+  <input class="searchinput w-full" autocomplete="false" type="text" name="keyword" required="required" value="${cri.keyword}" id="search_keyword" onkeyup="handleEnterKey(event)">
+  <button type="button" class="absolute right-0 top-0 bottom-0 p-2 right-1.25" id="button" data-card-widget="search" onclick="reportlist_go(1);">
     <i class="fa fa-search"></i>
   </button>
 </div>
-
+  </div>
   </div>
   
   
@@ -257,7 +213,7 @@
 <div class="col-12">
 <div class="mt-2 mb-2 button buttens">
 <button type="button" 
-class="btn mr-1 btn-primary regist" onclick="location.href='/usr/home/reportForm'">등록</button>
+class="btn mr-1 btn-primary regist" onclick="location.href='/ers/lsupporter/nonreportForm'">등록</button>
 <button type="button" 
 class="btn btn-danger delete">삭제</button>
 </div>
@@ -289,35 +245,28 @@ class="btn btn-danger delete">삭제</button>
     <th class="tg-baqh">열람 여부</th>
   </tr>
 </thead>
+<c:forEach items="${reportList }" var="report">
+<fmt:formatDate value="${report.regDate }" pattern="yy-MM-dd" var="regDate"/>
 <tbody>
   <tr>
     <td class="tg-0lax">
-      <input type="checkbox" class="text-center check_box"/>
+      <input type="checkbox" class="text-center check_box" style="width:30px;height:30px;margin-top:7px;"/>
     </td>
-    <td class="tg-0lax">1</td>
-    <td class="tg-0lax">2020-01-01</td>
-    <td class="tg-0lax">김형민</td>
-    <td class="tg-0lax">고객상담...</td>
-    <td class="tg-0lax">Y</td>
+    <td class="tg-0lax">${report.RNo }</td>
+    <td class="tg-0lax">${regDate }</td>
+    <td class="tg-0lax">${report.name }</td>
+    <td class="tg-0lax">${report.reType }</td>
+    <td class="tg-0lax">${report.viewCheck }</td>
   </tr>
-  <tr>
-    <td class="tg-0lax">
-      <input type="checkbox" class="text-center check_box"/>
-    </td>
-    <td class="tg-0lax">2</td>
-    <td class="tg-0lax">2020-01-02</td>
-    <td class="tg-0lax">박지성</td>
-    <td class="tg-0lax">악성대상자신고</td>
-    <td class="tg-0lax">N</td>
-  </tr>
+ 
 </tbody>
-
+</c:forEach>
 </table>
 </form>
 </div>
 </div>
-
-
+<br/><br/>
+<%@include file="../include/lsupporter/pagination.jsp"%>
 		</div>
 </div>
 

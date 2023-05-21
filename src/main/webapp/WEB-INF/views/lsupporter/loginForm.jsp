@@ -3,7 +3,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <body class="login-page">
 
-<div class="login">f
+<div class="login">
 <div class="card card-outline card-primary">
 <div class="card-header text-center">
 <a href="#" class="h1"><b class="idcheck">생활지원사 로그인</b></a>

@@ -175,6 +175,42 @@ public class LsupporterService {
 		
 		return lsupportMapper.selectMemberDetail(wid,id);
 	}
+
+	public List<MemberDetailVO> getMemberEcall(String wid, String id) {
+		return lsupportMapper.selectMemberEcall(wid,id);
+	}
+
+	public int getemergencyCount(String wid, String id) {
+		// TODO Auto-generated method stub
+		return lsupportMapper.selectemergencyCount(wid,id);
+	}
+
+	public int getfireCount(String wid, String id) {
+		// TODO Auto-generated method stub
+		return lsupportMapper.selectfireCount(wid,id);
+	}
+
+	public List<MemberDetailVO> getMembermachin(String wid, String id) {
+		return lsupportMapper.selectMemberDetailmachine(wid,id);
+	}
+
+	public Map<String, Object> getReportList(String id, SearchCriteria cri) {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		Map<String, Object> returnMap = new HashMap<>();
+		returnMap.put("cri", cri);		
+		returnMap.put("id", id);		
+		RowBounds rowbounds = new RowBounds(cri.getStartRowNum(),cri.getPerPageNum());
+		
+		List<MemberReportLsupporterVO> reportList = lsupportMapper.selectReportList(returnMap, rowbounds);
+		dataMap.put("reportList",reportList);
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(lsupportMapper.selectReportListCount(returnMap));
+		dataMap.put("pageMaker", pageMaker);
+
+		
+		return dataMap;
+	}
 	
 
 }

@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -84,13 +86,40 @@ public class LsupporterController {
 		return "lsupporter/carelist";
 	}
 	@RequestMapping("/ers/lsupporter/memberdetail")
-	public String Showmemberdetail(String id, Model model, HttpServletRequest request,HttpSession session) {
-		 session= request.getSession();
+	public String Showmemberdetail(String searchType,String keyword, String perPageNum, String page, Model model,String id, HttpServletRequest request,HttpSession session) {
+		 
+		SearchCriteria cri = new SearchCriteria();
+		if(perPageNum == null || perPageNum.isEmpty())perPageNum="5";
+		if(page == null || page.isEmpty())page="1";
+		if(searchType == null) searchType="";
+		if(keyword==null) keyword="";
+		cri.setPage(page);
+		cri.setPerPageNum(perPageNum);
+		cri.setSearchType(searchType);
+		cri.setKeyword(keyword);
+		
+		
+		session= request.getSession();
+		Map<String,Object> dataMap = new HashMap<String,Object> ();
 		 LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");
-		 MemberDetailVO memberdetail= lsupporterService.getMemberDetail(loginUser.getWid(),id);
-		 model.addAttribute("memberdetail", memberdetail);
-		return "lsupporter/memberdetail";
+		 Map<String,Object> reportListMap =lsupporterService.getReportList(id,cri);
+		MemberDetailVO memberdetail = lsupporterService.getMemberDetail(loginUser.getWid(),id);
+		List<MemberDetailVO> machinList = lsupporterService.getMembermachin(loginUser.getWid(),id);
+		List<MemberDetailVO> memberEcall = lsupporterService.getMemberEcall(loginUser.getWid(),id);
+		int emergencyCount = lsupporterService.getemergencyCount(loginUser.getWid(),id);
+		int fireCount = lsupporterService.getfireCount(loginUser.getWid(),id);
+		
+		 dataMap.put("memberdetail",memberdetail);
+		 dataMap.put("memberEcall", memberEcall);
+		 dataMap.put("emergencyCount", emergencyCount);
+		 dataMap.put("fireCount", fireCount);
+		 dataMap.put("machinList", machinList);
+		 
+		 model.addAttribute("dataMap", dataMap);
+		 model.addAttribute("reportListMap",reportListMap);
+		 return "lsupporter/memberdetail";
 	}
+	
 	@RequestMapping("/ers/lsupporter/membersearch")
 	public String Showmembersearch() {
 		return "lsupporter/membersearch";
