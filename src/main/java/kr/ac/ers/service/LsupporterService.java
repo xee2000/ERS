@@ -13,6 +13,7 @@ import kr.ac.ers.command.PageMaker;
 import kr.ac.ers.command.SearchCriteria;
 import kr.ac.ers.dto.LsupporterStatusVO;
 import kr.ac.ers.dto.LsupporterVO;
+import kr.ac.ers.dto.MemberDetailVO;
 import kr.ac.ers.dto.MemberReportLsupporterVO;
 import kr.ac.ers.dto.MemberVO;
 import kr.ac.ers.dto.MembereducationVO;
@@ -118,7 +119,7 @@ public class LsupporterService {
 		returnMap.put("wid", wid);		
 		RowBounds rowbounds = new RowBounds(cri.getStartRowNum(),cri.getPerPageNum());
 		
-		List<MemberReportLsupporterVO> memberList = lsupportMapper.selectmembereducationList(returnMap, rowbounds);
+		List<MembereducationVO> memberList = lsupportMapper.selectmembereducationList(returnMap, rowbounds);
 		dataMap.put("memberList", memberList);
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
@@ -128,6 +129,51 @@ public class LsupporterService {
 		return dataMap;
 		
 		
+	}
+
+	public int getmaineducationfutureDate(String wid) {
+		return lsupportMapper.selectmaineducationfutureDate(wid);
+	}
+
+	public int getmaineducationnotmachine(String wid) {
+		return lsupportMapper.selectmaineducationnotmachine(wid);
+	}
+
+
+
+	public int getmaineducationclearDate(String wid) {
+		return lsupportMapper.selectmaineducationclearDate(wid);
+	}
+
+	public int getmainemergancyall(String wid) {
+		return lsupportMapper.selectmainemergancyall(wid);
+	}
+
+	public int getmainemergancyno(String wid) {
+		return lsupportMapper.selectmainemergancyno(wid);
+	}
+
+	public Map<String, Object> getemergancyList(String wid, SearchCriteria cri) {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		Map<String, Object> returnMap = new HashMap<>();
+		returnMap.put("cri", cri);		
+		returnMap.put("wid", wid);		
+		RowBounds rowbounds = new RowBounds(cri.getStartRowNum(),cri.getPerPageNum());
+		
+		List<MemberReportLsupporterVO> emergancyList = lsupportMapper.selectemergancyList(returnMap, rowbounds);
+		dataMap.put("emergancyList",emergancyList);
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(lsupportMapper.selectemergancyListCount(returnMap));
+		dataMap.put("pageMaker", pageMaker);
+
+		
+		return dataMap;
+	}
+
+	public MemberDetailVO getMemberDetail(String wid, String id) {
+		
+		return lsupportMapper.selectMemberDetail(wid,id);
 	}
 	
 

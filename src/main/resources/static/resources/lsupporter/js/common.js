@@ -46,15 +46,31 @@ function OpenWindow(UrlStr, WinTitle, WinWidth, WinHeight) {
     });
   };
 
- function list_go(page) {
-  var data = {
-    "searchType": $('select[name="searchType"]').val(),
-    "keyword": $('input[name="keyword"]').val(),
-    "page": page,
-    "perPageNum": 5
-  };
+function list_go(page,url){
+	
+	
+	$("form#jobForm input[name='page']").val(page);
+	$("form#jobForm input[name='perPageNum']").val($('select[name="perPageNum"]').val());
+	$("form#jobForm input[name='searchType']").val($('select[name="searchType"]').val());
+	$("form#jobForm input[name='keyword']").val($('input[name="keyword"]').val());
+	
+	$('form#jobForm').attr({
+		action:url,
+		method:'get'
+	}).submit();
+}
 
-
+function emergancylist_go(page,url){
+	
+	$("form#jobForm input[name='page']").val(page);
+	$("form#jobForm input[name='perPageNum']").val($('select[name="perPageNum"]').val());
+	$("form#jobForm input[name='searchType']").val($('select[name="searchType"]').val());
+	$("form#jobForm input[name='keyword']").val($('input[name="keyword"]').val());
+	
+	$('form#jobForm').attr({
+		action:url,
+		method:'get'
+	}).submit();
 }
 
 

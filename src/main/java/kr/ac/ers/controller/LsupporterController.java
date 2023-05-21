@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -24,8 +23,8 @@ import jakarta.servlet.http.HttpSession;
 import kr.ac.ers.command.SearchCriteria;
 import kr.ac.ers.dto.LsupporterStatusVO;
 import kr.ac.ers.dto.LsupporterVO;
+import kr.ac.ers.dto.MemberDetailVO;
 import kr.ac.ers.dto.MemberReportLsupporterVO;
-import kr.ac.ers.dto.MembereducationVO;
 import kr.ac.ers.service.LsupporterService;
 import kr.ac.ers.utils.MailContentSend;
 
@@ -36,8 +35,22 @@ public class LsupporterController {
 	 private LsupporterService lsupporterService;
 	
 	@RequestMapping("/ers/lsupporter/main")
-	public String Showmain() {
-	
+	public String Showmain(Model model, HttpServletRequest request,HttpSession session) {
+		session= request.getSession();
+		 LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");
+		 
+		int futureDate =  lsupporterService.getmaineducationfutureDate(loginUser.getWid());
+		int clearDate =  lsupporterService.getmaineducationclearDate(loginUser.getWid());
+		int notmachine =  lsupporterService.getmaineducationnotmachine(loginUser.getWid());
+		int emergancyall = lsupporterService.getmainemergancyall(loginUser.getWid());
+		int emergancyno = lsupporterService.getmainemergancyno(loginUser.getWid());
+		
+		model.addAttribute("futureDate",futureDate);
+		model.addAttribute("clearDate",clearDate);
+		model.addAttribute("notmachine",notmachine);
+		model.addAttribute("emergancyall",emergancyall);
+		model.addAttribute("emergancyno",emergancyno);
+		
 		return "lsupporter/main";
 	}
 	@RequestMapping("/ers/lsupporter/loginForm")
@@ -71,7 +84,11 @@ public class LsupporterController {
 		return "lsupporter/carelist";
 	}
 	@RequestMapping("/ers/lsupporter/memberdetail")
-	public String Showmemberdetail() {
+	public String Showmemberdetail(String id, Model model, HttpServletRequest request,HttpSession session) {
+		 session= request.getSession();
+		 LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");
+		 MemberDetailVO memberdetail= lsupporterService.getMemberDetail(loginUser.getWid(),id);
+		 model.addAttribute("memberdetail", memberdetail);
 		return "lsupporter/memberdetail";
 	}
 	@RequestMapping("/ers/lsupporter/membersearch")
@@ -226,7 +243,24 @@ public class LsupporterController {
 	
 
 	@RequestMapping("/ers/lsupporter/emergancylist")
-	public String Showemergancylist() {
+	public String Showemergancylist(String searchType, String keyword, String perPageNum, String page,Model model, HttpServletRequest request, HttpServletResponse response , HttpSession session) {
+		SearchCriteria cri = new SearchCriteria();
+		if(perPageNum == null || perPageNum.isEmpty())perPageNum="5";
+		if(page == null || page.isEmpty())page="1";
+		if(searchType == null) searchType="";
+		if(keyword==null) keyword="";
+		cri.setPage(page);
+		cri.setPerPageNum(perPageNum);
+		cri.setSearchType(searchType);
+		cri.setKeyword(keyword);
+		
+		session= request.getSession();
+		 LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");
+		 
+	 
+		Map<String,Object> dataMap = lsupporterService.getemergancyList(loginUser.getWid(),cri);
+	
+		model.addAttribute("dataMap", dataMap);
 		return "lsupporter/emergancylist";
 	}
 	@RequestMapping("/ers/lsupporter/emergancydetail")

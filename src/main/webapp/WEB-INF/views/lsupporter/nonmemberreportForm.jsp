@@ -200,7 +200,7 @@ ${member.birth }
                     <input type="hidden" name="id" value="">
                     <input type="hidden" name="reType" value="2">
 					<input type="hidden" name="wCode" value="${wCode}">
-					<input type="hidden" name="reDone" value="0">
+					<input type="hidden" name="reDone" value="1">
 					<input type="hidden" name="viewCheck" value="N">
                     <input type="radio" name="callCheck" value="Y">전화함                    
                     <input type="radio" name="callCheck" value="N">전화안함    
@@ -242,10 +242,12 @@ ${member.birth }
 <form action="nonmemberreportregist" name="form" method="post" role="form" id="registForm">
 <input type="hidden" name="id" value="">
 <input type="hidden" name="wCode" value="${wCode}">
-<input type="hidden" name="reDone" value="0">
+<input type="hidden" name="reDone" value="1">
 <input type="hidden" name="viewCheck" value="0">
- <input type="hidden" name="reType" value="3">
- <input type="hidden" name="callCheck" value="">                    
+<input type="hidden" name="reType" value="3">
+<input type="hidden" name="callCheck" value="">     
+<input type="hidden" name="occurType" value="null"> 
+<input type="hidden" name="occurTime" value="23/01/01">                
 <table style="undefined;table-layout: fixed; width: 100%;">
 <colgroup>
 <col style="width: 150px;">
@@ -291,11 +293,13 @@ ${member.birth }
 <form action="nonmemberreportregist" name="form" method="post" role="form" id="registForm">
 <input type="hidden" name="id" value="">
 <input type="hidden" name="wCode" value="${wCode}">
-<input type="hidden" name="reDone" value="0">
+<input type="hidden" name="reDone" value="1">
 <input type="hidden" name="viewCheck" value="N">
 <input type="hidden" name="reType" value="4">
 <input type="hidden" name="callCheck" value="">                    
 <input type="hidden" name="content" value=""> 
+<input type="hidden" name="occurType" value="null"> 
+<input type="hidden" name="occurTime" value="23/01/01"> 
 <table style="undefined;table-layout: fixed; width: 100%;">
 <colgroup>
 <col style="width: 150px;">
@@ -337,10 +341,12 @@ ${member.birth }
 <form action="nonmemberreportregist" name="form" method="post" role="form" id="registForm">
 <input type="hidden" name="id" value="">
 <input type="hidden" name="wCode" value="${wCode}">
-<input type="hidden" name="reDone" value="0">
+<input type="hidden" name="reDone" value="1">
 <input type="hidden" name="viewCheck" value="N">
 <input type="hidden" name="callCheck" value="">                    
 <input type="hidden" name="reType" value="5">
+<input type="hidden" name="occurType" value="null"> 
+<input type="hidden" name="occurTime" value="23/01/01"> 
 <table style="undefined;table-layout: fixed; width: 100%;">
 <colgroup>
 <col style="width: 140.333333px">
@@ -387,10 +393,12 @@ ${member.birth }
 <form action="nonmemberreportregist" name="form" method="post" role="form" id="registForm">
 <input type="hidden" name="id" value="">
 <input type="hidden" name="wCode" value="${wCode}">
-<input type="hidden" name="reDone" value="0">
+<input type="hidden" name="reDone" value="1">
 <input type="hidden" name="viewCheck" value="N">
- <input type="hidden" name="reType" value="6">
- <input type="hidden" name="callCheck" value="">                    
+<input type="hidden" name="reType" value="6">
+<input type="hidden" name="callCheck" value="">
+<input type="hidden" name="occurType" value="null"> 
+<input type="hidden" name="occurTime" value="23/01/01">                     
 <table style="undefined;table-layout: fixed; width: 100%;">
 <colgroup>
 <col style="width: 190px;">

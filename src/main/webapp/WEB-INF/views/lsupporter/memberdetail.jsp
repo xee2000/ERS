@@ -66,57 +66,54 @@
 <thead>
   <tr>
     <th class="tg-c6of">대상자명 </th>
-    <th class="tg-3xi5">김보건</th>
+    <th class="tg-3xi5">${memberdetail.name }</th>
   </tr>
 </thead>
 <tbody>
   <tr>
     <td class="tg-c6of">나이</td>
-    <td class="tg-3xi5">24</td>
+    <td class="tg-3xi5">${memberdetail.birth }</td>
   </tr>
   <tr>
     <td class="tg-c6of">전화번호</td>
-    <td class="tg-3xi5">010-3238-7013</td>
+    <td class="tg-3xi5">${memberdetail.phone }</td>
   </tr>
   <tr>
     <td class="tg-c6of">고위험수준</td>
-    <td class="tg-c6of">YES</td>
+    <td class="tg-c6of">${memberdetail.caution }</td>
   </tr>
   <tr>
     <td class="tg-c6of">심장박동기 부착여부</td>
-    <td class="tg-c6of">N</td>
+    <td class="tg-c6of">${memberdetail.pacemaker }</td>
   </tr>
     <tr>
     <td class="tg-c6of">대상자 구분</td>
-    <td class="tg-c6of">노인</td>
+    <td class="tg-c6of">${memberdetail.memType }</td>
   </tr>
   <tr>
     <td class="tg-c6of">거주지주소</td>
-    <td class="tg-c6of">대전시 서구 용문동</td>
+    <td class="tg-c6of">${memberdetail.address }</td>
   </tr>
   <tr>
     <td class="tg-0lax">질병정보</td>
-    <td class="tg-0lax">심혈관계 질환으로 장기간 투약상태</td>
+    <td class="tg-0lax">${memberdetail.orgdisease }</td>
   </tr>
   <tr>
     <td class="tg-0lax">복용약물내역</td>
-    <td class="tg-0lax">당뇨약 2년째 복용중</td>
-  </tr>
-  <tr>
-    <td class="tg-0lax">병원방문기록</td>
-    <td class="tg-0lax">1년간 건양대 병원 주기적 방문상태</td>
+    <td class="tg-0lax">${memberdetail.drug }</td>
   </tr>
   <tr>
     <td class="tg-0lax">심리상태</td>
-    <td class="tg-0lax">아들과의 대면시 불안증세, 수전증 2년째 지속중</td>
+    <td class="tg-0lax">${memberdetail.mentalstatus }</td>
   </tr>
   <tr>
     <td class="tg-0lax">가족과의 친분도</td>
-    <td class="tg-0lax">가족과 대면을 힘겨워함 혼자있고 싶어함이 큰상태</td>
+    <td class="tg-0lax">${memberdetail.fam_rel }</td>
   </tr>
   <tr>
     <td class="tg-0lax">긴급연락망1<br/>(이름/관계/연락처)</td>
-    <td class="tg-0lax">이정호/동료/010-3238-7013</td>
+    <td class="tg-0lax">
+</td>
   </tr>
   <tr>
     <td class="tg-0lax">긴급연락망2<br/>(이름/관계/연락처)</td>

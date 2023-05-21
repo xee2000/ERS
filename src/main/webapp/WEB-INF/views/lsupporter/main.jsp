@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 <%@include file="../include/lsupporter/head.jspf"%>
 <link rel="stylesheet" href="/resources/lsupporter/css/main.css">
 
@@ -13,50 +15,50 @@
       <div class="emergany_status_list">
         <div class="col-lg-3 col-3">
           <div class="small-box bg-primary">
-            <div class="inner">
-              <h3>10명</h3>
-              <p>상담전체</p>
-            </div>
+           <div class="inner">
+      <h3>${futureDate+clearDate+notmachine }명</h3>
+      <p>상담전체</p>
+    </div>
             <div class="icon">
               <i class="ion ion-bag"></i>
             </div>
-            <a href="#" class="small-box-footer">자세히 보기 <i class="fas fa-arrow-circle-right"></i></a>
+            <a href="nowcare" class="small-box-footer">자세히 보기 <i class="fas fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <div class="col-lg-3 col-3">
           <div class="small-box bg-primary">
             <div class="inner">
-              <h3>2명</h3>
+              <h3>${futureDate }명</h3>
               <p>상담예정자</p>
             </div>
             <div class="icon">
               <i class="ion ion-bag"></i>
             </div>
-            <a href="#" class="small-box-footer">자세히 보기 <i class="fas fa-arrow-circle-right"></i></a>
+            <a href="nowcare" class="small-box-footer">자세히 보기 <i class="fas fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <div class="col-lg-3 col-3">
           <div class="small-box bg-primary">
             <div class="inner">
-              <h3>8명</h3>
+              <h3>${clearDate }명</h3>
               <p>상담완료</p>
             </div>
             <div class="icon">
               <i class="ion ion-bag"></i>
             </div>
-            <a href="#" class="small-box-footer">자세히 보기 <i class="fas fa-arrow-circle-right"></i></a>
+            <a href="nowcare" class="small-box-footer">자세히 보기 <i class="fas fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <div class="col-lg-3 col-3">
           <div class="small-box bg-warning">
             <div class="inner">
-              <h3>2명</h3>
+              <h3>${notmachine }명</h3>
               <p>미수신</p>
             </div>
             <div class="icon">
               <i class="ion ion-bag"></i>
             </div>
-            <a href="#" class="small-box-footer">자세히 보기 <i class="fas fa-arrow-circle-right"></i></a>
+            <a href="nowcare" class="small-box-footer">자세히 보기 <i class="fas fa-arrow-circle-right"></i></a>
           </div>
         </div>
       </div>
@@ -73,7 +75,7 @@
         <div class="col-lg-3 col-3">
           <div class="small-box bg-danger">
             <div class="inner">
-              <h3>3명</h3>
+              <h3>${emergancyall }명</h3>
               <p>응급발생자</p>
             </div>
             <div class="icon">
@@ -82,22 +84,11 @@
             <a href="#" class="small-box-footer">자세히 보기 <i class="fas fa-arrow-circle-right"></i></a>
           </div>
         </div>
+
         <div class="col-lg-3 col-3">
           <div class="small-box bg-danger">
             <div class="inner">
-              <h3>2명</h3>
-              <p>미수신</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-bag"></i>
-            </div>
-            <a href="#" class="small-box-footer">자세히 보기 <i class="fas fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
-        <div class="col-lg-3 col-3">
-          <div class="small-box bg-danger">
-            <div class="inner">
-              <h3>1명</h3>
+              <h3>${emergancyno }명</h3>
               <p>미처리</p>
             </div>
             <div class="icon">
@@ -179,6 +170,9 @@
 </section>
 <!--foot -->
 
+<script>
+
+</script>
 
 <%@include file="../include/lsupporter/foot.jspf"%>
 

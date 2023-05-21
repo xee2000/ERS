@@ -85,7 +85,7 @@
     <td class="tg-3xi5">
       ${member.picture}
     </td>
-    <td class="tg-3xi5" onclick="location.href='/ers/lsupporter/memberdetail'">
+    <td class="tg-3xi5" onclick="location.href='/ers/lsupporter/memberdetail?id='+${member.id}">
       ${member.name}
     </td>
     <td class="tg-3xi5">

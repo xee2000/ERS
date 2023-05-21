@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@include file="../include/lsupporter/head.jspf"%>
+<c:set var="emergancyList" value="${dataMap.emergancyList }"/>
+<c:set var="pageMaker" value="${dataMap.pageMaker}"/>
+<c:set var="cri" value="${pageMaker.cri }"/>
 <link rel="stylesheet" href="/resources/lsupporter/css/emergancylist.css">
 <!-- Content Wrapper. Contains page content -->
 
@@ -14,20 +18,21 @@
 		<div class="category_date_menubar">
 		<div class="date">
 		<label class="date_select">날짜조회 :</label>
-		<input type="date" name="startday" style="width:250px;border:1px solid black;">&nbsp;&nbsp;<span class="dash">-</span>
-		&nbsp;&nbsp;<input type="date" name="endday" style="width:250px;border:1px solid black;">
+		<input type="date" name="keyword" value="${cri.keyword} style="width:250px;border:1px solid black;">&nbsp;&nbsp;<span class="dash">-</span>
+		&nbsp;&nbsp;<input type="date" name="keyword"  value="${cri.keyword} style="width:250px;border:1px solid black;">
 		</div>
   <div class="search_bar search_bar_main flex mb-5">
  <div class="search_bar mb-2 flex">
-  <select class="keywordoption"id="카테고리" name="category">
-    <option value="전체" disabled selected>선택</option>
-      <option value="대상자명" ${cri.perPageNum eq 10 ? 'selected' : '' }>대상자명</option>
-      <option value="수신여부">성별</option>
-      <option value="기타1">활동여부</option>
+  <select class="keywordoption"name="searchType" id="searchType" >
+   <option value="" disabled>검 색</option>
+<option value="all" ${cri.searchType eq 'all' ? 'selected':'' }>전체</option>
+<option value="n" ${cri.searchType eq 'n' ? 'selected':'' }>대상자명</option>
+<option value="rD" ${cri.searchType eq 'r' ? 'selected':'' }>보고서작성여부</option>
+<option value="vc" ${cri.searchType eq 'rd' ? 'selected':'' }>열람여부</option>
   </select>
 <div class="search_container flex items-center">
-  <input class="searchinput w-full" type="text" id="검색어" name="q" required>
-  <button type="submit" class="absolute right-0 top-0 bottom-0 p-2 right-1.25">
+  <input class="searchinput w-full" autocomplete="false" type="text" name="keyword" required="required" value="${cri.keyword}" id="search_keyword" onkeyup="handleEnterKey(event)">
+  <button type="button" class="absolute right-0 top-0 bottom-0 p-2 right-1.25" id="button" data-card-widget="search" onclick="emergancylist_go(1);">
     <i class="fa fa-search"></i>
   </button>
 </div>
@@ -73,69 +78,40 @@ class="btn btn-lg mr-1 ml-1 btn-primary regist " onclick="location.href='/usr/ho
     <th class="tg-nqa4">열람여부</th>
   </tr>
 </thead>
+<c:forEach items="${emergancyList }" var="emergancy" >
+<fmt:formatDate value="${emergancy.occurTime }" pattern="MM-dd-HH" var="occurTime" />
 <tbody>
   <tr>
-    <td class="tg-73oq">1</td>
+    <td class="tg-73oq">${emergancy.RNo }</td>
     <td class="tg-73oq">
-    <img src="/img/노인이미지.jpg" style="height:150px;width:200px;"/>
+    ${emergancy.picture }
     </td>
-    <td class="tg-73oq" onclick="location.href='/usr/home/emergancydetail'">홍길동</td>
-    <td class="tg-73oq">남</td>
-    <td class="tg-73oq">5월5일<br/>14:10</td>
-    <td class="tg-73oq" onclick="location.href='/usr/home/educationdetail'">Y</td>
-    <td class="tg-73oq">Y</td>
-  </tr>
-   <tr>
-    <td class="tg-73oq">1</td>
+    <td class="tg-73oq" onclick="location.href='/ers/lsupporter/memberdetail'">
+	${emergancy.name }
+</td>
     <td class="tg-73oq">
-    <img src="/img/노인이미지.jpg" style="height:150px;width:200px;"/>
+    ${emergancy.gender }
     </td>
-    <td class="tg-73oq" onclick="location.href='/usr/home/emergancydetail'">홍길동</td>
-    <td class="tg-73oq">남</td>
-    <td class="tg-73oq">5월5일<br/>14:10</td>
-    <td class="tg-73oq" onclick="location.href='/usr/home/educationdetail'">Y</td>
-    <td class="tg-73oq">Y</td>
-  </tr>
-   <tr>
-    <td class="tg-73oq">1</td>
     <td class="tg-73oq">
-    <img src="/img/노인이미지.jpg" style="height:150px;width:200px;"/>
+    ${occurTime }
     </td>
-    <td class="tg-73oq" onclick="location.href='/usr/home/emergancydetail'">홍길동</td>
-    <td class="tg-73oq">남</td>
-    <td class="tg-73oq">5월5일<br/>14:10</td>
-    <td class="tg-73oq" onclick="location.href='/usr/home/educationdetail'">Y</td>
-    <td class="tg-73oq">Y</td>
-  </tr>
-   <tr>
-    <td class="tg-73oq">1</td>
+
     <td class="tg-73oq">
-    <img src="/img/노인이미지.jpg" style="height:150px;width:200px;"/>
+    ${emergancy.reDone }
     </td>
-    <td class="tg-73oq" onclick="location.href='/usr/home/emergancydetail'">홍길동</td>
-    <td class="tg-73oq">남</td>
-    <td class="tg-73oq">5월5일<br/>14:10</td>
-    <td class="tg-73oq" onclick="location.href='/usr/home/educationdetail'">Y</td>
-    <td class="tg-73oq">Y</td>
-  </tr>
-   <tr>
-    <td class="tg-73oq">1</td>
     <td class="tg-73oq">
-    <img src="/img/노인이미지.jpg" style="height:150px;width:200px;"/>
+    ${emergancy.viewCheck }
     </td>
-    <td class="tg-73oq" onclick="location.href='/usr/home/emergancydetail'">홍길동</td>
-    <td class="tg-73oq">남</td>
-    <td class="tg-73oq">5월5일<br/>14:10</td>
-    <td class="tg-73oq" onclick="location.href='/usr/home/educationdetail'">Y</td>
-    <td class="tg-73oq">Y</td>
+    
   </tr>
   
 </tbody>
+  </c:forEach>
 </table>
 </form>
 </div>
 </div>
-
+<%@include file="../include/lsupporter/pagination.jsp"%>
 
 		</div>
 </div>
@@ -143,6 +119,11 @@ class="btn btn-lg mr-1 ml-1 btn-primary regist " onclick="location.href='/usr/ho
 
 </section>
 <!--foot -->
+
+
+<script>
+
+</script>
 
 
 <%@include file="../include/lsupporter/foot.jspf"%>
