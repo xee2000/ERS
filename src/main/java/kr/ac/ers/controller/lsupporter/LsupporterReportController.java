@@ -1,4 +1,4 @@
-package kr.ac.ers.controller;
+package kr.ac.ers.controller.lsupporter;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -20,9 +20,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import kr.ac.ers.command.SearchCriteria;
 import kr.ac.ers.dto.LsupporterVO;
-import kr.ac.ers.dto.MemberDetailVO;
 import kr.ac.ers.dto.MemberReportLsupporterVO;
 import kr.ac.ers.dto.ReportFileVO;
+import kr.ac.ers.dto.ReportVO;
 import kr.ac.ers.service.LsupporterService;
 import kr.ac.ers.utils.MakeFileName;
 
@@ -40,10 +40,24 @@ public class LsupporterReportController {
 	public String Showmembersearch() {
 		return "lsupporter/membersearch";
 	}
+	
+	@RequestMapping("/ers/lsupporter/reportModifyForm")
+	public String ShowreportModifyForm(int rNo, Model model) {
+		ReportVO reportmodify = lsupporterService.getModifyreportForm(rNo);
+		model.addAttribute("reportmodify",reportmodify);
+		return "lsupporter/reportModifyForm";
+	}
+	
+	@PostMapping("/ers/lsupporter/reportModify")
+	public String ShowreportModify(int rNo, Model model) {
+		ReportVO reportmodify = lsupporterService.getModifyreportForm(rNo);
+		model.addAttribute("reportmodify",reportmodify);
+		return "lsupporter/reportModifyForm";
+	}
 
 	@RequestMapping("/ers/lsupporter/reportdetail")
 	public String Showreportdetail(Model model,int rNo) {
-		MemberDetailVO reportdetail = lsupporterService.getReportDetail(rNo);
+		ReportVO reportdetail = lsupporterService.getReportDetail(rNo);
 		model.addAttribute("reportdetail",reportdetail);
 		return "lsupporter/reportdetail";
 	}

@@ -1,10 +1,9 @@
-package kr.ac.ers.controller;
+package kr.ac.ers.controller.lsupporter;
 
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,8 +15,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,7 +23,6 @@ import kr.ac.ers.command.SearchCriteria;
 import kr.ac.ers.dto.LsupporterStatusVO;
 import kr.ac.ers.dto.LsupporterVO;
 import kr.ac.ers.dto.MemberDetailVO;
-import kr.ac.ers.dto.MemberReportLsupporterVO;
 import kr.ac.ers.service.LsupporterService;
 import kr.ac.ers.utils.MailContentSend;
 

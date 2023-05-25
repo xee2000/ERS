@@ -316,9 +316,23 @@ where m.wid = l.wid and e.id = m.id and l.wid= #{wid}
 		where rNo = #{rNO}
 	</select>
 	
-	<select id="selectreportdetail" resultType="MemberDetailVO">
-		select * 
+	<select id="selectreportdetail" resultType="ReportVO">
+				select *
+				from report r, member m
+				where rno= #{rNo} and r.id = m.id
+	</select>
+	
+	<update id="modifyreport" parameterType="int" >
+		update report 
+		set 
+		viewCheck=#{viewCheck},occurTime=#{occurTime},occurType=#{occurType},
+		callCheck=#{callCheck},content=#{content}
+		where rNo=#{rNo}
+	</update>
+	
+	<select id="selectReportModifyForm" resultType="ReportVO" parameterType="int">
+		select *
 		from report r, member m
-		where r.rno=#{rNo} and r.id = m.id
+        where r.id = m.id and r.rno=#{rNo}
 	</select>
 	</mapper>

@@ -71,14 +71,6 @@
 		    <version>2.6</version>
 		</dependency>
 		
-		
-		   <!-- json 변환 -->
-          <dependency>
-              <groupId>com.google.code.gson</groupId>
-              <artifactId>gson</artifactId>
-          </dependency>
-		
-	
 	 <!-- multipart등을 사용할수 있음 -->
           <dependency>
               <groupId>commons-fileupload</groupId>

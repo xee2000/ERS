@@ -48,7 +48,6 @@ public class MemberDetailVO {
 	private String mStatus;
 	
 	private int cNum;
-	private Date asSend;
 	private Date changeDate;
 	private String changeStatus;
 	private String lNum;

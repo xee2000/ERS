@@ -18,6 +18,7 @@ import kr.ac.ers.dto.MemberReportLsupporterVO;
 import kr.ac.ers.dto.MemberVO;
 import kr.ac.ers.dto.MembereducationVO;
 import kr.ac.ers.dto.ReportFileVO;
+import kr.ac.ers.dto.ReportVO;
 import kr.ac.ers.repository.LsupporterMapper;
 import kr.ac.ers.repository.ReportFileMapper;
 
@@ -222,10 +223,15 @@ public class LsupporterService {
 		return dataMap;
 	}
 
-	public MemberDetailVO getReportDetail(int rNo) {
+	public ReportVO getReportDetail(int rNo) {
 
-		MemberDetailVO reportdetail = lsupportMapper.selectreportdetail(rNo);
+		ReportVO reportdetail = lsupportMapper.selectreportdetail(rNo);
 		return reportdetail;
+	}
+
+	public ReportVO getModifyreportForm(int rNo) {
+	ReportVO reportmodify =lsupportMapper.selectReportModifyForm(rNo);
+		return reportmodify;
 	}
 
 }

@@ -1,4 +1,4 @@
-package kr.ac.ers.controller;
+package kr.ac.ers.controller.lsupporter;
 
 import java.sql.SQLException;
 import java.util.Map;

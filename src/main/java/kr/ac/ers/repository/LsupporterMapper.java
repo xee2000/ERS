@@ -25,12 +25,14 @@ public interface LsupporterMapper {
 	 void LsupporterModify(LsupporterStatusVO lsupporter);
 	 //여기까지
 
+	 	//이메일 관련 메서드
 	 int selectcountemail(String name, String email);
 
 	 LsupporterVO selectLsupportByemail(String email);
 
 	 int selectLsupportBypwd(String name, String email, String wid);	
-	
+	 //여기까지
+	 
 	//모달창의 대상자 조회
 	List<MemberReportLsupporterVO> selectSearchMemberList(Map<String, Object> returnMap, RowBounds rowbounds);
 	int selectSearchMemberListCount(SearchCriteria cri, String wid);
@@ -70,21 +72,30 @@ public interface LsupporterMapper {
 
 	int selectemergancyListCount(Map<String, Object> returnMap);
 	//여기까지
-
+	
+	//대상자상세
 	MemberDetailVO selectMemberDetail(String wid,String id);
-
+	
+	//비상연락망 리스트
 	List<MemberDetailVO> selectMemberEcall(String wid, String id);
-
+	
+	//대상자 상세에 있는 총 응급누적건수
 	int selectemergencyCount(String wid, String id);
 
+	//대상자 상세에 있는 총 화재누적건수
 	int selectfireCount(String wid, String id);
 
+	//대상자 상세에 있는 장비리스트
 	List<MemberDetailVO> selectMemberDetailmachine(String wid, String id);
-
-	List<MemberReportLsupporterVO> selectReportList(Map<String, Object> returnMap, RowBounds rowbounds);
 	
+	//보고서리스트와 카운트
+	List<MemberReportLsupporterVO> selectReportList(Map<String, Object> returnMap, RowBounds rowbounds);
 	int selectReportListCount(Map<String, Object> returnMap);
+	//여기까지
+	
+	//보고서 상세
+	ReportVO selectreportdetail(int rNo);
 
-	MemberDetailVO selectreportdetail(int rNo);
+	ReportVO selectReportModifyForm(int rNo);
 
 }
