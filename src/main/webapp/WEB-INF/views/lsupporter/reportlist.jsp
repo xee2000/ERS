@@ -48,7 +48,7 @@
 <div class="col-12">
 <div class="mt-2 mb-2 button buttens">
 <button type="button" 
-class="btn btn-lg btn-dark regist backbtn" onclick="location.href='/ers/lsupporter/main'">뒤로가기</button>
+class="btn btn-lg btn-dark regist backbtn" onclick="history.back();">뒤로가기</button>
 <button type="button" 
 class="btn btn-lg mr-1 btn-primary regist" onclick="location.href='/ers/lsupporter/nonmemberreportForm'">등록</button>
 <button type="button" 
@@ -93,9 +93,17 @@ class="btn btn-lg btn-danger delete">삭제</button>
     <td class="tg-3xi5">
     ${member.picture }
     </td>
-    <td class="tg-3xi5" onclick="location.href='/ers/lsupporter/memberdetail'">${member.name }</td>
+    <td class="tg-3xi5" onclick="location.href='/ers/lsupporter/memberdetail?id='+${member.id}">${member.name }</td>
     <td class="tg-3xi5">${member.gender }</td>
-  <td class="tg-3xi5">${member.reType }</td> 
+ <td class="tg-3xi5" onclick="location.href='/ers/lsupporter/reportdetail?rNo='+${member.RNo}">
+  <c:if test="${member.reType == 1}">응급상황</c:if>
+  <c:if test="${member.reType == 2}">고객면담</c:if>
+  <c:if test="${member.reType == 3}">건강상태</c:if>
+  <c:if test="${member.reType == 4}">서비스 취소</c:if>
+  <c:if test="${member.reType == 5}">장기부재</c:if>
+  <c:if test="${member.reType == 6}">악성대상자신고</c:if>
+  <c:if test="${member.reType == 7}">장비점검</c:if>
+ </td>
     <td class="tg-3xi5" onclick="location.href='/usr/home/educationdetail'">${regDate }</td>
  <td class="tg-3xi5">${member.viewCheck }</td>
   </tr>

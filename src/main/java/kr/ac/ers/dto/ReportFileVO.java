@@ -6,32 +6,34 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 
 @Getter
 @Setter
+@NoArgsConstructor 
+@ToString
 public class ReportFileVO {
-
+	
 	private int sfNo;
+	private String id;
 	private String attacher;
 	private int rNo;
+	private String content;
 	private String uploadpath;
 	private String filename;
-	private String filetype;
+	private String fileType;
 	private Date regDate;
+	private Long size;
 	private List<MultipartFile> uploadFile;
 	private List<ReportFileVO> reportList;
 	
-	public ReportFileVO toReportFileVO() {
-		ReportFileVO file = new ReportFileVO();
-		file.setAttacher(this.attacher);
-		file.setFiletype(this.filetype);
-		file.setFilename(this.filename);
-		file.setRegDate(this.regDate);
-		file.setRNo(this.rNo);
-		file.setSfNo(this.sfNo);
-		return file;
-	}
-
+	   public void setFiletype(String fileType) {
+	        this.fileType = fileType;
+	    }
+	   
+	   
+	
 }

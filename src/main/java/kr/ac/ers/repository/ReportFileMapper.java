@@ -7,7 +7,10 @@ import kr.ac.ers.dto.ReportFileVO;
 @Mapper
 public interface ReportFileMapper {
 
-	void insertFile(ReportFileVO file);
+
+	void save(ReportFileVO reportfile);
+
+	ReportFileVO selectFilenumber(int sfNo);
 	
-		
+	int selectReportFileSequenceNextValue();
 }

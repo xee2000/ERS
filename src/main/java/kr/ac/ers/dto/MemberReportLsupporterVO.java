@@ -1,10 +1,18 @@
 package kr.ac.ers.dto;
+
 import java.util.Date;
+import java.util.List;
+
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 public class MemberReportLsupporterVO {
 	private String id;
 	private String name;
@@ -34,14 +42,23 @@ public class MemberReportLsupporterVO {
 	private String reDone;
 	private String viewCheck;
 	private String reType;
+	
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date occurTime;
 	private String occurType;
 	private String callCheck;
 	private String lNum;
 	private int wCode;
 	private String pwd;
-	 private String imageUrl;
-	
-	}
-	
+	private String uploadpath;
+	private String filename;
+	private String fileType;
+	private Long size;
+	private List<MultipartFile> uploadFile;
+	private List<ReportFileVO> reportFileList;
 
+	public void setFiletype(String fileType) {
+		this.fileType = fileType;
+	}
+
+}

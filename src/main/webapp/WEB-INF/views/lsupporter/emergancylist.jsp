@@ -47,7 +47,7 @@
 <div class="row">
 <div class="col-12">
 <div class="mt-2 mb-2 button buttens">
-<button type="button" class="btn btn-dark btn-lg mt-2 mb-2 backbtn">뒤로가기</button>
+<button type="button" class="btn btn-dark btn-lg mt-2 mb-2 backbtn" onclick="history.back();">뒤로가기</button>
 <button type="button" 
 class="btn btn-lg mr-1 ml-1 btn-primary regist " onclick="location.href='/ers/lsupporter/nonmemberreportForm'">등록</button>
 </div>
@@ -86,7 +86,7 @@ class="btn btn-lg mr-1 ml-1 btn-primary regist " onclick="location.href='/ers/ls
     <td class="tg-73oq">
     ${emergancy.picture }
     </td>
-    <td class="tg-73oq" onclick="location.href='/ers/lsupporter/memberdetail'">
+    <td class="tg-73oq" onclick="location.href='/ers/lsupporter/memberdetail?id=${emergancy.id}'">
 	${emergancy.name }
 </td>
     <td class="tg-73oq">

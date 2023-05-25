@@ -35,6 +35,8 @@ public class LsupporterController {
 	
 	 @Autowired
 	 private LsupporterService lsupporterService;
+	 
+
 	
 	@RequestMapping("/ers/lsupporter/main")
 	public String Showmain(Model model, HttpServletRequest request,HttpSession session) {
@@ -63,28 +65,7 @@ public class LsupporterController {
 	public String Showmypage() {
 		return "lsupporter/mypage";
 	}
-	@RequestMapping("/ers/lsupporter/nowcare")
-	public String Shownowcare() {
-		return "lsupporter/nowcare";
-	}
-
-	@RequestMapping("/ers/lsupporter/carelist")
-	public String Showcarelist(String searchType,String keyword, String perPageNum, String page, Model model, HttpServletRequest request,HttpSession session) {
-		SearchCriteria cri = new SearchCriteria();
-		if(perPageNum == null || perPageNum.isEmpty())perPageNum="5";
-		if(page == null || page.isEmpty())page="1";
-		if(searchType == null) searchType="";
-		if(keyword==null) keyword="";
-		cri.setPage(page);
-		cri.setPerPageNum(perPageNum);
-		cri.setSearchType(searchType);
-		cri.setKeyword(keyword);
-		 session= request.getSession();
-		 LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");
-		 Map<String, Object> dataMap = lsupporterService.getLsupportercarelist(cri,loginUser.getWid());
-		model.addAttribute("dataMap", dataMap);		
-		return "lsupporter/carelist";
-	}
+	
 	@RequestMapping("/ers/lsupporter/memberdetail")
 	public String Showmemberdetail(String searchType,String keyword, String perPageNum, String page, Model model,String id, HttpServletRequest request,HttpSession session) {
 		 
@@ -120,10 +101,7 @@ public class LsupporterController {
 		 return "lsupporter/memberdetail";
 	}
 	
-	@RequestMapping("/ers/lsupporter/membersearch")
-	public String Showmembersearch() {
-		return "lsupporter/membersearch";
-	}
+	
 	@RequestMapping("/ers/lsupporter/reportForm")
 	public String ShowreportFormh() {
 		return "lsupporter/reportForm";
@@ -136,59 +114,6 @@ public class LsupporterController {
 	public String ShowpwcheckForm() {
 		return "lsupporter/pwcheckForm";
 	}
-
-
-	
-	
-	@RequestMapping("/ers/lsupporter/nonmemberreportForm")
-	public String ShownonmemberreportForm(String searchType, String keyword, String perPageNum, String page, Model model, HttpSession session, HttpServletRequest request) {
-		SearchCriteria cri = new SearchCriteria();
-		if(perPageNum == null || perPageNum.isEmpty())perPageNum="5";
-		if(page == null || page.isEmpty())page="1";
-		if(searchType == null) searchType="";
-		if(keyword==null) keyword="";
-		cri.setPage(page);
-		cri.setPerPageNum(perPageNum);
-		cri.setSearchType(searchType);
-		cri.setKeyword(keyword);
-		session= request.getSession();
-		 LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");
-		 int wCode = loginUser.getWCode();
-		 Map<String,Object> dataMap = lsupporterService.getLsupporterMemberList(loginUser.getWid(), cri);
-		 model.addAttribute("dataMap",dataMap);
-		 model.addAttribute("wCode",wCode);
-		return "lsupporter/nonmemberreportForm";
-	}
-	
-	@GetMapping("/ers/lsupporter/nonmemberreportFormAction")
-	@ResponseBody
-	public Map<String, Object> shownonmemberreportFormAction(@RequestParam String searchType, @RequestParam String keyword, HttpSession session, HttpServletRequest request) {
-	    
-		SearchCriteria cri = new SearchCriteria();
-		
-		if (cri.getPerPageNum() == 0) {
-	    	
-	        cri.setPerPageNum(5);
-	    }
-	    if (cri.getPage()==0) {
-	    	cri.setPage(1);
-	    }
-	    if (searchType == null||searchType.isEmpty()) {
-	        cri.setSearchType("");
-	    }else {
-	    	cri.setSearchType(searchType);
-	    	}
-	    if (keyword== null||keyword.isEmpty()) {
-	        cri.setKeyword("");
-	    }else {
-	    	cri.setKeyword(keyword);
-	    }
-	    session = request.getSession();
-	    LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");
-	    Map<String, Object> dataMap = lsupporterService.getLsupporterMemberList(loginUser.getWid(), cri);
-	    return dataMap;
-	}
-	
 	
 	@GetMapping("/ers/lsupporter/lsupporterstatus")
 	public String showLsupporterStatus(Model model, HttpSession session, HttpServletRequest request) {
@@ -206,92 +131,7 @@ public class LsupporterController {
 	    return "lsupporter/lsupporterstatusForm";
 	}
 	
-	@RequestMapping("/ers/lsupporter/reportlist")
-	public String Showreportlist(String searchType, String keyword, String perPageNum, String page, Model model, HttpSession session, HttpServletRequest request) {
-		SearchCriteria cri = new SearchCriteria();
-		if(perPageNum == null || perPageNum.isEmpty())perPageNum="5";
-		if(page == null || page.isEmpty())page="1";
-		if(searchType == null) searchType="";
-		if(keyword==null) keyword="";
-		cri.setPage(page);
-		cri.setPerPageNum(perPageNum);
-		cri.setSearchType(searchType);
-		cri.setKeyword(keyword);
-		
-		try {
-			 session= request.getSession();
-			 LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");
-			Map<String, Object> dataMap = lsupporterService.getMemberList(cri,loginUser.getWid());
-			model.addAttribute("dataMap", dataMap);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return "lsupporter/reportlist";
-	}
 	
-	@GetMapping("/ers/lsupporter/reportlistAction")
-	@ResponseBody
-	public Map<String,Object> Showreportlist(String searchType,String keyword, String perPageNum, String page, Model model, HttpServletRequest request,HttpSession session) throws SQLException {
-		 
-		SearchCriteria cri = new SearchCriteria();
-		
-		if (cri.getPerPageNum() == 0) {
-	    	
-	        cri.setPerPageNum(5);
-	    }
-	    if (cri.getPage()==0) {
-	    	cri.setPage(1);
-	    }
-	    if (searchType == null||searchType.isEmpty()) {
-	        cri.setSearchType("");
-	    }else {
-	    	cri.setSearchType(searchType);
-	    	}
-	    if (keyword== null||keyword.isEmpty()) {
-	        cri.setKeyword("");
-	    }else {
-	    	cri.setKeyword(keyword);
-	    }
-		
-			 session= request.getSession();
-			 LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");
-			Map<String, Object> dataMap = lsupporterService.getMemberList(cri,loginUser.getWid());
-		
-		return dataMap;
-	}
-	
-	@PostMapping("/ers/lsupporter/nonmemberreportregist")
-	public String regist(MemberReportLsupporterVO reportlsupporter)throws Exception{
-		System.out.println("asdasdasd");
-		String url="redirect:/ers/lsupporter/reportlist";
-		lsupporterService.reportregist(reportlsupporter);
-		return url;
-	}
-	
-
-	@RequestMapping("/ers/lsupporter/emergancylist")
-	public String Showemergancylist(String searchType, String keyword, String perPageNum, String page,Model model, HttpServletRequest request, HttpServletResponse response , HttpSession session) {
-		SearchCriteria cri = new SearchCriteria();
-		if(perPageNum == null || perPageNum.isEmpty())perPageNum="5";
-		if(page == null || page.isEmpty())page="1";
-		if(searchType == null) searchType="";
-		if(keyword==null) keyword="";
-		cri.setPage(page);
-		cri.setPerPageNum(perPageNum);
-		cri.setSearchType(searchType);
-		cri.setKeyword(keyword);
-		
-		session= request.getSession();
-		 LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");
-		 
-	 
-		Map<String,Object> dataMap = lsupporterService.getemergancyList(loginUser.getWid(),cri);
-	
-		model.addAttribute("dataMap", dataMap);
-		return "lsupporter/emergancylist";
-	}
 	@RequestMapping("/ers/lsupporter/emergancydetail")
 	public String Showemergancydetail() {
 		return "lsupporter/emergancydetail";

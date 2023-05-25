@@ -1,27 +1,29 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="memberList" value="${dataMap.memberList }" />
+<c:set var="pageMaker" value="${dataMap.pageMaker }" />
+<c:set var="cri" value="${pageMaker.cri }" />
 <%@include file="../include/lsupporter/head.jspf"%>
-<link rel="stylesheet" href="/resources/lsupporter/css/reportdetail.css">
+ <%@include file="../include/lsupporter/toastUiEditorLib.jspf" %>
+<link rel="stylesheet" href="/resources/lsupporter/css/nonmemberreportForm.css">
+<!--   <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
 
-	
-
+   <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet"> -->
 <div class="tab-pane" id="carewordlist">
 <div class="col-md-12">
 <div class="reportForm">
 <div class="form-group row">
 
-<h3 style="margin:0 auto;">보고서 작성 페이지</h3>
+<h1 class="report_title" style="margin:0 auto;">보고서</h1>
 </div>
 </div>
 </div>
 
-<c:set var="ymd" value="<%=new java.util.Date()%>" />
 <div class="row">
 <div class="col-12 flex justify-end mb-1">
-<button type="button" class="btn btn-dark btn-lg ml-3 backbtn">뒤로가기</button>
-<button type="button" class="btn btn-primary btn-lg mr-1">수정</button>
-<button type="button" class="btn btn-danger btn-lg">삭제</button>
+<button type="button" class="btn btn-dark btn-md backbtn" onclick="history.back();">뒤로가기</button>
+<button type="submit" class="btn btn-primary btn-md" onclick="regist_go();">제출</button>
 </div>
 </div>
 
@@ -32,161 +34,138 @@
 </colgroup>
 <thead>
   <tr>
-    <th class="tg-2xpi">보고서 작성일자</th>
-    <th class="tg-ynlj">
-    <span class="regDate"><fmt:formatDate value="${ymd}" pattern="yyyy-MM-dd" /></span>
-    </th>
+    <th >보고서 작성일자</th>
+    <fmt:formatDate value="${reportdetail.regDate }" pattern="yy-MM-dd" var="regDate"/>
+    <td style="text-align:center;">
+   ${regDate }
+    </td>
   </tr>
 </thead>
 <tbody>
   <tr>
-    <td class="tg-yj5y">대상자</td>
-    <td class="tg-c3ow">홍길동</td>
+    <th>대상자</th>
+    <td style="text-align:center;">
+    ${reportdetail.name}
+</td>
+  </tr>
+<!--   응급상황  : 1
+고객면담 : 2
+건강상태 : 3
+서비스 취소 : 4
+장기부재 : 5
+악성대상자신고 : 6
+장비점검 : 7 -->
+  <tr>
+    <th class="tg-2xpi">보고서 구분</th>
+    <td class="tg-2xpi">
+   <c:if test="${reportdetail.reType==1 }">
+   응급상황보고서
+   </c:if>
+    <c:if test="${reportdetail.reType==2 }">
+   고객면담보고서
+   </c:if>
+    <c:if test="${reportdetail.reType==3 }">
+   건강상태보고서
+   </c:if>
+    <c:if test="${reportdetail.reType==4 }">
+   서비스취소보고서
+   </c:if>
+    <c:if test="${reportdetail.reType==5 }">
+   장기부재신청 보고서
+   </c:if>
+    <c:if test="${reportdetail.reType==6 }">
+   악성대상자신고보고서
+   </c:if>
+    <c:if test="${reportdetail.reType==1 }">
+   장비점검보고서
+   </c:if>
+    </td>
   </tr>
 </tbody>
 </table>
 
 
+<c:if test="${reportdetail.reType ==2 }">
 <!--고객면담  -->
 <div class="flex">
-<div class="col-md-12">
-<div class="card card-primary">
-<div class="card-header">
-<h3 class="card-title">고객면담 보고서</h3>
-<div class="card-tools">
-<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-<i class="fas fa-minus"></i>
-</button>
+  <div class="col-md-12">
+      <div class="card-header">
+        <h3 class="card-title report_title">고객면담보고서</h3>
+       
+      </div>
+      <div class="card-body" style="display: block;">
+        <div class="form-group">
+          <form action="nonmemberreportregist" name="form" method="post" role="form" id="registForm">
+       	   
+        <div class="report-content">
+            <table>
+            
+                <tr>
+                
+                    <th style="text-align: center;">특이사항</th>
+                    
+                   <td>
+                   <div class="toast-ui-viewer"> 
+              	<script type="text/x-template">${reportdetail.content}</script>
+              </div>
+   				<!--   <div class="toast-ui-editor"></div> -->
+				</td>
+                </tr>
+                <tr>
+                    <th style="text-align: center;">전화유무</th>
+                    <td> 
+                    ${reportdetail.callCheck }
+                    </td>
+                </tr>
+            </table>
+            <!-- 추가적인 테이블 내용을 추가할 수 있습니다. -->
+        </div>
+        </form>
+    </div>
 </div>
-</div>
-<div class="card-body" style="display: none;">
-<div class="form-group">
-<form action="#" method="#" >
 
 
-<table class="tg" style="undefined;table-layout: fixed; width: 100%;">
-<colgroup>
-<col style="width: 140px;">
-<col style="width: 278.333333px;">
-</colgroup>
-<thead>
-  <tr>
-    <th class="tg-2xpi">상담목적</th>
-    <th class="tg-ynlj">
-<select name="education_list">
-<option value="정기상담">정기상담</option>
-<option value="정기상담">대상자 요청</option>
-<option value="정기상담">응급발생</option>
-<option value="정기상담">외출확인</option>
-</select>
-    </th>
-  </tr>
-</thead>
-<tbody>
-  <tr>
-    <td class="tg-yj5y">상담경로</td>
-    <td class="tg-c3ow">
-    <input type="radio" name="chatroad" value="정상"/>전화&nbsp;&nbsp;
-    <input type="radio" name="chatroad" value="고장"/>방문
-    </td>
-  </tr>
-  <tr>
-    <td class="tg-uqo3">확인내용</td>
-    <td class="tg-0lax">
-    <select name="check_detail">
-    <option value="부재중">부재중</option>
-    <option value="상담완료(방문불필요)">상담완료(방문불필요)</option>
-    <option value="상담완료(방문필요)">상담완료(방문필요)</option>
-    </select>
-    </td>
-  </tr>
-  <tr>
-    <td class="tg-uqo3">약속일자</td>
-    <td class="tg-0lax">
-    <input type="datetime-local" name="promise"><br/>
-    </td>
-  </tr>
-  <tr>
-    <td class="tg-uqo3">상세내용</td>
-    <td class="tg-0lax">
-    <textarea name="content" cols="30" rows="5"style="border:1px solid black;"></textarea>
-    </td>
-  </tr>
-</tbody>
-</table>
-
-
-</form>
-</div>
 </div>
 </div>
 </div>
 </div>
 <!--장비점검 보고서 끝  -->
+</c:if>
 
 
+<c:if test="${reportdetail.reType ==3 }">
 <!--건강상태  -->
 <div class="flex">
 <div class="col-md-12">
-<div class="card card-primary">
 <div class="card-header">
-<h3 class="card-title">건강상태 보고서</h3>
-<div class="card-tools">
-<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-<i class="fas fa-minus"></i>
-</button>
+<h3 class="card-title report_title">건강상태보고서</h3>
 </div>
-</div>
-<div class="card-body" style="display: none;">
+<div class="card-body" style="display: block;">
 <div class="form-group">
-<form action="#" method="#" >
-
-
-<table class="tg" style="undefined;table-layout: fixed; width: 100%;">
+<div class="report">
+        <div class="report-content">
+<form action="nonmemberreportregist" name="form" method="post" role="form" id="registForm">
+<input type="hidden" name="id" value="">
+<input type="hidden" name="wCode" value="${wCode}">
+<input type="hidden" name="reDone" value="1">
+<input type="hidden" name="viewCheck" value="0">
+<input type="hidden" name="reType" value="3">
+<input type="hidden" name="callCheck" value="">     
+<input type="hidden" name="occurType" value="null"> 
+<input type="hidden" name="occurTime" value="23/01/01">                
+<table style="undefined;table-layout: fixed; width: 100%;">
 <colgroup>
 <col style="width: 150px;">
 <col style="width: 290.333333px">
 </colgroup>
-<thead>
-  <tr>
-    <th class="tg-2xpi">상담경로</th>
-    <th class="tg-l8qj">
-  <input type="radio" name="chatroad" value="정상"/>전화&nbsp;&nbsp;
-    <input type="radio" name="chatroad" value="고장"/>방문
-    </th>
-  </tr>
-</thead>
 <tbody>
   <tr>
-    <td class="tg-yj5y">기존질환</td>
-    <td class="tg-0pky">
-    <textarea rows="3"></textarea>
+    <th class="">확인내용</th>
+    <td class="">
+    <textarea class="summernote" id="content" name="content" rows="3">${reportdetail.content }</textarea>
     </td>
   </tr>
-  <tr>
-    <td class="tg-uqo3">알레르기</td>
-    <td class="tg-0lax">
-      <textarea rows="3"></textarea>
-    </td>
-  </tr>
-  <tr>
-    <td class="tg-uqo3">복용중인 약물</td>
-    <td class="tg-0lax">
-      <textarea rows="3"></textarea>
-    </td>
-  </tr>
-  <tr>
-    <td class="tg-uqo3">사용중인 의료기기</td>
-    <td class="tg-0lax">
-      <textarea rows="3"></textarea>
-    </td>
-  </tr>
-  <tr>
-    <td class="tg-uqo3">의사와의 진료내용</td>
-    <td class="tg-0lax">
-      <textarea rows="3"></textarea>
-    </td>
-  </tr>
+  
 </tbody>
 </table>
 
@@ -196,25 +175,31 @@
 </div>
 </div>
 </div>
+</div>
+</c:if>
+
 <!--건강상태 보고서 끝  -->
 
 <!--서비스취소  -->
+<c:if test="${reportdetail.reType ==4 }">
 <div class="flex">
 <div class="col-md-12">
-<div class="card card-primary">
 <div class="card-header">
-<h3 class="card-title">서비스취소 보고서</h3>
-<div class="card-tools">
-<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-<i class="fas fa-minus"></i>
-</button>
-</div>
+<h3 class="card-title report_title">서비스취소보고서</h3>
 </div>
 <div class="card-body" style="display: none;">
 <div class="form-group">
-<form action="#" method="#" >
-
-<table class="tg" style="undefined;table-layout: fixed; width: 100%;">
+<form action="nonmemberreportregist" name="form" method="post" role="form" id="registForm">
+<input type="hidden" name="id" value="">
+<input type="hidden" name="wCode" value="${wCode}">
+<input type="hidden" name="reDone" value="1">
+<input type="hidden" name="viewCheck" value="0">
+<input type="hidden" name="reType" value="4">
+<input type="hidden" name="callCheck" value="">                    
+<input type="hidden" name="content" value=""> 
+<input type="hidden" name="occurType" value="null"> 
+<input type="hidden" name="occurTime" value="23/01/01"> 
+<table style="undefined;table-layout: fixed; width: 100%;">
 <colgroup>
 <col style="width: 150px;">
 <col style="width: 287.333333px">
@@ -223,7 +208,7 @@
   <tr>
     <td class="tg-2xpi">파일첨부</td>
     <td class="tg-l8qj">
-    <input type="file"/>
+    <input type="file" name="filename"/>
     </td>
   </tr>
 </thead>
@@ -233,26 +218,29 @@
 </div>
 </div>
 </div>
-</div>
+
+</c:if>
 <!--서비스취소 보고서 끝  -->
 
 <!--장기부재  -->
+<c:if test="${reportdetail.reType ==5 }">
 <div class="flex">
 <div class="col-md-12">
-<div class="card card-primary">
 <div class="card-header">
-<h3 class="card-title">장기부재신청 보고서</h3>
-<div class="card-tools">
-<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-<i class="fas fa-minus"></i>
-</button>
-</div>
+<h3 class="card-title report_title">장기부재 신청서</h3>
 </div>
 <div class="card-body" style="display: none;">
 <div class="form-group">
-<form action="#" method="#" >
-
-<table class="tg" style="undefined;table-layout: fixed; width: 100%;">
+<form action="nonmemberreportregist" name="form" method="post" role="form" id="registForm">
+<input type="hidden" name="id" value="">
+<input type="hidden" name="wCode" value="${wCode}">
+<input type="hidden" name="reDone" value="1">
+<input type="hidden" name="viewCheck" value="0">
+<input type="hidden" name="callCheck" value="">                    
+<input type="hidden" name="reType" value="5">
+<input type="hidden" name="occurType" value="null"> 
+<input type="hidden" name="occurTime" value="23/01/01"> 
+<table style="undefined;table-layout: fixed; width: 100%;">
 <colgroup>
 <col style="width: 140.333333px">
 <col style="width: 135.333333px">
@@ -261,25 +249,12 @@
 </colgroup>
 <thead>
   <tr>
-    <th class="tg-2xpi">장기부재 사유</th>
-    <th class="tg-l8qj" colspan="3">
-    <input type="radio" name="chatroad" value="정상"/>여행&nbsp;&nbsp;
-    <input type="radio" name="chatroad" value="고장"/>입원&nbsp;&nbsp;
-    <input type="radio" name="chatroad" value="고장"/>기타
-    </th>
-  </tr>
+ <th>장기부재 사유</th>
+<th colspan="3">
+ ${reportdetai.content }
+</th>
 </thead>
 <tbody>
-  <tr>
-    <td class="tg-uqo3">부재시작일</td>
-    <td class="tg-baqh">
-    <input type="date"/>
-    </td>
-    <td class="tg-baqh">예상복귀일</td>
-    <td class="tg-baqh">
-    <input type="date"/>
-    </td>
-  </tr>
 </tbody>
 </table>
 </form>
@@ -287,67 +262,65 @@
 </div>
 </div>
 </div>
-</div>
+</c:if>
+
 <!--장기부재신청서보고서 끝  -->
 
 <!--악성대상자 신고 보고서  -->
+<c:if test="${reportdetail.reType ==6 }">
 <div class="flex">
 <div class="col-md-12">
-<div class="card card-primary">
 <div class="card-header">
-<h3 class="card-title">악성대상자 신고 보고서</h3>
-<div class="card-tools">
-<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-<i class="fas fa-minus"></i>
-</button>
-</div>
+<h3 class="card-title report_title">악성대상자 신고보고서</h3>
+
 </div>
 <div class="card-body" style="display: none;">
 <div class="form-group">
-<form action="#" method="#" >
-
-<table class="tg" style="undefined;table-layout: fixed; width: 100%;">
+<form action="nonmemberreportregist" name="form" method="post" role="form" id="registForm"  enctype="multipart/form-data">
+<input type="hidden" name="id" value="">
+<input type="hidden" name="wCode" value="${wCode}">
+<input type="hidden" name="reDone" value="1">
+<input type="hidden" name="viewCheck" value="N">
+<input type="hidden" name="reType" value="6">
+<input type="hidden" name="callCheck" value="">
+<input type="hidden" name="occurType" value="null"> 
+<input type="hidden" name="occurTime" value="23/01/01">
+<input type="hidden" name="attacher" value="${wid }">
+                     
+<table style="undefined;table-layout: fixed; width: 100%;">
 <colgroup>
 <col style="width: 190px;">
 <col style="width: 377.333333px">
 </colgroup>
 <thead>
   <tr>
-    <th class="tg-2xpi">발생시간</th>
-    <th class="tg-l8qj">
-    <input type="datetime-local"/>
-    </th>
+    <th>발생시간</th>
+    <td>
+   ${reportdetail.occurTime }
+    </td>
   </tr>
 </thead>
 <tbody>
   <tr>
-    <td class="tg-uqo3">신고사유</td>
-    <td class="tg-baqh">
-      <textarea rows="3"></textarea>
-    </td>
-  </tr>
-  <tr>
-    <td class="tg-uqo3">사건정보</td>
-    <td class="tg-0lax">
-      <textarea rows="3"></textarea>
-    </td>
-  </tr>
-  <tr>
-    <td class="tg-uqo3">대응내용</td>
-    <td class="tg-0lax">
-      <textarea rows="3"></textarea>
-    </td>
-  </tr>
-  <tr>
-    <td class="tg-uqo3">증언자정보</td>
-    <td class="tg-0lax">
-      <textarea rows="3"></textarea>
+    <th>사건내용</th>
+    <td>
+      <textarea name="content" rows="3">${reportdetail.regDate }</textarea>
     </td>
   </tr>
     <tr>
-    <td class="tg-uqo3">파일첨부</td>
-    <td class="tg-0lax">
-     <input type="file" />
+    <th>파일첨부</th>
+    <td >
+   <div class="form-group">								
+<div class="card card-outline card-success">
+	<div class="card-header">
+		<h5 style="display:inline;line-height:40px;">첨부파일 : </h5>
+		&nbsp;&nbsp;<button class="btn btn-xs btn-primary"
+		onclick="addFile_go();"	type="button" id="addFileBtn">Add File</button>
+		</div>									
+		<div class="card-footer fileInput">
+		</div>
+	</div>
+</div>
     </td>
   </tr>
 </tbody>
@@ -356,94 +329,13 @@
 </div>
 </div>
 </div>
-</div>
-</div>
 <!--악성대상자 신고보고서 끝  -->
 
 </div>
+</c:if>
 
 
-<!--오늘날짜 자동생성  -->
-<script>
-document.getElementById('currentDatetime').value= new Date().toISOString().slice(0, 16);
-</script>
-<!--기타누를시 상세내용 활성화  -->
-<script>
-function showDetails() {
-    // textarea의 클래스를 변경하여 summernote를 보이도록 함
-    var details = document.querySelector(".gateway_equ_details");
-    details.classList.add("summernote");
-    details.style.display = "block";
-  }
 
-  function hideDetails() {
-    // textarea의 클래스를 변경하여 summernote를 숨김
-    var details = document.querySelector(".gateway_equ_details");
-    details.classList.remove("summernote");
-    details.style.display = "none";
-  }
-  $('input[name=firealert_equ]').on('click', function() {
-    if ($(this).val() === '기타' || $(this).val() === '고장') {
-      $('#firealert_equ_details').show();
-    } else {
-      $('#firealert_equ_details').hide();
-    }
-  });
-
-  $('input[name=activity_equ]').on('click', function() {
-    if ($(this).val() === '기타' || $(this).val() === '고장') {
-      $('#activity_equ_details').show();
-    } else {
-      $('#activity_equ_details').hide();
-    }
-  });
-
-  $('input[name=gogate_equ]').on('click', function() {
-    if ($(this).val() === '기타' || $(this).val() === '고장') {
-      $('#gogate_equ_details').show();
-    } else {
-      $('#gogate_equ_details').hide();
-    }
-  });
-});
-</script>
-
-
-<script>
-function toggleDetails() {
-  if ($('input[name="long"]:checked').val() === '기타') {
-    $('#long_gita_details').show();
-  } else {
-    $('#long_gita_details').hide();
-  }
-}
-
-$(document).ready(function() {
-  $('input[name="long"]').on('click', toggleDetails);
-});
-</script>
-
-<script>
-function toggleDetails(select) {
-  var selectedOption = select.options[select.selectedIndex].value;
-  if (selectedOption === '기타') {
-    $('#calltitle_details').show();
-  } else {
-    $('#calltitle_details').hide();
-  }
-}
-</script>
-
-<script>
-  document.getElementById('currentDatetime').value= new Date().toISOString().slice(0, -1);
-</script>
-
-<script>
-$('.summernote').summernote({
-	  height: 150,
-	  lang: "ko-KR"
-	});
-</script>
 <div style="height:300px;"></div>
 
 <%@include file="../include/lsupporter/foot.jspf"%>

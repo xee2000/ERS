@@ -13,6 +13,7 @@ import kr.ac.ers.dto.MemberDetailVO;
 import kr.ac.ers.dto.MemberReportLsupporterVO;
 import kr.ac.ers.dto.MemberVO;
 import kr.ac.ers.dto.MembereducationVO;
+import kr.ac.ers.dto.ReportVO;
 
 @Mapper
 public interface LsupporterMapper {
@@ -83,4 +84,7 @@ public interface LsupporterMapper {
 	List<MemberReportLsupporterVO> selectReportList(Map<String, Object> returnMap, RowBounds rowbounds);
 	
 	int selectReportListCount(Map<String, Object> returnMap);
+
+	MemberDetailVO selectreportdetail(int rNo);
+
 }

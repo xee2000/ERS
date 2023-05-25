@@ -1,3 +1,13 @@
+.reportFormlist {
+    display: none;
+  }
+
+p>img{
+	width:300px;
+	height:300px;
+	
+}
+
 .reportmenu{
 	width:100%;
 	

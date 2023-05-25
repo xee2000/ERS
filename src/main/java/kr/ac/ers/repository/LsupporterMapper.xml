@@ -69,7 +69,7 @@
 	</select>
 	<!--생활지원사에게 배정된 대상자의 보고서 리스트 뽑아주는 쿼리  -->
 	<select id="selectSearchMemberList" resultType="MemberReportLsupporterVO" >
-		select *
+		select DISTINCT r.rno, m.picture, m.name, m.gender, r.retype, r.regdate, r.viewcheck
 		from member m , report r, lsupporter l
 		where m.id = r.id and m.wid = l.wid and l.wid= #{wid} and m.id is not null
 		<include refid="search" />
@@ -82,17 +82,18 @@
 	where m.wid = l.wid and fs.wcode = l.wcode and l.wid = #{wid} and m.id is not null
 	<include refid="search" />
 	</select>
-	<!--고객과 일치하는 보고서를 데려오는 리스트카운터  -->
+	<!--생화맂원사에게 배정된 대상자 카운터  -->
 	<select id="selectSearchLsupporterMemberListCount" resultType="int" >
-	select count(*)
-	from member m , report r , lsupporter l
-	where m.id = r.id and m.wid = l.wid and l.wid=#{wid} and m.id is not null
+	select count(m.id)
+	from member m ,lsupporter l
+	where m.wid = l.wid and l.wid = #{wid} and m.id is not null
 		<include refid="search" />
 	</select>
+	<!-- 생활지원사에게 배정된 대상자 리스트 -->
 	<select id="selectLsupporterMemberList" resultType="MemberVO">
-	select *
-	from member m, fieldstaff fs, lsupporter l
-	where m.wid = l.wid and fs.wcode = l.wcode and l.wid = #{wid} and m.id is not null
+	select m.picture, m.name, m.gender, m.birth, m.id
+	from member m,lsupporter l
+	where m.wid = l.wid and l.wid = #{wid} and m.id is not null
 <include refid="search" /> 
 	</select>
 		<select id="selectlsupporterStatus" parameterType="String" resultType="LsupporterStatusVO">
@@ -106,11 +107,7 @@
 		    report(rNo,id,content,wCode,reDone,viewCheck,reType,occurTime,occurType)
 		    values(#{rNo},#{id},#{content},#{wCode},#{reDone},#{viewCheck},#{reType},#{occurTime},${occurType})
 		</update>
-		<select id="selectMemberEmergancyList"  resultType="MemberEmergancyReportVO" parameterType="String">
-		select *
-		from emergency e, member m, report r, lsupporter l
-		where e.wid = l.wid and m.wid = l.wid and l.wid = #{wid}   
-		</select>
+
 		<select id="selectReportSequenceNextValue" resultType="int">
 		select report_seq.nextVal
 		from dual
@@ -256,7 +253,7 @@ WHERE l.wid = #{wid}
   )
 </select> 
 <select id="selectemergancyList" resultType="MemberEmergancyReportVO" parameterType="String">	
-select *
+select DISTINCT m.id,r.rno,m.picture, m.name, m.gender, e.occurtime, r.redone, r.viewcheck
 from member m, report r, lsupporter l, emergency e
 where m.wid = l.wid and e.id = m.id and l.wid= #{wid}
 <include refid="search" /> 
@@ -313,6 +310,15 @@ where m.wid = l.wid and e.id = m.id and l.wid= #{wid}
 	<include refid="search" /> 
 	</select>
 	
+	<select id="selectFilenumber" resultType="MemberReportLsupporterVO">
+		select *
+		from report
+		where rNo = #{rNO}
+	</select>
 	
-	
+	<select id="selectreportdetail" resultType="MemberDetailVO">
+		select * 
+		from report r, member m
+		where r.rno=#{rNo} and r.id = m.id
+	</select>
 	</mapper>

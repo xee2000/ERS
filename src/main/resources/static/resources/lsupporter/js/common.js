@@ -110,6 +110,7 @@ function MemberPictureThumb(contextPath){
 	 }
 }
 
+
 var contextPath="";
 function summernote_go(target,context){
 	contextPath=context;
@@ -135,6 +136,7 @@ function summernote_go(target,context){
 				}
 				
 				for (var file of files) {
+					alert("시작");
 					sendFile(file,this);
 				}
 			},
@@ -150,7 +152,6 @@ function summernote_go(target,context){
 function sendFile(file,el){
 	var form_data = new FormData();
 	form_data.append("file", file); 
-	
 	$.ajax({
 		url: contextPath+'/uploadImg',
     	data: form_data,
@@ -161,7 +162,7 @@ function sendFile(file,el){
     		$(el).summernote('editor.insertImage', img_url);
     	},
     	error:function(error){
-    		
+    		alert("실패?");
     	}
 	});
 }
@@ -176,19 +177,5 @@ function deleteFile(src) {
 		}
 	});
 }
-
-
-
-	
-
-
-
-
-
-
-
-
-
-
 
 
