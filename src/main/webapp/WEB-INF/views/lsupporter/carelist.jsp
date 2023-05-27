@@ -43,7 +43,7 @@
   
  <div class="row flex text-start">
  <div class="col-12">
-  <button type="button" class="btn btn-dark btn-lg backbtn mb-1" onclick="location.href='/usr/home/main'">뒤로가기</button>
+  <button type="button" class="btn btn-dark btn-lg backbtn mb-1" onclick="history.back();">뒤로가기</button>
  </div>
  </div>
   
@@ -176,6 +176,7 @@ if (finalDay <= 1) {
   }
 });
 </Script>
+
 
 <%@include file="../include/lsupporter/foot.jspf"%>
 

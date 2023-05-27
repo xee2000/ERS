@@ -5,8 +5,8 @@
 
 	<update id="save" parameterType="ReportFileVO">
 	insert into
-	reportfile(sfNo,attacher,rNo,filename,uploadpath)
-	values(#{sfNo},#{attacher},#{rNo},#{filename},#{uploadpath})
+	reportfile(sfNo,attacher,rNo,filename,uploadpath,fileType)
+	values(#{sfNo},#{attacher},#{rNo},#{filename},#{uploadpath},#{fileType})
 	</update>
 	
 	<select id="selectFilenumber" resultType="ReportFileVO">
@@ -19,4 +19,28 @@
 		select reportfile_seq.nextVal
 		from dual
 	</select>
+	
+	<select id="selectReportFileByrNo" resultType="ReportFileVO" parameterType="int">
+	select *
+	from reportfile
+	where rno = #{rNo}
+	</select>
+	<select id="selectReportFileBysfNo" resultType="ReportFileVO">
+	select *
+	from reportfile
+	where sfno = #{sfNo}
+	</select>
+	
+	<update id="removeReportFileBysfNo" parameterType="int">
+		delete 
+		from reportfile
+		where sfno=#{sfNo}	
+	</update>
+	
+	<update id="remove" parameterType="int">
+		delete 
+		from reportfile
+		where rNo=#{rNo}	
+	</update>
+	
 </mapper>

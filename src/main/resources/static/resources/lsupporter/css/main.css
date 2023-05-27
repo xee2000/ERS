@@ -37,17 +37,19 @@ display:inline-block;
 width:200px;
 }
 .nowactovity{
+	    font-family: 'TheJamsil5Bold';
 font-weight:bold;
-font-size:2.2rem;
-margin-left:6%;
+font-size:2.6rem;
+text-align:center;
 }
 .nowemergancy{
+	    font-family: 'TheJamsil5Bold';
 font-weight:bold;
-font-size:2.2rem;
-margin-left:6%;
+font-size:2.6rem;
+text-align:center;
 }
 .emergany_status_list{
-margin-left:6%;
+text-align:center;
 }
 .menu_bar{
 margin-bottom:30px;

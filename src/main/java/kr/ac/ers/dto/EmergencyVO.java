@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class EmergancyVO {
+public class EmergencyVO {
 
 	
 	private int sCode;

@@ -14,7 +14,7 @@ function OpenWindow(UrlStr, WinTitle, WinWidth, WinHeight) {
 		      "searchType": $('select[name="searchType"]').val(),
 		      "keyword": $('input[name="keyword"]').val(),
 		      "page": page, // Pass the page parameter
-		      "perPageNum": 5 // Hard-coded to 5 for displaying 5 results per page
+		      "perPageNum": 3 // Hard-coded to 5 for displaying 5 results per page
 		    };
 
     $.ajax({
@@ -103,7 +103,7 @@ function MemberPictureThumb(contextPath){
 	 for(var target of document.querySelectorAll('.manPicture')){	
 		 var id = target.getAttribute('data-id');
 		 
-		target.style.backgroundImage="url('"+contextPath+"/member/getPicture.do?id="+id+"')";				
+		target.style.backgroundImage="url('"+contextPath+"/member/getPicture?id="+id+"')";				
 		target.style.backgroundPosition="center";
 		target.style.backgroundRepeat="no-repeat";
 		target.style.backgroundSize="cover";

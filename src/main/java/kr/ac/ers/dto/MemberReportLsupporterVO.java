@@ -42,7 +42,7 @@ public class MemberReportLsupporterVO {
 	private String reDone;
 	private String viewCheck;
 	private String reType;
-	
+	private int sCode;
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date occurTime;
 	private String occurType;
@@ -56,9 +56,25 @@ public class MemberReportLsupporterVO {
 	private Long size;
 	private List<MultipartFile> uploadFile;
 	private List<ReportFileVO> reportFileList;
-
-	public void setFiletype(String fileType) {
-		this.fileType = fileType;
+	public MemberReportLsupporterVO toreportVO() {
+		// TODO Auto-generated method stub
+		return null;
 	}
+	
+	public MemberReportLsupporterVO toMemberReportLsupporter() {
+		MemberReportLsupporterVO memberreportlsupporter = new MemberReportLsupporterVO();
+		memberreportlsupporter.setContent(this.content);
+		memberreportlsupporter.setOccurTime(this.occurTime);
+		memberreportlsupporter.setOccurType(this.occurType);
+		memberreportlsupporter.setCallCheck(this.callCheck);
+		memberreportlsupporter.setReDone(this.reDone);
+		memberreportlsupporter.setRegDate(this.regDate);
+		memberreportlsupporter.setReType(this.reType);
+		memberreportlsupporter.setViewCheck(this.viewCheck);
+		return memberreportlsupporter;
+	}
+
+
+
 
 }

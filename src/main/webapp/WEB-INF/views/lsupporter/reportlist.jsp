@@ -10,7 +10,7 @@
 
 
 		<!-- Main content -->
-		<section class="content-header" style="height:1200px;">
+		<section class="content-header" style="height:1700px;">
 <h3 class="emergancylist_title mb-2">보고서 목록</h3>
 <div class="row body_case">
 		<div class="col-12">
@@ -50,9 +50,8 @@
 <button type="button" 
 class="btn btn-lg btn-dark regist backbtn" onclick="history.back();">뒤로가기</button>
 <button type="button" 
-class="btn btn-lg mr-1 btn-primary regist" onclick="location.href='/ers/lsupporter/nonmemberreportForm'">등록</button>
-<button type="button" 
-class="btn btn-lg btn-danger delete">삭제</button>
+class="btn btn-md mr-1 btn-primary regist" onclick="location.href='/ers/lsupporter/nonmemberreportForm'">등록</button>
+<button type="submit" class="btn btn-danger btn-md ml-2" onclick="deleteSelectedMembers();">삭제</button>
 </div>
 </div>
 </div>
@@ -69,12 +68,11 @@ class="btn btn-lg btn-danger delete">삭제</button>
 <col style="width: 23px">
 <col style="width: 60px">
 <col style="width: 120px">
-<col style="width: 50px">
 </colgroup>
 <thead>
   <tr>
-    <th class="tg-yj5y"><input type="checkbox" id="selectAll">
-      전체선택</th>
+    <th class="tg-yj5y">
+     선택</th>
     <th class="tg-yj5y">번호</th>
     <th class="tg-yj5y">사진</th>
     <th class="tg-yj5y">대상자명</th>
@@ -88,10 +86,10 @@ class="btn btn-lg btn-danger delete">삭제</button>
 <c:forEach items="${memberList }" var="member">
 <fmt:formatDate value="${member.regDate}" var="regDate" pattern="yy-MM-dd" />
   <tr>
-    <td class="tg-3xi5"> <input type="checkbox" class="text-center check_box checkbox"/></td>
+    <td class="tg-3xi5"> <input type="checkbox" class="text-center check_box checkbox" name="selectedMembers" value="${member.RNo}"/></td>
 <td class="tg-3xi5">${member.RNo }</td> 
     <td class="tg-3xi5">
-    ${member.picture }
+    <span class="manPicture" data-id="${member.id }" style="width:80px;height:80px;display:block;margin:0 auto;"></span>
     </td>
     <td class="tg-3xi5" onclick="location.href='/ers/lsupporter/memberdetail?id='+${member.id}">${member.name }</td>
     <td class="tg-3xi5">${member.gender }</td>
@@ -99,13 +97,14 @@ class="btn btn-lg btn-danger delete">삭제</button>
   <c:if test="${member.reType == 1}">응급상황</c:if>
   <c:if test="${member.reType == 2}">고객면담</c:if>
   <c:if test="${member.reType == 3}">건강상태</c:if>
-  <c:if test="${member.reType == 4}">서비스 취소</c:if>
+  <c:if test="${member.reType == 4}">서비스취소</c:if>
   <c:if test="${member.reType == 5}">장기부재</c:if>
   <c:if test="${member.reType == 6}">악성대상자신고</c:if>
   <c:if test="${member.reType == 7}">장비점검</c:if>
  </td>
-    <td class="tg-3xi5" onclick="location.href='/usr/home/educationdetail'">${regDate }</td>
- <td class="tg-3xi5">${member.viewCheck }</td>
+    <td class="tg-3xi5">${regDate }</td>
+ <c:if test="${member.viewCheck == 0 }"><td class="tg-3xi5">미열람</td></c:if>
+ <c:if test="${member.viewCheck == 1 }"><td class="tg-3xi5">열람</td></c:if>
   </tr>
   </c:forEach>
 </tbody>
@@ -153,27 +152,72 @@ class="btn btn-lg btn-danger delete">삭제</button>
     });
   }
 </script>
-<script>
-function enterkey() {
-    if (window.event.keyCode == 13) {
 
+
+<script>
+function deleteSelectedMembers() {
+  var selectedMembers = [];
+  var checkboxes = document.getElementsByName('selectedMembers');
+
+  for (var i = 0; i < checkboxes.length; i++) {
+    if (checkboxes[i].checked) {
+      selectedMembers.push(checkboxes[i].value);
     }
+  }
+
+  if (selectedMembers.length === 0) {
+    // No reports selected, handle the case accordingly
+    return;
+  }
+
+  // Create a form dynamically
+  var form = document.createElement('form');
+  form.method = 'POST';
+  form.action = '/ers/lsupporter/remove';
+
+  // Add hidden input fields for each selected report number
+  for (var j = 0; j < selectedMembers.length; j++) {
+    var input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = 'rNo';
+    input.value = selectedMembers[j];
+    form.appendChild(input);
+  }
+
+  // Append the form to the document
+  document.body.appendChild(form);
+
+  // Show confirmation dialog using Swal (SweetAlert)
+  Swal.fire({
+    title: '<strong>보고서 삭제</strong>',
+    icon: 'warning',
+    html: selectedMembers.join(', ') + ' 번의 보고서를 정말로 삭제하시겠습니까?',
+    showCloseButton: true,
+    showCancelButton: true,
+    focusConfirm: false,
+    confirmButtonText: '삭제',
+    cancelButtonText: '취소',
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Swal.fire(
+        '삭제처리가 완료되었습니다.',
+        '',
+        'success'
+      ).then(() => {
+        // Submit the form
+        form.submit();
+      });
+    }
+  });
 }
 </script>
-<Script>
-function handleEnterKey(event) {
-	  if (event.keyCode === 13) {
-	    list_go(1);
-	    event.preventDefault();
-	  }
-	}
-</Script>
 
 
-
-
-
-
+<script>
+  window.onload=function(){
+  	MemberPictureThumb('<%=request.getContextPath()%>');
+  }
+</script>
 
 
 

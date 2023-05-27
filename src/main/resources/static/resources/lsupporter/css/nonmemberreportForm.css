@@ -1,8 +1,4 @@
-.reportFormlist {
-    display: none;
-  }
-
-p>img{
+	 p>img{
 	width:300px;
 	height:300px;
 	
@@ -55,8 +51,8 @@ margin: 100px auto;
 
 /* Specific styles for modal body */
 #modalBody {
-  width: 600px;
-  height: 650px;
+  width: 900px;
+  height: 800px;
   padding: 30px;
   margin: 0 auto;
   border: 1px solid #777;
@@ -149,6 +145,7 @@ margin-right:81%;
         }
 
         th {
+      
          padding: 5px;
         border-bottom: 1px solid #ccc;
         	text-align: center;

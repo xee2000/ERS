@@ -44,8 +44,126 @@
 <tbody>
   <tr>
     <th>대상자</th>
-    <td style="text-align:center;">
-<input type="text" name="id" style="text-align:center;" readonly value="${member_name }">
+    <td>
+<div class="search_container flex items-center">
+  <input onclick="modalopen();" value="" class="searchinput searchinput_name w-full" type="text" id="searchinput" name="name" required>
+  <button type="submit" class="absolute right-0 top-0 bottom-0 p-2 right-1.25">
+     <i class="fa fa-search" style="padding-left: 120px;" id="popupBtn"></i>
+  </button>
+</div>
+      <!--모달창  -->
+      <div id="modalWrap">
+  <div id="modalContent">
+    <div id="modalBody">
+      <span id="closeBtn">&times;</span>
+      <!--모달창  -->
+      <div class="callist">
+<div class="row">
+<div class="col-12">
+<h3 class="caltitle mt-2">대상자 이름조회</h3>
+</div>
+</div>
+
+
+
+<form>
+<table class="tg table table_list" style="undefined;table-layout: fixed; width: 100%;">
+<colgroup>
+<col style="width: 150.333333px">
+<col style="width: 300px">
+</colgroup>
+  <tr>
+    <th class="tg-l8qj" >
+<select class="form-control" style="font-size: 1.5rem;height: auto;" name="searchType" id="searchType">
+   <option value="nbg" ${cri.searchType=='nbg' ? "selected":"" } >전체</option>
+   <option value="n" ${cri.searchType=='n' ? "selected":"" } >대상자명</option>
+   <option value="b" ${cri.searchType=='b' ? "selected":"" }>나이</option>
+   <option value="g" ${cri.searchType=='g' ? "selected":"" }>성별</option>
+</select>
+</th>
+   <th class="tg-l8qj">
+<div class="search_container flex items-center">
+  <input onclick="modalopen();" value="" class="searchinput searchinput_name w-full" type="text" id="searchinput" name="keyword" required="required">
+  <button onclick="list_go(1);" type="submit" class="absolute right-0 top-0 bottom-0 p-2 right-1.25">
+     <i class="fa fa-search" style="padding-left: 120px;" id="popupBtn"></i>
+  </button>
+</div>
+</th>
+  </tr>
+</tbody>
+</table>
+</form>
+
+<div class="row">
+<div class="col-12">
+
+
+<table class="tg searchlist" style="undefined;table-layout: fixed;">
+<colgroup>
+<col style="width: 100px">
+<col style="width: 100.333333px">
+<col style="width: 70.333333px">
+<col style="width: 70.333333px">
+<col style="width: 70.333333px">
+</colgroup>
+<thead>
+  <tr>
+    <th class="tg-uqo3">이미지</th>
+    <th class="tg-2xpi">대상자명</th>
+    <th class="tg-2xpi">성별</th>
+    <th class="tg-uqo3">나이</th>
+    <th class="tg-uqo3">응급발생여부</th>
+  </tr>
+</thead>
+	<c:forEach var="member" items="${memberList }">
+	<fmt:formatDate value="${member.occurTime }" pattern="MM-dd kk시mm분" var="occurTime"/>
+	<tbody>
+	  <tr>
+	  <td style="display:none" class="modal_content" id="memberid" >
+	 <input type="hidden" class="member-id" value="${member.id}" />
+	  </td>
+	  <td style="display:none" class="modal_content" id="memberid" >
+	 <input type="hidden" class="member-sCode" value="${member.SCode}" />
+	  </td>
+	    <td class="modal_content" style="text-align:center;">
+	   <img style="width:180px;height:100px;" src="/resources/lsupporter/img/노인1.png" >
+	    </td>
+	    <td class="modal_content" id="modalname">
+	   ${member.name }
+	</td>
+	    <td class="modal_content">
+	    ${member.gender }
+	    </td>
+	    <td class="modal_content">
+	${member.birth }
+	</td>
+	<c:if test="${member.SCode == 0 }">
+	<td class="modal_content">
+	미발생
+	</td>
+	</c:if>
+	<c:if test="${member.SCode != 0 }">
+	<td class="modal_content">
+	응급발생
+	</td>
+	</c:if>
+	  </tr>
+	</tbody>
+	</c:forEach>
+</table>
+
+
+<%@include file="../include/lsupporter/pagination.jsp"%>
+
+</div>
+
+</div>
+      
+    </div>
+  </div>
+</div>
+ 
+  </div>
 </td>
   </tr>
   <tr>
@@ -74,7 +192,7 @@
       </div>
       <div class="card-body" style="display: none;" >
         <div class="form-group">
-          <form action="reportregist" name="form" method="post" role="form" id="sendForm1">
+          <form action="nonmemberreportregist" name="form" method="post" role="form" id="sendForm1">
        	   <input type="hidden" name="content"/>
         <div class="report-content">
             <table>
@@ -89,7 +207,8 @@
                 <tr>
                     <th style="text-align: center;">전화유무</th>
                     <td> 
-                   <input type="hidden" name="id" value="${member_id }">
+                    <input type="hidden" name="id" value="">
+                    <input type="hidden" name="sCode" value="">
                     <input type="hidden" name="reType" value="2">
 					<input type="hidden" name="wCode" value="${wCode}">
 					<input type="hidden" name="reDone" value="1">
@@ -124,9 +243,10 @@
 <div class="form-group">
 <div class="report">
         <div class="report-content">
-<form action="reportregist" name="form" method="post" role="form" id="sendForm2">
- <input type="hidden" name="id" value="${member_id }">
+<form action="emergencyreportregist" name="form" method="post" role="form" id="sendForm2">
+<input type="hidden" name="id" value="">
 <input type="hidden" name="wCode" value="${wCode}">
+  <input type="hidden" name="sCode" value="">
 <input type="hidden" name="reDone" value="1">
 <input type="hidden" name="viewCheck" value="0">
 <input type="hidden" name="reType" value="3">
@@ -167,9 +287,10 @@
 </div>
 <div class="card-body" style="display: none;" >
 <div class="form-group">
-<form action="reportregist" name="form" method="post" role="form" id="sendForm3" enctype="multipart/form-data">
- <input type="hidden" name="id" value="${member_id }">
+<form action="emergencyreportregist" name="form" method="post" role="form" id="sendForm3" enctype="multipart/form-data">
+<input type="hidden" name="id" value="">
 <input type="hidden" name="wCode" value="${wCode}">
+  <input type="hidden" name="sCode" value="">
 <input type="hidden" name="reDone" value="1">
 <input type="hidden" name="viewCheck" value="0">
 <input type="hidden" name="reType" value="4">
@@ -208,9 +329,10 @@
 </div>
 <div class="card-body"  style="display: none;">
 <div class="form-group">
-<form action="reportregist" name="form" method="post" role="form" id="sendForm4">
- <input type="hidden" name="id" value="${member_id }">
+<form action="emergencyreportregist" name="form" method="post" role="form" id="sendForm4">
+<input type="hidden" name="id" value="">
 <input type="hidden" name="wCode" value="${wCode}">
+  <input type="hidden" name="sCode" value="">
 <input type="hidden" name="reDone" value="1">
 <input type="hidden" name="viewCheck" value="0">
 <input type="hidden" name="callCheck" value="">                    
@@ -253,9 +375,10 @@
 </div>
 <div class="card-body" style="display: none;">
 <div class="form-group">
-<form action="reportregist" name="form" method="post" role="form" id="sendForm5"  enctype="multipart/form-data">
- <input type="hidden" name="id" value="${member_id }">
+<form action="emergencyreportregist" name="form" method="post" role="form" id="sendForm5"  enctype="multipart/form-data">
+<input type="hidden" name="id" value="">
 <input type="hidden" name="wCode" value="${wCode}">
+  <input type="hidden" name="sCode" value="">
 <input type="hidden" name="reDone" value="1">
 <input type="hidden" name="viewCheck" value="0">
 <input type="hidden" name="reType" value="6">
@@ -295,7 +418,15 @@
 </div>
 </div>
 </div>
-<!--악성대상자 신고보고서 끝  --
+<!--악성대상자 신고보고서 끝  -->
+
+
+
+
+
+<Script>
+
+</Script>
 
 <!--모달창 스크립ㅌ  -->
 <script>
@@ -333,7 +464,13 @@
   
   <!-- 모달창에 입력한 id를 각폼의 input에 넣어주는 스크립트 -->
  <script>
-	
+$('.modal_content#modalname').click(function() {
+	  var memberId = $(this).closest('tr').find('.member-id').val();
+	  var membersCode = $(this).closest('tr').find('.member-sCode').val();
+	  $('input[name="id"]').val(memberId);
+	  $('input[name="sCode"]').val(membersCode);
+	});
+
 
 </script>
 
@@ -342,13 +479,17 @@
 function regist_go() {
     var gubunVal = $('#formGubunValue').val();
     var forms = $('form#sendForm' + gubunVal);
-                   
+    var callcheck = $('inpu[name="callCheck"]');
+    var inputcontent = $('input[name="content"]');
+    var areacontent = $('input[name="content"]');
+
+     	
     Swal.fire({
         icon: "success",
         title: "제출",
         text: `보고서가 제출되었습니다.`,
         showCancelButton: false,
-        confirmButtonText: "확인",
+        confirmButtonText: "확인"	
     }).then((res) => {
     	forms.submit(); 
         /* Read more about isConfirmed, isDenied below */
@@ -386,6 +527,27 @@ $(document).ready(function() {
 });
 </script>
 
+
+
+<!-- <script>
+	let ArticleWrite__submitDone = false;
+	function ArticleWrite__submit(form) {		
+		const editor = $(form).find('.toast-ui-editor').data('data-toast-editor');
+		const markdown = editor.getMarkdown().trim();
+		
+		if ( markdown.length == 0 ) {
+			alert('내용을 입력해주세요.');
+			editor.focus();
+			return;
+		}
+		
+		form.content.value = markdown;
+		
+		ArticleWrite__submitDone = true;
+		form.submit();		
+	}
+</script> -->
+
 <script>
 window.onload=function(){
 		summernote_go($('#content'),'<%=request.getContextPath()%>');
@@ -407,6 +569,7 @@ function toggleReportForms() {
   }
 
 </Script>
+
 
 
 <div style="height:300px;"></div>

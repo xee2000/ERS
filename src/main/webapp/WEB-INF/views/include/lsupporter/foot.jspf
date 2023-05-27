@@ -29,5 +29,12 @@
     	
     	
 	</body>
+	
+	<script>
+  window.onload=function(){
+  	MemberPictureThumb('<%=request.getContextPath()%>');
+  }
+</script>
+	
 
 </html>

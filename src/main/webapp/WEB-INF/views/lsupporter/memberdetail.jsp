@@ -10,11 +10,13 @@
 <c:set value="${dataMap.fireCount }" var="fireCount"/>
 <c:set value="${dataMap.machinList }" var="machinList"/>
 <c:set value="${reportListMap.reportList }" var="reportList"/>
+<c:set var="pageMaker" value="${reportListMap.pageMaker}"/>
+<c:set var="cri" value="${reportListMap.cri }"/>
 
 
 <div class="row">
 <div class="col-12 flex justify-start mb-1">
-<button type="button" class="btn btn-dark btn-lg">뒤로가기</button>
+<button type="button" class="btn btn-dark btn-lg" onclick="history.back();">뒤로가기</button>
 </div>
 </div>
 <div class="container-fluid">
@@ -24,7 +26,7 @@
 <div class="card card-primary card-outline">
 <div class="card-body box-profile">
 <div class="text-center" style="width:300px;height:300px;">
-${memberdetail.picture }
+<span class="manPicture" data-id="${member.id }" style="width:80px;height:80px;display:block;margin:0 auto;"></span>
 </div>
 <h3 class="profile-username text-center">${memberdetail.name }</h3>
 </div>
@@ -118,9 +120,9 @@ ${memberdetail.picture }
     <td class="tg-0lax">가족과의 친분도</td>
     <td class="tg-0lax">${memberdetail.fam_rel }</td>
   </tr>
-<c:forEach var="ecall" items="${memberEcall}"  varStatus="status">
+<c:forEach var="ecall" items="${memberEcall}"  varStatus="state">
   <tr>
-    <td class="tg-0lax">긴급연락망${status.index+1 }<br/>(이름/관계/연락처)</td>
+    <td class="tg-0lax">긴급연락망${state.index+1 }<br/>(이름/관계/연락처)</td>
     <td class="tg-0lax">
     ${ecall.name }/${ecall.relation }/${ecall.phone }
 </td>
@@ -190,10 +192,8 @@ ${memberdetail.picture }
   <select class="keywordoption"name="searchType" id="searchType" >
    <option value="" disabled>검 색</option>
 <option value="nbg" ${cri.searchType eq 'nbg' ? 'selected':'' }>전체</option>
-<option value="n" ${cri.searchType eq 'n' ? 'selected':'' }>대상자명</option>
-<option value="g" ${cri.searchType eq 'g' ? 'selected':'' }>성별</option>
-<option value="r" ${cri.searchType eq 'r' ? 'selected':'' }>활동여부</option>
-<option value="rd" ${cri.searchType eq 'rd' ? 'selected':'' }>남은정기상담일</option>
+<option value="lp" ${cri.searchType eq 'lp' ? 'selected':'' }>상담자</option>
+<option value="r" ${cri.searchType eq 'r' ? 'selected':'' }>보고서구분</option>
   </select>
 <div class="search_container flex items-center">
 <input type="hidden" name="id" value="${memberdetail.id }">
@@ -213,7 +213,7 @@ ${memberdetail.picture }
 <div class="col-12">
 <div class="mt-2 mb-2 button buttens">
 <button type="button" 
-class="btn mr-1 btn-primary regist" onclick="location.href='/ers/lsupporter/nonreportForm'">등록</button>
+class="btn mr-1 btn-primary regist" onclick="location.href='/ers/lsupporter/reportForm?id='+${memberdetail.id}">등록</button>
 <button type="button" 
 class="btn btn-danger delete">삭제</button>
 </div>
@@ -245,20 +245,30 @@ class="btn btn-danger delete">삭제</button>
     <th class="tg-baqh">열람 여부</th>
   </tr>
 </thead>
-<c:forEach items="${reportList }" var="report">
+	<c:forEach items="${reportList }" var="report" varStatus="status">
 <fmt:formatDate value="${report.regDate }" pattern="yy-MM-dd" var="regDate"/>
 <tbody>
   <tr>
     <td class="tg-0lax">
       <input type="checkbox" class="text-center check_box" style="width:30px;height:30px;margin-top:7px;"/>
     </td>
-    <td class="tg-0lax">${report.RNo }</td>
+    <td class="tg-0lax">${status.index+1 }</td>
     <td class="tg-0lax">${regDate }</td>
     <td class="tg-0lax">${report.name }</td>
-    <td class="tg-0lax">${report.reType }</td>
-    <td class="tg-0lax">${report.viewCheck }</td>
+    <td class="tg-0lax">
+<c:if test="${report.reType == 1}">응급상황</c:if>
+  <c:if test="${report.reType == 2}">고객면담</c:if>
+  <c:if test="${report.reType == 3}">건강상태</c:if>
+  <c:if test="${report.reType == 4}">서비스취소</c:if>
+  <c:if test="${report.reType == 5}">장기부재</c:if>
+  <c:if test="${report.reType == 6}">악성대상자신고</c:if>
+  <c:if test="${report.reType == 7}">장비점검</c:if>
+</td>
+    <td class="tg-0lax">
+<c:if test="${report.viewCheck == 0 }">N</c:if>
+ <c:if test="${report.viewCheck == 1 }">Y</c:if>
+</td>
   </tr>
- 
 </tbody>
 </c:forEach>
 </table>

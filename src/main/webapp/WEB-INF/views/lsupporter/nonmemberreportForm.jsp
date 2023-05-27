@@ -8,7 +8,7 @@
 <%--  <%@include file="../include/lsupporter/toastUiEditorLib.jspf" %> --%>
 <link rel="stylesheet" href="/resources/lsupporter/css/nonmemberreportForm.css">
  <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
 <div class="tab-pane" id="carewordlist">
 <div class="col-md-12">
@@ -23,7 +23,7 @@
 <c:set var="ymd" value="<%=new java.util.Date()%>" />
 <div class="row">
 <div class="col-12 flex justify-end mb-1">
-<button type="button" class="btn btn-dark btn-md backbtn" onclick="location.href='/usr/home/reportlist'">뒤로가기</button>
+<button type="button" class="btn btn-dark btn-md backbtn" onclick="history_back();">뒤로가기</button>
 <button type="submit" class="btn btn-primary btn-md" onclick="regist_go();">제출</button>
 </div>
 </div>
@@ -83,8 +83,8 @@
 </th>
    <th class="tg-l8qj">
 <div class="search_container flex items-center">
-  <input onclick="modalopen();" value="" class="searchinput searchinput_name w-full" type="text" id="searchinput" name="name" required>
-  <button type="submit" class="absolute right-0 top-0 bottom-0 p-2 right-1.25">
+  <input onclick="modalopen();" value="" class="searchinput searchinput_name w-full" type="text" id="searchinput" name="keyword" required="required">
+  <button onclick="list_go(1)" type="submit" class="absolute right-0 top-0 bottom-0 p-2 right-1.25">
      <i class="fa fa-search" style="padding-left: 120px;" id="popupBtn"></i>
   </button>
 </div>
@@ -104,6 +104,7 @@
 <col style="width: 100.333333px">
 <col style="width: 70.333333px">
 <col style="width: 70.333333px">
+<col style="width: 70.333333px">
 </colgroup>
 <thead>
   <tr>
@@ -111,16 +112,21 @@
     <th class="tg-2xpi">대상자명</th>
     <th class="tg-2xpi">성별</th>
     <th class="tg-uqo3">나이</th>
+    <th class="tg-uqo3">응급발생여부</th>
   </tr>
 </thead>
 	<c:forEach var="member" items="${memberList }">
+	<fmt:formatDate value="${member.occurTime }" pattern="MM-dd kk시mm분" var="occurTime"/>
 	<tbody>
 	  <tr>
 	  <td style="display:none" class="modal_content" id="memberid" >
 	 <input type="hidden" class="member-id" value="${member.id}" />
 	  </td>
-	    <td class="modal_content">
-	    ${member.picture }
+	  <td style="display:none" class="modal_content" id="memberid" >
+	 <input type="hidden" class="member-sCode" value="${member.SCode}" />
+	  </td>
+	    <td class="modal_content" style="text-align:center;">
+	   <img style="width:140px;height:100px;" src="/resources/lsupporter/img/노인1.png" >
 	    </td>
 	    <td class="modal_content" id="modalname">
 	   ${member.name }
@@ -131,6 +137,16 @@
 	    <td class="modal_content">
 	${member.birth }
 	</td>
+	<c:if test="${member.SCode == 0 }">
+	<td class="modal_content">
+	미발생
+	</td>
+	</c:if>
+	<c:if test="${member.SCode != 0 }">
+	<td class="modal_content">
+	응급발생
+	</td>
+	</c:if>
 	  </tr>
 	</tbody>
 	</c:forEach>
@@ -153,7 +169,7 @@
   <tr>
     <th class="tg-2xpi">보고서 구분</th>
     <td class="tg-2xpi">
-    <select name="reType" style="text-align:center;" class="reportmenu" onchange="toggleReportForms()">
+    <select name="reType" style="text-align:center;" class="reportmenu" onchange="toggleReportForms()" id="formGubunValue">
     <option selected disabled value="====">선택</option>
     <option value="1">고객면담보고서</option>
     <option value="2">건강상태보고서</option>
@@ -168,7 +184,7 @@
 
 
 <!--고객면담  -->
-<div class="flex" id="report-form-1" class="reportFormlist">
+<div class="flex reportFormlist" id="report-form-1">
   <div class="col-md-12">
       <div class="card-header">
         <h3 class="card-title report_title">고객면담보고서</h3>
@@ -176,7 +192,7 @@
       </div>
       <div class="card-body" style="display: none;" >
         <div class="form-group">
-          <form action="nonmemberreportregist" name="form" method="post" role="form" id="registForm">
+          <form action="nonmemberreportregist" name="form" method="post" role="form" id="sendForm1">
        	   <input type="hidden" name="content"/>
         <div class="report-content">
             <table>
@@ -184,7 +200,7 @@
                     <th style="text-align: center;">특이사항</th>
                      
                    <td>
-               <textarea class="form-control" name="content" id="content" rows="5"
+               <textarea style="font-size:2rem;" class="form-control" name="content" id="content" rows="5"
 									placeholder="1000자 내외로 작성하세요."></textarea>
 				</td>
                 </tr>
@@ -192,6 +208,7 @@
                     <th style="text-align: center;">전화유무</th>
                     <td> 
                     <input type="hidden" name="id" value="">
+                    <input type="hidden" name="sCode" value="">
                     <input type="hidden" name="reType" value="2">
 					<input type="hidden" name="wCode" value="${wCode}">
 					<input type="hidden" name="reDone" value="1">
@@ -199,7 +216,7 @@
                     <input type="radio" name="callCheck" value="Y">전화함                    
                     <input type="radio" name="callCheck" value="N">전화안함    
                     <input type="hidden" name="occurType" value="null"> 
-                    <input type="hidden" name="occurTime" value="23/01/01"> 
+                    <input type="hidden" name="occurTime" value="23-01-01"> 
                     </td>
                 </tr>
             </table>
@@ -216,7 +233,7 @@
 
 
 <!--건강상태  -->
-<div class="flex" id="report-form-2" class="reportFormlist">
+<div class="flex reportFormlist" id="report-form-2">
 <div class="col-md-12">
 <div class="card-header">
 <h3 class="card-title report_title">건강상태보고서</h3>
@@ -226,15 +243,16 @@
 <div class="form-group">
 <div class="report">
         <div class="report-content">
-<form action="nonmemberreportregist" name="form" method="post" role="form" id="registForm">
+<form action="nonmemberreportregist" name="form" method="post" role="form" id="sendForm2">
 <input type="hidden" name="id" value="">
 <input type="hidden" name="wCode" value="${wCode}">
+<input type="hidden" name="sCode" value="">
 <input type="hidden" name="reDone" value="1">
 <input type="hidden" name="viewCheck" value="0">
 <input type="hidden" name="reType" value="3">
 <input type="hidden" name="callCheck" value="">     
 <input type="hidden" name="occurType" value="null"> 
-<input type="hidden" name="occurTime" value="23/01/01">                
+<input type="hidden" name="occurTime" value="23-01-01">             
 <table style="undefined;table-layout: fixed; width: 100%;">
 <colgroup>
 <col style="width: 150px;">
@@ -262,23 +280,24 @@
 <!--건강상태 보고서 끝  -->
 
 <!--서비스취소  -->
-<div class="flex" id="report-form-3" class="reportFormlist">
+<div class="flex reportFormlist" id="report-form-3">
 <div class="col-md-12">
 <div class="card-header">
 <h3 class="card-title report_title">서비스취소보고서</h3>
 </div>
 <div class="card-body" style="display: none;" >
 <div class="form-group">
-<form action="nonmemberreportregist" name="form" method="post" role="form" id="registForm">
+<form action="nonmemberreportregist" name="form" method="post" role="form" id="sendForm3" enctype="multipart/form-data">
 <input type="hidden" name="id" value="">
 <input type="hidden" name="wCode" value="${wCode}">
+<input type="hidden" name="sCode" value="">
 <input type="hidden" name="reDone" value="1">
 <input type="hidden" name="viewCheck" value="0">
 <input type="hidden" name="reType" value="4">
 <input type="hidden" name="callCheck" value="">                    
-<input type="hidden" name="content" value=""> 
+<input type="hidden" name="content" value="서비스취소"> 
 <input type="hidden" name="occurType" value="null"> 
-<input type="hidden" name="occurTime" value="23/01/01"> 
+<input type="hidden" name="occurTime" value="23-01-01"> 
 <table style="undefined;table-layout: fixed; width: 100%;">
 <colgroup>
 <col style="width: 150px;">
@@ -288,7 +307,7 @@
   <tr>
     <th class="">파일첨부</th>
     <td class="">
-    <input type="file" name="filename"/>
+    <input type='file' name="uploadFile">
     </td>
   </tr>
 </thead>
@@ -303,22 +322,23 @@
 <!--서비스취소 보고서 끝  -->
 
 <!--장기부재  -->
-<div class="flex" id="report-form-4" class="reportFormlist">
+<div class="flex reportFormlist" id="report-form-4">
 <div class="col-md-12">
 <div class="card-header">
 <h3 class="card-title report_title">장기부재 신청서</h3>
 </div>
 <div class="card-body"  style="display: none;">
 <div class="form-group">
-<form action="nonmemberreportregist" name="form" method="post" role="form" id="registForm">
+<form action="nonmemberreportregist" name="form" method="post" role="form" id="sendForm4">
 <input type="hidden" name="id" value="">
 <input type="hidden" name="wCode" value="${wCode}">
+<input type="hidden" name="sCode" value="">
 <input type="hidden" name="reDone" value="1">
 <input type="hidden" name="viewCheck" value="0">
 <input type="hidden" name="callCheck" value="">                    
 <input type="hidden" name="reType" value="5">
 <input type="hidden" name="occurType" value="null"> 
-<input type="hidden" name="occurTime" value="23/01/01"> 
+<input type="hidden" name="occurTime" value="23-01-01"> 
 <table style="undefined;table-layout: fixed; width: 100%;">
 <colgroup>
 <col style="width: 140.333333px">
@@ -330,9 +350,9 @@
   <tr>
  <th>장기부재 사유</th>
 <td colspan="3">
-  <input type="radio" name="content" value="여행"/>여행&nbsp;&nbsp;
-  <input type="radio" name="content" value="입원"/>입원&nbsp;&nbsp;
-  <input type="radio" id="gita"value="기타" onclick="showTextarea()"/>기타
+  <input type="radio" name="content" value="여행"><label class="mr-2">여행</label>
+  <input type="radio" name="content" value="입원"><label>입원</label>
+  <input type="radio" name="content" id="gita"value="기타" onclick="showTextarea()"/><label>기타</label>
   <input type="text" name="content" id="detailsInput" style="display: none;" placeholder="기타 사유를 입력하세요..." />
 </td>
 </thead>
@@ -347,7 +367,7 @@
 <!--장기부재신청서보고서 끝  -->
 
 <!--악성대상자 신고 보고서  -->
-<div class="flex" id="report-form-5" class="reportFormlist">
+<div class="flex reportFormlist" id="report-form-5">
 <div class="col-md-12">
 <div class="card-header">
 <h3 class="card-title report_title">악성대상자 신고보고서</h3>
@@ -355,9 +375,10 @@
 </div>
 <div class="card-body" style="display: none;">
 <div class="form-group">
-<form action="nonmemberreportregist" name="form" method="post" role="form" id="registForm"  enctype="multipart/form-data">
+<form action="nonmemberreportregist" name="form" method="post" role="form" id="sendForm5"  enctype="multipart/form-data">
 <input type="hidden" name="id" value="">
 <input type="hidden" name="wCode" value="${wCode}">
+<input type="hidden" name="sCode" value="">
 <input type="hidden" name="reDone" value="1">
 <input type="hidden" name="viewCheck" value="0">
 <input type="hidden" name="reType" value="6">
@@ -387,7 +408,7 @@
     <tr>
     <th>파일첨부</th>
     <td >
-<input type="file" name="uploadFile">
+<input type='file' name="uploadFile">
     </td>
   </tr>
 </tbody>
@@ -401,10 +422,11 @@
 
 
 
-<!--모달창에서 이름검색시 해당 아이디를 각 보고서의 hidden id의 value로 심어주는 스크립트  -->
 
 
+<Script>
 
+</Script>
 
 <!--모달창 스크립ㅌ  -->
 <script>
@@ -441,30 +463,49 @@
   </script>
   
   <!-- 모달창에 입력한 id를 각폼의 input에 넣어주는 스크립트 -->
+  <!-- 모달창에 입력한 id를 각폼의 input에 넣어주는 스크립트 -->
  <script>
 $('.modal_content#modalname').click(function() {
 	  var memberId = $(this).closest('tr').find('.member-id').val();
+	  var membersCode = $(this).closest('tr').find('.member-sCode').val();
 	  $('input[name="id"]').val(memberId);
+	  $('input[name="sCode"]').val(membersCode);
 	});
 
-	/*보고서가 펼쳐진 대상만 submit되도록 해주는 스크립트포함  */
 
 </script>
+
 
 
 <script>
 function regist_go() {
+  var gubunVal = $('#formGubunValue').val();
+  var form = $('form#sendForm' + gubunVal);
+  var callcheck = $('input[name="callCheck"]');
+  var inputcontent = $('input[name="content"]');
+  var areacontent = $('input[name="content"]');
 
-	  var forms = $('.flex'); // Get all elements with the class "flex"
-
-	  forms.each(function() {
-	    var form = $(this);
-	    if (form.css('display') !== 'none') {
-	      form.find('form').submit();
-	    }
-	  });
-	}
+  Swal.fire({
+    title: "정말로 제출하시겠습니까?",
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonText: "확인",
+    cancelButtonText: "취소"
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Swal.fire(
+        "정상 제출되었습니다.",
+        "",
+        "success"
+      ).then(() => {
+        form.submit();
+      });
+    }
+  });
+}
 </script>
+
+
 
 <script>
 function showTextarea() {
@@ -477,7 +518,20 @@ function showTextarea() {
     detailsInput.hide();
   }
 }
+
+$(document).ready(function() {
+  $('input[type="radio"][name="content"]').on('change', function() {
+    var gita = $('#gita');
+    
+    if (!gita.is(':checked')) {
+      var detailsInput = $('#detailsInput');
+      detailsInput.hide();
+    }
+  });
+});
 </script>
+
+
 
 <!-- <script>
 	let ArticleWrite__submitDone = false;

@@ -14,6 +14,7 @@ import kr.ac.ers.command.SearchCriteria;
 import kr.ac.ers.dto.LsupporterStatusVO;
 import kr.ac.ers.dto.LsupporterVO;
 import kr.ac.ers.dto.MemberDetailVO;
+import kr.ac.ers.dto.MemberEmergencyReportVO;
 import kr.ac.ers.dto.MemberReportLsupporterVO;
 import kr.ac.ers.dto.MemberVO;
 import kr.ac.ers.dto.MembereducationVO;
@@ -111,18 +112,20 @@ public class LsupporterService {
 		lsupportMapper.LsupporterModify(lsupporter);
 	}
 
-	public void reportregist(MemberReportLsupporterVO reportlsupporter,String wid) {
+	public void reportregist(MemberReportLsupporterVO reportlsupporter, String wid) {
 		int rNo = lsupportMapper.selectReportSequenceNextValue();
-		
+
 		reportlsupporter.setRNo(rNo);
 		lsupportMapper.insertMemberReport(reportlsupporter);
-				if(reportlsupporter.getReportFileList() != null)
-			for(ReportFileVO reportfile : reportlsupporter.getReportFileList()) {
-				reportfile.setSfNo(reportFileMapper.selectReportFileSequenceNextValue());	
+		if (reportlsupporter.getReportFileList() != null)
+			for (ReportFileVO reportfile : reportlsupporter.getReportFileList()) {
+				reportfile.setSfNo(reportFileMapper.selectReportFileSequenceNextValue());
 				reportfile.setRNo(rNo);
 				reportfile.setAttacher(wid);
 				reportfile.setFilename(reportlsupporter.getReportFileList().get(0).getFilename());
 				reportfile.setUploadpath(reportlsupporter.getReportFileList().get(0).getUploadpath());
+				reportfile.setFiletype(reportlsupporter.getReportFileList().get(0).getFileType());
+				reportfile.setSize(reportlsupporter.getReportFileList().get(0).getSize());
 				reportFileMapper.save(reportfile);
 			}
 	}
@@ -158,26 +161,30 @@ public class LsupporterService {
 		return lsupportMapper.selectmaineducationclearDate(wid);
 	}
 
-	public int getmainemergancyall(String wid) {
-		return lsupportMapper.selectmainemergancyall(wid);
+	public int getmainemergencyall(String wid) {
+		return lsupportMapper.selectmainemergencyall(wid);
+	}
+	public int getmainemergencymiss(String wid) {
+		return lsupportMapper.selectmainemergencymiss(wid);
 	}
 
-	public int getmainemergancyno(String wid) {
-		return lsupportMapper.selectmainemergancyno(wid);
+	public int getmainemergencyclear(String wid) {
+		return lsupportMapper.selectmainemergencyclear(wid);
 	}
+	
 
-	public Map<String, Object> getemergancyList(String wid, SearchCriteria cri) {
+	public Map<String, Object> getemergencyList(String wid, SearchCriteria cri) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		Map<String, Object> returnMap = new HashMap<>();
 		returnMap.put("cri", cri);
 		returnMap.put("wid", wid);
 		RowBounds rowbounds = new RowBounds(cri.getStartRowNum(), cri.getPerPageNum());
 
-		List<MemberReportLsupporterVO> emergancyList = lsupportMapper.selectemergancyList(returnMap, rowbounds);
-		dataMap.put("emergancyList", emergancyList);
+		List<MemberReportLsupporterVO> emergencyList = lsupportMapper.selectemergencyList(returnMap, rowbounds);
+		dataMap.put("emergencyList", emergencyList);
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
-		pageMaker.setTotalCount(lsupportMapper.selectemergancyListCount(returnMap));
+		pageMaker.setTotalCount(lsupportMapper.selectemergencyListCount(returnMap));
 		dataMap.put("pageMaker", pageMaker);
 
 		return dataMap;
@@ -223,15 +230,72 @@ public class LsupporterService {
 		return dataMap;
 	}
 
-	public ReportVO getReportDetail(int rNo) {
-
-		ReportVO reportdetail = lsupportMapper.selectreportdetail(rNo);
-		return reportdetail;
+	public ReportVO getModifyreportForm(int rNo) {
+		ReportVO reportmodify = lsupportMapper.selectReportModifyForm(rNo);
+		return reportmodify;
 	}
 
-	public ReportVO getModifyreportForm(int rNo) {
-	ReportVO reportmodify =lsupportMapper.selectReportModifyForm(rNo);
-		return reportmodify;
+	public MemberReportLsupporterVO getreportLsupporterForModify(int rNo) {
+		MemberReportLsupporterVO reportlsupporter = lsupportMapper.selectLsupporterreport(rNo);
+		List<ReportFileVO> reportFileList = reportFileMapper.selectReportFileByrNo(rNo);
+		reportlsupporter.setReportFileList(reportFileList);
+		return reportlsupporter;
+	}
+
+	public ReportFileVO getReportFileBysfNo(int sfNo) {
+		ReportFileVO reportfile = reportFileMapper.selectReportFileBysfNo(sfNo);
+		return reportfile;
+	}
+
+	public void removeReportFileBysfNo(int sfNo) {
+		reportFileMapper.removeReportFileBysfNo(sfNo);
+
+	}
+
+	public void modify(MemberReportLsupporterVO reportlsupporter) {
+		lsupportMapper.updatereport(reportlsupporter);
+		if (reportlsupporter.getReportFileList() != null)
+			for (ReportFileVO reportfile : reportlsupporter.getReportFileList()) {
+				reportfile.setRNo(reportlsupporter.getRNo());
+				reportfile.setAttacher(reportlsupporter.getWid());
+				reportFileMapper.save(reportfile);
+			}
+
+	}
+
+	public MemberReportLsupporterVO getReportByRNo(int rNo) {
+		MemberReportLsupporterVO reportlsupporter = lsupportMapper.selectLsupporterreport(rNo);
+		return reportlsupporter;
+	}
+
+	public void remove(int rNo) {
+	    lsupportMapper.remove(rNo);
+	    List<ReportFileVO> reportfiles = reportFileMapper.selectReportFileByrNo(rNo);
+	    if (reportfiles != null && !reportfiles.isEmpty()) {
+	        reportFileMapper.remove(reportfiles.get(0).getRNo());
+	    }
+	}
+
+	public MemberVO getmemById(String id) {
+	MemberVO member = lsupportMapper.selectMemberById(id);
+		return member;
+	}
+
+	public Map<String, Object> getemergencyLsupporterMemberList(String wid, SearchCriteria cri) {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		Map<String, Object> returnMap = new HashMap<>();
+		returnMap.put("cri", cri);
+		returnMap.put("wid", wid);
+		RowBounds rowbounds = new RowBounds(cri.getStartRowNum(), cri.getPerPageNum());
+
+		List<MemberEmergencyReportVO> memberList = lsupportMapper.selectSearchemergencyMemberList(returnMap, rowbounds);
+		dataMap.put("memberList", memberList);
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(lsupportMapper.selectSearchemergencyMemberListCount(cri, wid));
+		dataMap.put("pageMaker", pageMaker);
+
+		return dataMap;
 	}
 
 }

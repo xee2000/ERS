@@ -42,14 +42,16 @@ public class LsupporterController {
 		int futureDate =  lsupporterService.getmaineducationfutureDate(loginUser.getWid());
 		int clearDate =  lsupporterService.getmaineducationclearDate(loginUser.getWid());
 		int notmachine =  lsupporterService.getmaineducationnotmachine(loginUser.getWid());
-		int emergancyall = lsupporterService.getmainemergancyall(loginUser.getWid());
-		int emergancyno = lsupporterService.getmainemergancyno(loginUser.getWid());
+		int emergencyall = lsupporterService.getmainemergencyall(loginUser.getWid());
+		int emergencymiss = lsupporterService.getmainemergencymiss(loginUser.getWid());
+		int emergencyclear = lsupporterService.getmainemergencyclear(loginUser.getWid());
 		
 		model.addAttribute("futureDate",futureDate);
 		model.addAttribute("clearDate",clearDate);
 		model.addAttribute("notmachine",notmachine);
-		model.addAttribute("emergancyall",emergancyall);
-		model.addAttribute("emergancyno",emergancyno);
+		model.addAttribute("emergencyall",emergencyall);
+		model.addAttribute("emergencymiss",emergencymiss);
+		model.addAttribute("emergencyclear",emergencyclear);
 		
 		return "lsupporter/main";
 	}
@@ -97,11 +99,6 @@ public class LsupporterController {
 		 return "lsupporter/memberdetail";
 	}
 	
-	
-	@RequestMapping("/ers/lsupporter/reportForm")
-	public String ShowreportFormh() {
-		return "lsupporter/reportForm";
-	}
 	@RequestMapping("/ers/lsupporter/idcheckForm")
 	public String ShowidcheckForm() {
 		return "lsupporter/idcheckForm";

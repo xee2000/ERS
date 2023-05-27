@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import kr.ac.ers.command.SearchCriteria;
 import kr.ac.ers.dto.LsupporterVO;
+import kr.ac.ers.dto.MemberVO;
 import kr.ac.ers.service.LsupporterService;
 
 @Controller
@@ -29,11 +30,13 @@ public class LsupporterListController {
 		public String Shownowcare() {
 			return "lsupporter/nowcare";
 		}
+	
+	 
 
 		@RequestMapping("/ers/lsupporter/carelist")
 		public String Showcarelist(String searchType,String keyword, String perPageNum, String page, Model model, HttpServletRequest request,HttpSession session) {
 			SearchCriteria cri = new SearchCriteria();
-			if(perPageNum == null || perPageNum.isEmpty())perPageNum="5";
+			if(perPageNum == null || perPageNum.isEmpty())perPageNum="10";
 			if(page == null || page.isEmpty())page="1";
 			if(searchType == null) searchType="";
 			if(keyword==null) keyword="";
@@ -51,7 +54,7 @@ public class LsupporterListController {
 		@RequestMapping("/ers/lsupporter/reportlist")
 		public String Showreportlist(String searchType, String keyword, String perPageNum, String page, Model model, HttpSession session, HttpServletRequest request) {
 			SearchCriteria cri = new SearchCriteria();
-			if(perPageNum == null || perPageNum.isEmpty())perPageNum="5";
+			if(perPageNum == null || perPageNum.isEmpty())perPageNum="10";
 			if(page == null || page.isEmpty())page="1";
 			if(searchType == null) searchType="";
 			if(keyword==null) keyword="";
@@ -105,10 +108,10 @@ public class LsupporterListController {
 		}
 
 
-		@RequestMapping("/ers/lsupporter/emergancylist")
+		@RequestMapping("/ers/lsupporter/emergencylist")
 		public String Showemergancylist(String searchType, String keyword, String perPageNum, String page,Model model, HttpServletRequest request, HttpServletResponse response , HttpSession session) {
 			SearchCriteria cri = new SearchCriteria();
-			if(perPageNum == null || perPageNum.isEmpty())perPageNum="5";
+			if(perPageNum == null || perPageNum.isEmpty())perPageNum="10";
 			if(page == null || page.isEmpty())page="1";
 			if(searchType == null) searchType="";
 			if(keyword==null) keyword="";
@@ -121,10 +124,10 @@ public class LsupporterListController {
 			 LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");
 			 
 		 
-			Map<String,Object> dataMap = lsupporterService.getemergancyList(loginUser.getWid(),cri);
+			Map<String,Object> dataMap = lsupporterService.getemergencyList(loginUser.getWid(),cri);
 		
 			model.addAttribute("dataMap", dataMap);
-			return "lsupporter/emergancylist";
+			return "lsupporter/emergencylist";
 		}
 		
 		

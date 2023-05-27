@@ -3,6 +3,7 @@ package kr.ac.ers.dto;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Getter;
@@ -23,6 +24,8 @@ public class ReportVO {
 	private String reDone;
 	private String viewCheck;
 	private String reType;
+	
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date occurTime;
 	private String occurType;
 	private String callCheck;
