@@ -4,20 +4,21 @@
 <link rel="stylesheet" href="/resources/lsupporter/css/lsupporterstatus.css">
 
 
-<div class="row">
-<div class="col-12 flex justify-between mb-1">
-<button type="button" class="btn btn-dark btn-md">뒤로가기</button>
-<button type="button" class="btn btn-success btn-md">수정</button>
-</div>
+<div class="mb-1 text-right card-primary">
+<button type="button" class="btn btn-success btn-md mr-2" onclick="location.href='/ers/lsupporter/lsupporterstatusModifyForm'">수정</button>
 </div>
 <div class="container-fluid">
 <div class="row">
-<div class="col-md-3">
+<div class="col-md-3" style="margin-top: 11%;">
 
-<div class="card card-primary card-outline">
+<div class="card card-primary card-outline" style="height:96%;">
 <div class="card-body box-profile">
 <div class="text-center">
-<img class="profile-user-img img-fluid img-circle" src="/resources/lsupporter/img/노인1.jpg" style="width:300px;height:300px;" alt="">
+<div class="row"  style="height:200px;">
+<div class="mailbox-attachments clearfix col-md-12" style="text-align: center;">							
+<div id="pictureView" class="lsuppPicture"  data-id="${lsupporter.wid }" style="border: 1px solid green; height: 290px; width: 200px; margin: 0 auto;"></div>														
+	</div>
+</div>
 </div>
 </div>
 
@@ -35,7 +36,7 @@
 </ul>
 </div>
 <div class="card-body">
-<div class="tab-content">
+<div class="tab-content" style="margin:0 auto;">
 <div class="tab-pane active" id="activity">
 
 <form class="form-horizontal">
@@ -48,10 +49,6 @@
   <tr>
     <th scope="row">생년월일</th>
     <td>${lsupporter.birth }</td>
-  </tr>
-  <tr>
-    <th scope="row">주소</th>
-    <td>${lsupporter.address }</td>
   </tr>
   <tr>
     <th scope="row">이메일</th>
@@ -89,9 +86,6 @@
 
 </div>
 <div style="height:400px;"></div>
-
-
-
 
 
 

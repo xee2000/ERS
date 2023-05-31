@@ -15,8 +15,10 @@
 
 
 <div class="row">
-<div class="col-12 flex justify-start mb-1">
-<button type="button" class="btn btn-dark btn-lg" onclick="history.back();">뒤로가기</button>
+<div class="col-12 mb-2 text-right">
+<button type="button" class="btn btn-primary  btn-md mr-2" onclick="location.href='/ers/lsupporter/lifemodifyForm?id=${memberdetail.id}'">정보수정
+<i class="fa fa-check"></i>
+</button>
 </div>
 </div>
 <div class="container-fluid">
@@ -26,9 +28,9 @@
 <div class="card card-primary card-outline">
 <div class="card-body box-profile">
 <div class="text-center" style="width:300px;height:300px;">
-<span class="manPicture" data-id="${member.id }" style="width:80px;height:80px;display:block;margin:0 auto;"></span>
+<span class="manPicture" data-id="${memberdetail.id }" style="width:80px;height:80px;display:block;margin:0 auto;"></span>
 </div>
-<h3 class="profile-username text-center">${memberdetail.name }</h3>
+<h3 class="profile-username text-center" style="color:black;">${memberdetail.name }</h3>
 </div>
 
 </div>
@@ -55,11 +57,18 @@
 <div class="col-md-9">
 <div class="card">
 <div class="card-header p-2">
-<ul class="nav nav-pills justify-around">
-<li class="nav-item"><a class="tab_name" href="#activity" data-toggle="tab">대상자정보</a></li>
-<li class="nav-item"><a class="tab_name" href="#systemstatus" data-toggle="tab">서비스정보</a></li>
-<li class="nav-item"><a class="tab_name" href="#carewordlist" data-toggle="tab">보고서</a></li>
+<ul class="nav nav-tabs nav-pills justify-around">
+  <li class="nav-item">
+    <a class="tab_name active" href="#activity" data-toggle="tab">대상자정보</a>
+  </li>
+  <li class="nav-item">
+    <a class="tab_name" href="#systemstatus" data-toggle="tab">서비스정보</a>
+  </li>
+  <li class="nav-item">
+    <a class="tab_name" href="#carewordlist" data-toggle="tab">보고서</a>
+  </li>
 </ul>
+
 </div>
 <div class="card-body">
 <div class="tab-content">
@@ -67,7 +76,7 @@
 
 <form class="form-horizontal">
 
-<table class="tg type03" style="undefined;table-layout: fixed;">
+<table class="type03">
 <colgroup>
 <col style="width: 210.333333px">
 <col style="width: 480.333333px">
@@ -75,54 +84,69 @@
 <thead>
   <tr>
 
-    <th class="tg-0lax" style="color:black;font-weight:normal;">대상자명 </th>
-    <th class="tg-0lax" style=:color:black;>${memberdetail.name }</th>
+    <th class="tg-bbbb">대상자명 </th>
+    <td class="title_name">${memberdetail.name }</td>
   </tr>
 </thead>
 <tbody>
   <tr>
-    <td class="tg-0lax">나이</td>
-    <td class="tg-0lax">${memberdetail.birth }</td>
+    <th class="tg-bbbb">나이</th>
+    <td class="title_name">${memberdetail.age }</td>
   </tr>
   <tr>
-    <td class="tg-0lax">전화번호</td>
+    <th class="tg-bbbb">전화번호</th>
     <td class="tg-0lax">${memberdetail.phone }</td>
   </tr>
   <tr>
-    <td class="tg-0lax">고위험수준</td>
-    <td class="tg-0lax">${memberdetail.caution }</td>
+    <th class="tg-bbbb">고위험수준</th>
+   
+   <c:if test="${memberdetail.caution == 'Y'}">
+    <td class="tg-0lax">고위험</td>
+    </c:if>
+    <c:if test="${memberdetail.caution == 'N'}">
+    <td class="tg-0lax">양호</td>
+    </c:if>
   </tr>
   <tr>
-    <td class="tg-0lax">심장박동기 부착여부</td>
-    <td class="tg-0lax">${memberdetail.pacemaker }</td>
+    <th class="tg-bbbb">심장박동기 부착여부</th>
+    <c:if test="${memberdetail.pacemaker =='Y'}">
+    <td class="tg-0lax">부착</td>
+    </c:if>
+    <c:if test="${memberdetail.pacemaker =='N'}">
+    <td class="tg-0lax">미부착</td>
+    </c:if>
   </tr>
     <tr>
-    <td class="tg-0lax">대상자 구분</td>
+    <th class="tg-bbbb">대상자 구분</th>
     <td class="tg-0lax">${memberdetail.memType }</td>
   </tr>
   <tr>
-    <td class="tg-0lax">거주지주소</td>
+    <th class="tg-bbbb">거주지주소</th>
     <td class="tg-0lax">${memberdetail.address }</td>
   </tr>
   <tr>
-    <td class="tg-0lax">질병정보</td>
+    <th class="tg-bbbb">질병정보</th>
     <td class="tg-0lax">${memberdetail.orgdisease }</td>
   </tr>
   <tr>
-    <td class="tg-0lax">복용약물내역</td>
+    <th class="tg-bbbb">복용약물내역</th>
     <td class="tg-0lax">${memberdetail.drug }</td>
   </tr>
+   <tr>
+    <th class="tg-bbbb">알러지</th>
+    <td class="tg-0lax">${memberdetail.allergy }</td>
+  </tr>
   <tr>
-    <td class="tg-0lax">심리상태</td>
+    <th class="tg-bbbb">심리상태</th>
     <td class="tg-0lax">${memberdetail.mentalstatus }</td>
   </tr>
   <tr>
-    <td class="tg-0lax">가족과의 친분도</td>
+    <th class="tg-bbbb">가족과의 친분도</th>
     <td class="tg-0lax">${memberdetail.fam_rel }</td>
   </tr>
 <c:forEach var="ecall" items="${memberEcall}"  varStatus="state">
   <tr>
-    <td class="tg-0lax">긴급연락망${state.index+1 }<br/>(이름/관계/연락처)</td>
+    <th class="tg-bbbb">긴급연락망${state.index+1 }<br/>(이름/관계/연락처)</th>
     <td class="tg-0lax">
     ${ecall.name }/${ecall.relation }/${ecall.phone }
 </td>
@@ -140,22 +164,21 @@
 
 <div class="tab-pane" id="systemstatus">
 <div class="form-group row">
-<table class="tg" style="undefined;table-layout: fixed; width: 100%;margin-left:7%;">
+<table class="type03" style="width: 100%;">
 <colgroup>
-<col style="width: 150.333333px">
+<col style="width: 200.333333px">
 <col style="width: 110.333333px">
 <col style="width: 140.333333px">
 <col style="width: 80.333333px">
 <col style="width: 120.333333px">
-<col style="width: 80.333333px">
 </colgroup>
 <thead>
   <tr>
-    <th class="tg-baqh">기기명</th>
-    <th class="tg-baqh">모델명</th>
-    <th class="tg-baqh">설치일자</th>
-    <th class="tg-baqh">교체여부</th>
-    <th class="tg-baqh">교체일자</th>
+    <th class="tg-bbbb">기기명</th>
+    <th class="tg-bbbb" >모델명</th>
+    <th class="tg-bbbb">설치일자</th>
+    <th class="tg-bbbb">교체<br/>여부</th>
+    <th class="tg-bbbb">교체<br/>일자</th>
   </tr>
 </thead>
 <c:forEach items="${machinList }" var="machin">
@@ -163,11 +186,11 @@
 <fmt:formatDate value="${machin.changeDate }" pattern="yy-MM-dd" var="changeDate"/>
 <tbody>
   <tr>
-    <td class="tg-0lax">${machin.name }</td>
-    <td class="tg-0lax">${machin.MCode }</td>
-    <td class="tg-0lax">${regDate }</td>
-    <td class="tg-0lax">${machin.changeStatus }</td>
-    <td class="tg-0lax">${changeDate }</td>
+    <th class="tg-bbbb">${machin.name }</th>
+    <td class="tg-0lax" style="text-align:center;">${machin.MCode }</td>
+    <td class="tg-0lax" style="text-align:center;">${regDate }</td>
+    <td class="tg-0lax" style="text-align:center;">${machin.changeStatus }</td>
+    <td class="tg-0lax" style="text-align:center;">${changeDate }</td>
   </tr>
   
 </tbody>
@@ -213,19 +236,22 @@
 <div class="col-12">
 <div class="mt-2 mb-2 button buttens">
 <button type="button" 
-class="btn mr-1 btn-primary regist" onclick="location.href='/ers/lsupporter/reportForm?id='+${memberdetail.id}">등록</button>
+class="btn mr-1 btn-primary btn-md regist" onclick="location.href='/ers/lsupporter/reportForm?id='+${memberdetail.id}">등록
+<i class="fa fa-check"></i>
+</button>
 <button type="button" 
-class="btn btn-danger delete">삭제</button>
+class="btn btn-danger btn-md delete">삭제
+  <i class="fa fa-times"></i>
+</button>
 </div>
 </div>
 </div>
 
 <div class="row">
-<div class="col-10">
-<form action="#" method="get">
-<table class="tg" style="undefined;table-layout: fixed; width: 492px">
+<div class="col-12">
+<table class="type03" style="width:100%;">
 <colgroup>
-<col style="width: 120.333333px">
+<col style="width: 60.333333px">
 <col style="width: 55.333333px">
 <col style="width: 140.333333px">
 <col style="width: 80.333333px">
@@ -235,27 +261,24 @@ class="btn btn-danger delete">삭제</button>
 <thead>
   <tr>
     <th class="tg-baqh">
-      <input type="checkbox" id="selectAll">
-      전체선택
+     선택
     </th>
-    <th class="tg-baqh">번호</th>
-    <th class="tg-baqh">상담일자</th>
-    <th class="tg-baqh">상담자</th>
-    <th class="tg-baqh">보고서 구분</th>
-    <th class="tg-baqh">열람 여부</th>
+    <th class="tg-0lax">번호</th>
+    <th class="tg-0lax">상담일자</th>
+    <th class="tg-0lax">상담자</th>
+    <th class="tg-0lax">보고서<br/>구분</th>
+    <th class="tg-0lax">열람<br/>여부</th>
   </tr>
 </thead>
 	<c:forEach items="${reportList }" var="report" varStatus="status">
 <fmt:formatDate value="${report.regDate }" pattern="yy-MM-dd" var="regDate"/>
 <tbody>
   <tr>
-    <td class="tg-0lax">
-      <input type="checkbox" class="text-center check_box" style="width:30px;height:30px;margin-top:7px;"/>
-    </td>
-    <td class="tg-0lax">${status.index+1 }</td>
-    <td class="tg-0lax">${regDate }</td>
-    <td class="tg-0lax">${report.name }</td>
-    <td class="tg-0lax">
+     <td class="tg-73oq" style="text-align:center;"><input type="checkbox"  class="text-center check_box checkbox" name="selectedMembers" value="${report.RNo}"/></td>
+    <td style="text-align:center;"class="">${report.RNo }번</td>
+    <td style="text-align:center;" class="">${regDate }</td>
+    <td  style="text-align:center;"class="">${report.name }</td>
+    <td  style="text-align:center;"class="">
 <c:if test="${report.reType == 1}">응급상황</c:if>
   <c:if test="${report.reType == 2}">고객면담</c:if>
   <c:if test="${report.reType == 3}">건강상태</c:if>
@@ -264,15 +287,14 @@ class="btn btn-danger delete">삭제</button>
   <c:if test="${report.reType == 6}">악성대상자신고</c:if>
   <c:if test="${report.reType == 7}">장비점검</c:if>
 </td>
-    <td class="tg-0lax">
-<c:if test="${report.viewCheck == 0 }">N</c:if>
- <c:if test="${report.viewCheck == 1 }">Y</c:if>
+    <td style="text-align:center;" class="">
+<c:if test="${report.viewCheck == 0 }">미열람</c:if>
+ <c:if test="${report.viewCheck == 1 }">열람</c:if>
 </td>
   </tr>
 </tbody>
 </c:forEach>
 </table>
-</form>
 </div>
 </div>
 <br/><br/>

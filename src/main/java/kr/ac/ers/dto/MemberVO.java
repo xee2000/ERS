@@ -31,5 +31,6 @@ public class MemberVO {
 	private String allergy;
 	private String equipment;
 	private String afNo;
+	private String memType;
 
 }

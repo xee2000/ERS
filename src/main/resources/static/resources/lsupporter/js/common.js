@@ -7,44 +7,6 @@ function OpenWindow(UrlStr, WinTitle, WinWidth, WinHeight) {
 	win.focus() ; 
 }
 
-  function nonlist_go(page) {
-	  
-	  
-	  var data = {
-		      "searchType": $('select[name="searchType"]').val(),
-		      "keyword": $('input[name="keyword"]').val(),
-		      "page": page, // Pass the page parameter
-		      "perPageNum": 3 // Hard-coded to 5 for displaying 5 results per page
-		    };
-
-    $.ajax({
-      type: "GET",
-      data: data,
-      url: "/ers/lsupporter/nonmemberreportFormAction",
-      async: true,
-      contentType: 'application/json',
-      dataType: "json",
-      success: function(response) {
-        // Update the table with the search results
-        var table = $('.searchlist');
-        table.find('tbody').empty(); // Clear existing table body
-
-        // Iterate over the search results and generate table rows
-        $.each(response.memberList, function(index, member) {
-          var row = '<tr>' +
-            '<td class="modal_content">' + member.picture + '</td>' +
-            '<td onclick="membersearch();" class="modal_content" id="modalname">' + member.name + '</td>' +
-            '<td class="modal_content">' + member.gender + '</td>' +
-            '<td class="modal_content">' + member.birth + '</td>' +
-            '</tr>';
-          table.find('tbody').append(row); // Append each row to the table body
-        });
-      },
-      error: function(error) {
-        console.log(error);
-      }
-    });
-  };
 
 function list_go(page,url){
 	
@@ -53,41 +15,14 @@ function list_go(page,url){
 	$("form#jobForm input[name='perPageNum']").val($('select[name="perPageNum"]').val());
 	$("form#jobForm input[name='searchType']").val($('select[name="searchType"]').val());
 	$("form#jobForm input[name='keyword']").val($('input[name="keyword"]').val());
+	$("form#jobForm input[name='startday']").val($('input[name="startday"]').val());
+	$("form#jobForm input[name='endday']").val($('input[name="endday"]').val());
 	
 	$('form#jobForm').attr({
 		action:url,
 		method:'get'
 	}).submit();
 }
-
-function emergancylist_go(page,url){
-	
-	$("form#jobForm input[name='page']").val(page);
-	$("form#jobForm input[name='perPageNum']").val($('select[name="perPageNum"]').val());
-	$("form#jobForm input[name='searchType']").val($('select[name="searchType"]').val());
-	$("form#jobForm input[name='keyword']").val($('input[name="keyword"]').val());
-	
-	$('form#jobForm').attr({
-		action:url,
-		method:'get'
-	}).submit();
-}
-
-function reportlist_go(page,url){
-	
-	
-	$("form#jobForm input[name='page']").val(page);
-	$("form#jobForm input[name='perPageNum']").val($('select[name="perPageNum"]').val());
-	$("form#jobForm input[name='searchType']").val($('select[name="searchType"]').val());
-	$("form#jobForm input[name='keyword']").val($('input[name="keyword"]').val());
-	$("form#jobForm input[name='id']").val($('input[name="id"]').val());
-	
-	$('form#jobForm').attr({
-		action:url,
-		method:'get'
-	}).submit();
-}
-
 
 
 
@@ -98,17 +33,26 @@ function CloseWindow(parentURL){
 	window.close();
 }
 
-//사진출력
-function MemberPictureThumb(contextPath){
-	 for(var target of document.querySelectorAll('.manPicture')){	
-		 var id = target.getAttribute('data-id');
-		 
-		target.style.backgroundImage="url('"+contextPath+"/member/getPicture?id="+id+"')";				
-		target.style.backgroundPosition="center";
-		target.style.backgroundRepeat="no-repeat";
-		target.style.backgroundSize="cover";
-	 }
-}
+  function MemberPictureThumb(contextPath) {
+    for (var target of document.querySelectorAll('.manPicture')) {
+      var id = target.getAttribute('data-id');
+      target.style.backgroundImage = "url('/ers/manager/member/getPicture?id=" + id + "')";
+      target.style.backgroundPosition = "center";
+      target.style.backgroundRepeat = "no-repeat";
+      target.style.backgroundSize = "cover";
+    }
+  }
+
+
+ function lsupporterPictureThumb(contextPath) {
+    for (var target of document.querySelectorAll('.lsuppPicture')) {
+      var wid = target.getAttribute('data-id');
+      target.style.backgroundImage = "url('/ers/lsupporter/getLsuppPicture?wid=" + wid + "')";
+      target.style.backgroundPosition = "center";
+      target.style.backgroundRepeat = "no-repeat";
+      target.style.backgroundSize = "cover";
+    }
+  }
 
 
 var contextPath="";

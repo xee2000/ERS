@@ -2,7 +2,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@include file="../include/lsupporter/head.jspf"%>
- <%@include file="../include/lsupporter/toastUiEditorLib.jspf" %>
 <link rel="stylesheet" href="/resources/lsupporter/css/reportdetail.css">
 <!--   <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
 
@@ -19,9 +18,7 @@
 
 <div class="row">
 <div class="col-12 flex justify-end mb-1">
-<button type="button" class="btn btn-dark btn-md backbtn" onclick="history.back();">뒤로가기</button>
 <c:if test="${reportlsupporter.viewCheck == 0}">
-<button type="submit" class="btn btn-primary btn-md" onclick="submit_go('reportModify', '${reportlsupporter.RNo}');">수정</button>
 <button type="submit" class="btn btn-danger btn-md ml-2" onclick="submit_go('remove', '${reportlsupporter.RNo}');">삭제</button>
 </c:if>
 </div>
@@ -33,6 +30,12 @@
 <col style="width: 252.333333px">
 </colgroup>
 <thead>
+<tr>
+    <th >보고서 번호</th>
+    <td style="text-align:center;">
+   ${reportlsupporter.RNo }번
+    </td>
+  </tr>
   <tr>
     <th >보고서 작성일자</th>
     <fmt:formatDate value="${reportlsupporter.regDate }" pattern="yy-MM-dd" var="regDate"/>
@@ -107,6 +110,13 @@
                     ${reportlsupporter.callCheck }
                     </td>
                 </tr>
+                 <fmt:formatDate value="${reportlsupporter.occurTime }" pattern="yy-MM-dd" var="occurTime"/>
+                <tr>
+                    <th style="text-align: center;">면담등록일</th>
+                    <td> 
+                    ${occurTime }
+                    </td>
+                </tr>
             </table>
             <!-- 추가적인 테이블 내용을 추가할 수 있습니다. -->
         </div>
@@ -142,7 +152,14 @@
   <tr>
     <th class="">확인내용</th>
     <td class="">
-    <textarea class="summernote"  readonly id="content" name="content" rows="3">${reportlsupporter.content }</textarea>
+    ${reportlsupporter.content }
+    </td>
+  </tr>
+  <fmt:formatDate value="${reportlsupporter.occurTime }" pattern="yy-MM-dd" var="occurTime"/>
+  <tr>
+    <th class="">상태등록일</th>
+    <td class="">
+  ${occurTime }
     </td>
   </tr>
   
@@ -194,6 +211,14 @@
 </c:forEach>
     </td>
   </tr>
+  <fmt:formatDate value="${reportlsupporter.occurTime }" pattern="yy-MM-dd" var="occurTime"/>
+   <tr>
+    <th class="">취소요청일</th>
+    <td class="">
+    ${occurTime }
+    </td>
+  </tr>
+  
 </thead>
 </table>
 </div>
@@ -226,6 +251,13 @@
 <td colspan="3">
  ${reportlsupporter.content }
 </td>
+</tr>
+<tr>
+    <th class="">장기부재 등록일</th>
+    <td class="">
+    ${reportlsupporter.occurTime }
+    </td>
+  </tr>
 </thead>
 <tbody>
 </tbody>
@@ -266,7 +298,7 @@
   <tr>
     <th>사건내용</th>
     <td>
-      <textarea name="content" readonly rows="3">${reportlsupporter.content }</textarea>
+      ${reportlsupporter.content }
     </td>
   </tr>
     <tr>

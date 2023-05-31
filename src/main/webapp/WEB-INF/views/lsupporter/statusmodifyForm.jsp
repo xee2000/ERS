@@ -7,8 +7,9 @@
 <h3 class="title">생활지원사 정보수정</h3>
 <div class="row">
 <div class="col-12 flex justify-end mb-1">
-<button type="button" class="btn btn-dark btn-lg ml-3 backbtn">뒤로가기</button>
-<button type="button" class="btn btn-primary btn-lg">수정하기</button>
+<button type="button" class="btn btn-primary btn-lg">수정하기
+<i class="fa fa-check"></i>
+</button>
 </div>
 </div>
 <div class="row">

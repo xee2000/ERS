@@ -1,16 +1,20 @@
 package kr.ac.ers.dto;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 
 @Getter
 @Setter
+@ToString
 public class MemberDetailVO {
 	
 	private String id;
+	private String age;
 	private String name;
 	private String birth;
 	private String address;
@@ -51,4 +55,22 @@ public class MemberDetailVO {
 	private Date changeDate;
 	private String changeStatus;
 	private String lNum;
+	
+	public void setBirth(String birth) {
+		this.birth = birth;
+	    Calendar now = Calendar.getInstance(); //년월일시분초
+	    Integer currentYear = now.get(Calendar.YEAR);
+	       
+	    //태어난년도를 위한 세팅
+	    String stringBirthYear = "19"+this.birth.substring(0, 2);
+	    //태어난 년도
+	    Integer birthYear = Integer.parseInt(stringBirthYear);
+
+	    // 현재 년도 - 태어난 년도 => 나이 (만나이X)
+	     int age = (currentYear - birthYear +1);
+	     String outputAge = Integer.toString(age);
+	        
+	     setAge(outputAge + "세");
+		
+	}
 }

@@ -8,85 +8,6 @@
 	width:100%;
 	
 }
-.note-modal-content{
-	height:380px;
-	
-}
-#closeBtn {
-  float:right;
-  font-weight: bold;
-  color: #777;
-  font-size:25px;
-  cursor: pointer;
-}
-#resume-button {
-  width: 160px;
-  height: 30px;
-  margin-left:2%;
-  margin-bottom:5px;
-  }
-  #resume-form {
- transition: height 0.5s ease;
-  overflow: hidden;
-}
-#popupBtn {
-  width: 150px;
-  height: 50px;
-}
-#btnWrap {
-width: 500px;
-margin: 100px auto;
-}
-#modalWrap {
-  position: fixed;
-  z-index: 1;
-  padding-top: 100px;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.4);
-}
-
-/* Specific styles for modal body */
-#modalBody {
-  width: 900px;
-  height: 800px;
-  padding: 30px;
-  margin: 0 auto;
-  border: 1px solid #777;
-  background-color: #fff;
-}
-#closeBtn {
-  float:right;
-  font-weight: bold;
-  color: #777;
-  font-size:25px;
-  cursor: pointer;
-}
-.search_container{
-  position: relative;
-}
-.searchinput{
-border:1px solid black;
-border-radius:5px;
-font-size:1.5rem;
-height:50px;
-text-align:left;
-}
-.searchinput_name{
-	text-align:center;
-	
-}
-.modal_content{
-	text-align:center;
-	
-}
-.fa-search{
-font-size:2rem;
-
-}
 
   .card-title{
   font-size:2rem;
@@ -116,7 +37,7 @@ body{
 font-size:2rem;
 }
 .backbtn{
-margin-right:81%;
+margin-right:85%;
 }
 .tg-2xpi{
 	

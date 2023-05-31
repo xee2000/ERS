@@ -16,22 +16,28 @@ font-size:1.5rem;
 height: 49.32px;
 }
 .keywordoption{
-border:1px solid black;
 border-radius:5px;
-font-size:2.5rem;
+font-size:2rem;
+  appearance: none;
+  background-color: #f8f9fa;
+  border: none;
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 14px;
+  color: #333;
+  width: 200px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-
+.keywordoption option {
+  color: #333;
+}
 
 input[type="date"]::-webkit-datetime-edit-fields-wrapper,
 input[type="date"]::-webkit-datetime-edit-text {
 font-size:30px;
 width:200px;
 }
-.keywordoption{
-border:1px solid black;
-border-radius:5px;
-font-size:2.5rem;
-}
+
 
 .fa-search{
 font-size:1.5rem;

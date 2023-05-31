@@ -1,3 +1,24 @@
+.profile-user-img {
+  transition: transform 0.3s;
+}
+
+.profile-user-img.zoomed {
+  transform: scale(0.8); /* Adjust the scale value as per your requirement */
+}
+
+
+.info_text, .small-box-footer{
+	font-family: 'MBC1961GulimM';
+}
+
+.loginname{
+	font-family: 'MBC1961GulimM';
+	text-align:end;
+	font-size:2rem;
+    color: #333;
+    text-align: end;
+}
+
 .profile-username{
 font-family: 'MBC1961GulimM';
 font-size:2rem;
@@ -27,6 +48,7 @@ padding:10px;
 }
 .box-profile{
 border:2px solid orange;
+border-radius:10px;
 }
 .small-box{
 display:inline-block;

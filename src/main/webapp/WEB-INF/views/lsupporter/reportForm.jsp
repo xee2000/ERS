@@ -340,26 +340,60 @@
 
 <script>
 function regist_go() {
-    var gubunVal = $('#formGubunValue').val();
-    var forms = $('form#sendForm' + gubunVal);
-                   
-    Swal.fire({
-        icon: "success",
-        title: "제출",
-        text: `보고서가 제출되었습니다.`,
-        showCancelButton: false,
-        confirmButtonText: "확인",
-    }).then((res) => {
-    	forms.submit(); 
-        /* Read more about isConfirmed, isDenied below */
-        if (res.isConfirmed) {
-         	//삭제 요청 처리
-        }
-        else{
-            //취소
-        }
-    });
-}
+	  var gubunVal = $('#formGubunValue').val();
+	  var form = $('form#sendForm' + gubunVal);
+	  var textarea = form.find('textarea[name="content"]:visible');
+	  var dateInput = form.find('input[type="date"][name="occurTime"]');
+	  var selectedDate = dateInput.val();
+	  var callCheck = form.find('input[type="radio"][name="callCheck"]:checked');
+
+	  var missingFields = [];
+
+	  if (textarea.length > 0 && textarea.val().trim() === '') {
+	    missingFields.push(textarea.attr('name'));
+	  }
+
+	  if (dateInput.is(':visible') && (selectedDate === null || selectedDate.trim() === '')) {
+	    missingFields.push(dateInput.attr('name'));
+	  }
+
+	  if (!callCheck.length) {
+	    missingFields.push(callCheck.attr('name'));
+	  }
+
+	  // Filter out hidden inputs from missingFields
+	  missingFields = missingFields.filter(function(fieldName) {
+	    return form.find('[name="' + fieldName + '"]').is(':visible');
+	  });
+
+	  if (missingFields.length > 0) {
+	    // Show validation error message
+	    Swal.fire({
+	      title: '내용을 수정해주세요',
+	      text: '보고서에 입력되지 않은 항목이 있습니다.\n확인해주세요.',
+	      icon: 'warning',
+	      confirmButtonText: '확인'
+	    });
+	  } else {
+	    Swal.fire({
+	      title: '제출하시겠습니까?',
+	      icon: 'question',
+	      showCancelButton: true,
+	      confirmButtonText: '확인',
+	      cancelButtonText: '취소'
+	    }).then((result) => {
+	      if (result.isConfirmed) {
+	        Swal.fire({
+	          title: '정상 제출되었습니다.',
+	          icon: 'success'
+	        }).then(() => {
+	          form.submit();
+	        });
+	      }
+	    });
+	  }
+	}
+
 </script>
 
 <script>
@@ -407,6 +441,61 @@ function toggleReportForms() {
   }
 
 </Script>
+
+<script>
+$(document).ready(function() {
+	  // 보고서 구분 선택 시 보고서 열기 및 이전 보고서 내용 초기화
+	  $('#formGubunValue').change(function() {
+	    var selectedValue = $(this).val();
+	    var selectedForm = $('#sendForm' + selectedValue);
+
+	    // 이전에 작성한 보고서 내용 초기화
+	    selectedForm.find('textarea[name="content"]').val('');
+	    selectedForm.find('input[name="uploadFile"]').val('');
+	    selectedForm.find('input[name="callCheck"]').prop('checked', false);
+	    selectedForm.find('input[name="occurTime"]').val('');
+
+	    // 초기화되지 않은 radio input 요소의 선택 해제
+	    selectedForm.find('input[type="radio"][name="content"]:checked').prop('checked', false);
+
+	    // 초기화되지 않은 text input 요소의 값 초기화 및 가려짐 설정
+	    selectedForm.find('input[type="text"][name="content"]').val('').hide();
+
+	    // 초기화되지 않은 date input 요소의 값 초기화
+	    selectedForm.find('input[type="date"][name="occurTime"]').val('');
+
+	    // 선택한 보고서 열기
+	    $('.report-form').hide();
+	    selectedForm.show();
+
+	    // 기타 선택 시 펼쳐지는 input 요소 초기화 및 가려짐 설정
+	    if (selectedValue === '2') { // 건강상태보고서 선택 시
+	      var detailsInput = selectedForm.find('#detailsInput');
+	      var otherRadio = selectedForm.find('input[type="radio"][name="content"][value="기타"]');
+
+	      // radio 선택 변경 시 펼쳐지는 input 요소 가려짐 설정
+	      selectedForm.find('input[type="radio"][name="content"]').change(function() {
+	        if ($(this).val() === '기타') {
+	          detailsInput.show();
+	        } else {
+	          detailsInput.hide();
+	        }
+	      });
+	    }
+	  });
+	});
+
+</script>
+
+<script>
+$(document).ready(function() {
+	  $('form').submit(function() {
+	    $(this).find('input[type="hidden"]').prop('required', false);
+	    $(this).find('input[type="hidden"]:hidden').prop('required', true);
+	  });
+	});
+
+</script>
 
 
 <div style="height:300px;"></div>

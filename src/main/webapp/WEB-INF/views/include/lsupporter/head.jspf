@@ -29,6 +29,8 @@
 	<script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
 
 <script src="/bootstrap/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+ <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
 
 </head>
 <body class="body">
@@ -36,13 +38,13 @@
 	<nav class="main-header navbar navbar-expand-md navbar-light navbar-white" style="padding: 0px;">
   <div class="header_main">
     <a href="/ers/lsupporter/main" class="navbar-brand">
-      <img src="/resources/lsupporter/img/노인.png" class="brand-image img-circle elevation-3" style="opacity: 0.8; width: 200px; height: 150px;">
+      <img src="/resources/lsupporter/img/사회복지사이미지.png" class="brand-image img-circle elevation-3" style="opacity: 0.8; width: 200px; height: 150px;">
     </a>
     <button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="head_title collapse navbar-collapse order-3" id="navbarCollapse">
-      <span class="brand_text" onclick="location.href='/ers/lsupporter/main'">응급안전안심서비스</span>
+      <div class="brand_text" onclick="location.href='/ers/lsupporter/main'">응급안전안심서비스</div>
     </div>
 
     <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
@@ -61,8 +63,8 @@
       </c:if>
       <!-- 공지사항 -->
       <li class="item_bar">
-        <img style="width: 70px; height: 70px;" onclick="location.href='/ers/lsupporter/notice'" src="/resources/lsupporter/img/확성기.png" alt="">
-        <div class="header_menu_name" onclick="location.href='/ers/lsupporter/notice'">공지사항</div>
+        <img style="width: 70px; height: 70px;"src="/resources/lsupporter/img/확성기.png" alt="">
+        <div class="header_menu_name">공지사항</div>
       </li>
       <!-- 마이페이지 -->
       <c:if test="${loginUser != null }">

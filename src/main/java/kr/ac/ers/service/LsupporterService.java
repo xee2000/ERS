@@ -8,6 +8,7 @@ import java.util.Map;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import kr.ac.ers.command.PageMaker;
 import kr.ac.ers.command.SearchCriteria;
@@ -74,18 +75,21 @@ public class LsupporterService {
 
 	}
 
-	public Map<String, Object> getMemberList(SearchCriteria cri, String wid) throws SQLException {
+	public Map<String, Object> getMemberList(SearchCriteria cri, String wid, String startday, String endday) throws SQLException {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		Map<String, Object> returnMap = new HashMap<>();
 		returnMap.put("cri", cri);
 		returnMap.put("wid", wid);
+		returnMap.put("startday", startday);
+		returnMap.put("endday", endday);
+		
 		RowBounds rowbounds = new RowBounds(cri.getStartRowNum(), cri.getPerPageNum());
 
 		List<MemberReportLsupporterVO> memberList = lsupportMapper.selectSearchMemberList(returnMap, rowbounds);
 		dataMap.put("memberList", memberList);
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
-		pageMaker.setTotalCount(lsupportMapper.selectSearchMemberListCount(cri, wid));
+		pageMaker.setTotalCount(lsupportMapper.selectSearchMemberListCount(returnMap));
 		dataMap.put("pageMaker", pageMaker);
 
 		return dataMap;
@@ -173,7 +177,7 @@ public class LsupporterService {
 	}
 	
 
-	public Map<String, Object> getemergencyList(String wid, SearchCriteria cri) {
+	public Map<String, Object> getemergencyList(String wid, SearchCriteria cri, String startday, String endday) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		Map<String, Object> returnMap = new HashMap<>();
 		returnMap.put("cri", cri);
@@ -191,8 +195,9 @@ public class LsupporterService {
 	}
 
 	public MemberDetailVO getMemberDetail(String wid, String id) {
-
+		 
 		return lsupportMapper.selectMemberDetail(wid, id);
+				
 	}
 
 	public List<MemberDetailVO> getMemberEcall(String wid, String id) {
@@ -269,11 +274,11 @@ public class LsupporterService {
 	}
 
 	public void remove(int rNo) {
-	    lsupportMapper.remove(rNo);
-	    List<ReportFileVO> reportfiles = reportFileMapper.selectReportFileByrNo(rNo);
+		List<ReportFileVO> reportfiles = reportFileMapper.selectReportFileByrNo(rNo);
 	    if (reportfiles != null && !reportfiles.isEmpty()) {
-	        reportFileMapper.remove(reportfiles.get(0).getRNo());
+	    	reportFileMapper.remove(reportfiles.get(0).getRNo());
 	    }
+	    lsupportMapper.remove(rNo);
 	}
 
 	public MemberVO getmemById(String id) {
@@ -292,10 +297,65 @@ public class LsupporterService {
 		dataMap.put("memberList", memberList);
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
-		pageMaker.setTotalCount(lsupportMapper.selectSearchemergencyMemberListCount(cri, wid));
+		pageMaker.setTotalCount(lsupportMapper.selectSearchemergencyMemberListCount(returnMap));
 		dataMap.put("pageMaker", pageMaker);
 
 		return dataMap;
 	}
+
+	public Map<String, Object> getLsupportermembersearchList(String wid, SearchCriteria cri) {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		Map<String, Object> returnMap = new HashMap<>();
+		returnMap.put("cri", cri);
+		returnMap.put("wid", wid);
+		RowBounds rowbounds = new RowBounds(cri.getStartRowNum(), cri.getPerPageNum());
+
+		List<MemberEmergencyReportVO> memberList = lsupportMapper.selectSearchemergencyMemberList(returnMap, rowbounds);
+		dataMap.put("memberList", memberList);
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(lsupportMapper.selectSearchemergencyMemberListCount(returnMap));
+		dataMap.put("pageMaker", pageMaker);
+
+		return dataMap;
+	}
+
+	public Map<String, Object> getNowReportList(SearchCriteria cri, String wid) {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		Map<String, Object> returnMap = new HashMap<>();
+		returnMap.put("cri", cri);
+		returnMap.put("wid", wid);
+		RowBounds rowbounds = new RowBounds(cri.getStartRowNum(), cri.getPerPageNum());
+
+		List<MemberReportLsupporterVO> memberList = lsupportMapper.selectNowReportList(returnMap, rowbounds);
+		int educationCount = lsupportMapper.educationreportCount(wid);
+		int lifereportCount = lsupportMapper.lifereportCount(wid);
+		int falsereportCount = lsupportMapper.falsereportCount(wid);
+		int longreportCount = lsupportMapper.longreportCount(wid);
+		int devilreportCount = lsupportMapper.devilreportCount(wid);
+		dataMap.put("memberList", memberList);
+		dataMap.put("educationCount", educationCount);
+		dataMap.put("lifereportCount", lifereportCount);
+		dataMap.put("falsereportCount", falsereportCount);
+		dataMap.put("longreportCount", longreportCount);
+		dataMap.put("devilreportCount", devilreportCount);
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(lsupportMapper.selectNowReportListCount(returnMap));
+		dataMap.put("pageMaker", pageMaker);
+
+		return dataMap;
+	}
+
+
+	public MemberReportLsupporterVO getlifemodifyForm(String id,int wCode) {
+		MemberReportLsupporterVO report = lsupportMapper.selectlifemodifyForm(id, wCode);
+		return report;
+	}
+
+	public void getlifemodify(String orgdisease, String drug, String mentalstatus, String allergy, String id, String wid) {
+		lsupportMapper.lifemodify(orgdisease,drug,mentalstatus,allergy,id,wid);
+	}
+
 
 }

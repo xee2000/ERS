@@ -16,6 +16,8 @@ font-size:2rem;
 height:49.33px;
 margin-right:10px;
 font-size:2.5rem;
+border:1px solid black;
+border-radius:5px;
 }
 .buttens{
 text-align:end
@@ -174,3 +176,4 @@ margin-left:6%;
 .tg .tg-td-border:last-child {
   border-right: none;
 }
+

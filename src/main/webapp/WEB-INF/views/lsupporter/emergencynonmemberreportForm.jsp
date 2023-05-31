@@ -1,12 +1,11 @@
+
 	<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@include file="../include/lsupporter/head.jspf"%>
 <%--  <%@include file="../include/lsupporter/toastUiEditorLib.jspf" %> --%>
 <link rel="stylesheet" href="/resources/lsupporter/css/nonmemberreportForm.css">
- <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-   <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
 <div class="tab-pane" id="carewordlist">
 <div class="col-md-12">
 <div class="reportForm">
@@ -20,9 +19,7 @@
 <c:set var="ymd" value="<%=new java.util.Date()%>" />
 <div class="row">
 <div class="col-12 flex justify-end mb-1">
-<button type="submit" class="btn btn-primary btn-layer-3_1" onclick="regist_go();">제출
-
-</button>
+<button type="submit" class="btn btn-primary btn-md"  onclick="regist_go();">제출</button>
 </div>
 </div>
 
@@ -72,8 +69,7 @@
       </div>
       <div class="card-body" style="display: none;" >
         <div class="form-group">
-          <form action="nonmemberreportregist" name="form" method="post" role="form" id="sendForm1">
-       	   <input type="hidden" name="content"/>
+          <form action="emergencynonmemberreportregist" name="form" method="post" role="form" id="sendForm1">
         <div class="report-content">
             <table>
                 <tr>
@@ -131,7 +127,7 @@
 <div class="form-group">
 <div class="report">
         <div class="report-content">
-<form action="emergencyreportregist" name="form" method="post" role="form" id="sendForm2">
+<form action="emergencynonmemberreportregist" name="form" method="post" role="form" id="sendForm2">
 <input type="hidden" name="wCode" value="${wCode}">
 <input type="hidden" name="id" value="">
 <input type="hidden" name="sCode" value="">
@@ -149,7 +145,7 @@
   <tr>
     <th class="">확인내용</th>
     <td class="">
-    <textarea class="summernote" id="summernote" name="content" rows="3"></textarea>
+    <textarea class="summernote" id="content" name="content" rows="3"></textarea>
     </td>
   </tr>
   <tr>
@@ -181,7 +177,7 @@
 </div>
 <div class="card-body" style="display: none;" >
 <div class="form-group">
-	<form action="emergencyreportregist" name="form" method="post" role="form" id="sendForm3" enctype="multipart/form-data">
+	<form action="emergencynonmemberreportregist" name="form" method="post" role="form" id="sendForm3" enctype="multipart/form-data">
 	<input type="hidden" name="wCode" value="${wCode}">
 	<input type="hidden" name="id" value="">
     <input type="hidden" name="sCode" value="">
@@ -228,7 +224,7 @@
 </div>
 <div class="card-body"  style="display: none;">
 <div class="form-group">
-<form action="emergencyreportregist" name="form" method="post" role="form" id="sendForm4">
+<form action="emergencynonmemberreportregist" name="form" method="post" role="form" id="sendForm4">
 <input type="hidden" name="id" value="">
 <input type="hidden" name="sCode" value="">
 <input type="hidden" name="wCode" value="${wCode}">
@@ -277,7 +273,7 @@
 </div>
 <div class="card-body" style="display: none;">
 <div class="form-group">
-<form action="emergencyreportregist" name="form" method="post" role="form" id="sendForm5"  enctype="multipart/form-data">
+<form action="emergencynonmemberreportregist" name="form" method="post" role="form" id="sendForm5"  enctype="multipart/form-data">
 <input type="hidden" name="wCode" value="${wCode}">
 <input type="hidden" name="id" value="">
 <input type="hidden" name="sCode" value="">
@@ -304,7 +300,7 @@
   <tr>
     <th>사건내용</th>
     <td>
-      <textarea name="content" rows="3"></textarea>
+      <textarea name="content" id="content" rows="3"></textarea>
     </td>
   </tr>
     <tr>
@@ -327,24 +323,17 @@
 function regist_go() {
 	  var gubunVal = $('#formGubunValue').val();
 	  var form = $('form#sendForm' + gubunVal);
-	  var textareas = form.find('textarea[name="content"]:visible');
+	  var textarea = form.find('textarea[name="content"]:visible');
 	  var dateInput = form.find('input[type="date"][name="occurTime"]');
 	  var selectedDate = dateInput.val();
 	  var callCheck = form.find('input[type="radio"][name="callCheck"]:checked');
 	  var memberId = $('#memberIdInput').val();
 	  var memberSCode = $('#memberSCodeInput').val();
 	  var missingFields = [];
-
 	  // Perform existing validation checks
-	  textareas.each(function() {
-	    var textarea = $(this);
-	    var textareaVal = textarea.val().trim().replace(/,/g, ''); // Remove commas
-	    textarea.val(textareaVal); // Update textarea value
-
-	    if (textareaVal === '') {
-	      missingFields.push(textarea.attr('name'));
-	    }
-	  });
+	  if (textarea.length > 0 && textarea.val().trim() === '') {
+	    missingFields.push(textarea.attr('name'));
+	  }
 
 	  if (dateInput.is(':visible') && (selectedDate === null || selectedDate.trim() === '')) {
 	    missingFields.push(dateInput.attr('name'));
