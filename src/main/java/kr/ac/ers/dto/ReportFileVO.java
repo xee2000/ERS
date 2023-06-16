@@ -1,6 +1,5 @@
 package kr.ac.ers.dto;
 
-import java.io.File;
 import java.util.Date;
 import java.util.List;
 

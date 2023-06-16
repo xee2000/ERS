@@ -6,7 +6,6 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
 
-import kr.ac.ers.command.SearchCriteria;
 import kr.ac.ers.dto.LsupporterStatusVO;
 import kr.ac.ers.dto.LsupporterVO;
 import kr.ac.ers.dto.MemberDetailVO;

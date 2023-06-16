@@ -16,15 +16,7 @@
 <div class="row body_case">
 		<div class="col-12">
 				<div class="category_date_menubar">
-						<div class="date mb-4">
-								<input type="date" name="startday" value="${startday }" style="width: 250px; border: 1px solid black;">
-		&nbsp;&nbsp;
-		<span class="dash">-</span>
-		&nbsp;&nbsp;
-		<input type="date" name="endday" value="${endday }" id="enddayInput" oninput="datesearch();"
-				style="width: 250px; border: 1px solid black;"
-		>
-</div>
+						
 <div class="search_bar search_bar_main flex mb-2">
 		<div class="search_bar flex">
 			<select class="keywordoption mr-2" name="searchType" id="searchType">
@@ -32,7 +24,7 @@
   <option value="all" ${cri.searchType eq 'all' ? 'selected':'' }>전체</option>
   <option value="n" ${cri.searchType eq 'n' ? 'selected':'' }>대상자명</option>
   <option value="g" ${cri.searchType eq 'g' ? 'selected':'' }>성별</option>
-  <option value="r" ${cri.searchType eq 'r' ? 'selected':'' }>활동여부</option>
+  <option value="vc" ${cri.searchType eq 'vc' ? 'selected':'' }>열람여부</option>
 </select>
 			<div class="search_container flex items-center border border-gray-300 rounded-md overflow-hidden">
   <input class="searchinput w-full py-2 px-4 pr-10" autocomplete="off" type="text" name="keyword" required value="${cri.keyword}" id="search_keyword" onkeyup="handleEnterKey(event)">
@@ -57,6 +49,15 @@
 				</div>
 		</div>
 </div>
+
+
+<div class="row">
+  <div class="col-12" style="background-color: #f2f2f2; padding: 10px; border-radius: 5px;">
+    <p style="font-weight: bold; color: red; font-size: 1.5rem; margin-bottom: 10px;">내역 안내:</p>
+    <p style="font-size: 1.5rem; line-height: 1.4;">본 내역의 경우 응급상황이 발생된 대상자의 누적된 응급내역이 표시됩니다. 보고서를 작성하신 경우 "작성완료"로 표기되며, 미작성은 "미작성"으로 표기됩니다. 작성완료의 경우 작성된 보고서 열람이 가능합니다.</p>
+  </div>
+</div>
+
 
 <div class="row">
 		<div class="col-12 memberlistable">
@@ -96,7 +97,7 @@
 					</c:if>
 
 					<c:if test="${emergency.RNo != 0 }">
-							<td class="tg-73oq" onclick="location.href='/ers/lsupporter/reportdetail?rNo='+${emergency.RNo}">
+							<td class="tg-73oq" style="color:blue;text-decoration:underline;" onclick="location.href='/ers/lsupporter/reportdetail?rNo='+${emergency.RNo}">
 									작성완료</td>
 					</c:if>
 

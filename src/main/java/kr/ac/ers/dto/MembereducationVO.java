@@ -37,6 +37,7 @@ public class MembereducationVO {
 	private String outConfirm;
 	private Date outTime;
 	private Date activeTime;	
+	private int d_day;
 	
 	public void setBirth(String birth) {
 		this.birth = birth;

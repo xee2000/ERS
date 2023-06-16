@@ -2,9 +2,7 @@ package kr.ac.ers.controller.lsupporter;
 
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
@@ -12,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -20,8 +17,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -231,6 +228,12 @@ public class LsupporterController {
 	public String Showemergancydetail() {
 		return "lsupporter/emergancydetail";
 	}
+		
+	@RequestMapping("/ers/lsupporter/sitemain")
+	public String Showsitemain() {
+		return "lsupporter/sitemain";
+	}
+	
 	@RequestMapping("/ers/lsupporter/calmain")
 	public String Showcalmain() {
 		return "lsupporter/calmain";
@@ -397,7 +400,6 @@ public class LsupporterController {
 	@PostMapping("/ers/lsupporter/login")
 	   public String login(String wid, String pwd, HttpSession session) throws Exception {
 	      String url = "redirect:/ers/lsupporter/main";
-	      String message;
 
 	      int result = lsupporterService.login(wid, pwd);
 
@@ -406,15 +408,13 @@ public class LsupporterController {
 	    	  LsupporterVO loginUser = lsupporterService.getLsupporter(wid);
 	         session.setAttribute("loginUser", loginUser);
 			session.setMaxInactiveInterval(600 * 30); 
-	         return url;
+			  break;
 	      case 1: //아이디 불일치
-	         url="redirect:/ers/lsupporter/loginForm";
-	         message="아이디를 잘못입력하셨습니다.";
-	         return message;
+	         url="redirect:/ers/lsupporter/loginForm?error=1";
+	         break;
 	      case 2: //패스워드 불일치
-	    	  url="redirect:/ers/lsupporter/loginForm";
-	    	  message="패스워드를 잘못입력하셨습니다.";
-	    	  return message;
+	    	  url="redirect:/ers/lsupporter/loginForm?error=2";
+	          break;
 	    	  
 	      }
 

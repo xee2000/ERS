@@ -1,6 +1,7 @@
 package kr.ac.ers.controller.lsupporter;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class LsupporterListController {
 	 @RequestMapping("/ers/lsupporter/nowreportList")
 		public String Shownowcare(String searchType,String keyword, String perPageNum, String page, Model model, HttpServletRequest request,HttpSession session) {
 		 SearchCriteria cri = new SearchCriteria();
-			if(perPageNum == null || perPageNum.isEmpty())perPageNum="10";
+			if(perPageNum == null || perPageNum.isEmpty())perPageNum="5";
 			if(page == null || page.isEmpty())page="1";
 			if(searchType == null) searchType="";
 			if(keyword==null) keyword="";
@@ -46,7 +47,7 @@ public class LsupporterListController {
 		@RequestMapping("/ers/lsupporter/carelist")
 		public String Showcarelist(String searchType,String keyword, String perPageNum, String page, Model model, HttpServletRequest request,HttpSession session) {
 			SearchCriteria cri = new SearchCriteria();
-			if(perPageNum == null || perPageNum.isEmpty())perPageNum="10";
+			if(perPageNum == null || perPageNum.isEmpty())perPageNum="5";
 			if(page == null || page.isEmpty())page="1";
 			if(searchType == null) searchType="";
 			if(keyword==null) keyword="";
@@ -64,7 +65,7 @@ public class LsupporterListController {
 		@RequestMapping("/ers/lsupporter/reportlist")
 		public String Showreportlist(String searchType, String keyword, String perPageNum, String page,String startday, String endday, Model model, HttpSession session,HttpServletRequest request) {
 			SearchCriteria cri = new SearchCriteria();
-			if(perPageNum == null || perPageNum.isEmpty())perPageNum="10";
+			if(perPageNum == null || perPageNum.isEmpty())perPageNum="5";
 			if(page == null || page.isEmpty())page="1";
 			if(searchType == null) searchType="";
 			if(keyword==null) keyword="";
@@ -90,7 +91,7 @@ public class LsupporterListController {
 		@RequestMapping("/ers/lsupporter/emergencylist")
 		public String Showemergancylist(String searchType, String keyword, String perPageNum, String page,Model model,String startday, String endday, HttpServletRequest request, HttpServletResponse response , HttpSession session) {
 			SearchCriteria cri = new SearchCriteria();
-			if(perPageNum == null || perPageNum.isEmpty())perPageNum="10";
+			if(perPageNum == null || perPageNum.isEmpty())perPageNum="5";
 			if(page == null || page.isEmpty())page="1";
 			if(searchType == null) searchType="";
 			if(keyword==null) keyword="";
@@ -129,6 +130,37 @@ public class LsupporterListController {
 		
 			model.addAttribute("dataMap", dataMap);
 			return "lsupporter/emergencylist";
+		}
+		
+		@RequestMapping("/ers/lsupporter/list")
+		public String Showlist(String searchType, String keyword, String perPageNum, String page,Model model,String startday, String endday, HttpServletRequest request, HttpServletResponse response , HttpSession session) {
+			SearchCriteria cri = new SearchCriteria();
+			if(perPageNum == null || perPageNum.isEmpty())perPageNum="5";
+			if(page == null || page.isEmpty())page="1";
+			if(searchType == null) searchType="";
+			if(keyword==null) keyword="";
+			cri.setPage(page);
+			cri.setPerPageNum(perPageNum);
+			cri.setSearchType(searchType);
+			cri.setKeyword(keyword);
+			
+			session= request.getSession();
+			 LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");
+		
+			try {
+				Map<String,Object> carelist = lsupporterService.getLsupportercarelist(cri,loginUser.getWid());
+				Map<String, Object> reportlist = lsupporterService.getMemberList(cri,loginUser.getWid(),startday,endday);
+				Map<String,Object> emergencylist = lsupporterService.getemergencyList(loginUser.getWid(),cri,startday,endday);
+				
+				model.addAttribute("carelist",carelist);
+				model.addAttribute("reportlist",reportlist);
+				model.addAttribute("emergencylist",emergencylist);
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return "lsupporter/list";
 		}
 		
 		

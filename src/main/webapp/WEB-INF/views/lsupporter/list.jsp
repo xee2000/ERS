@@ -8,7 +8,16 @@
 <link rel="stylesheet" href="/resources/lsupporter/css/emergencylist.css">
 <!-- Content Wrapper. Contains page content -->
 
-
+<style>
+.buttonname{
+color:black;
+font-weight:bold;
+border:2px solid #EFEFEF;
+background-color:#EFEFEF;
+border-radius:5px;
+font-size:2.5rem;
+}
+</style>
 
 		<!-- Main content -->
 		<section class="content-header">
@@ -34,11 +43,10 @@
 </div>
 </div>
 
-<div class='row'>
-  <div class="col-12" style="background-color: #f2f2f2; padding: 10px; border-radius: 5px;">
-    <p style="font-weight: bold; color: red; font-size: 1.5rem;">정기상담 안내:</p>
-    <p style="font-size: 1.5rem;">본 정기상담의 경우 <span style="font-weight: bold; color: red;">장애인으로 구분된 경우</span> 보고서 작성일 기준 <span style="font-weight: bold; color: red;">14일</span>로 등록되며, <span style="font-weight: bold; color: red;">독거노인의 경우</span> <span style="font-weight: bold; color: red;">30일</span>로 등록됩니다.</p>
-  </div>
+<div class="row flex">
+<a href="#" id="all" class="buttonname mr-2">전체</a>
+<a href="#" id="care" class="buttonname mr-2">돌봄</a>
+<a href="#" id="emergency" class="buttonname mr-2">응급</a>
 </div>
 
 

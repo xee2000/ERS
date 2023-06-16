@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import kr.ac.ers.dto.MemberVO;
 import kr.ac.ers.dto.ReportFileVO;
 
 @Mapper

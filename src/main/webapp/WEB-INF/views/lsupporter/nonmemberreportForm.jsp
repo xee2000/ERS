@@ -511,6 +511,43 @@ function closeWindow(memberId, memberSCode) {
   parentWindow.postMessage(data, '*');
 }
 </script>
+<script>
+// Get all occurTime input elements
+var occurTimeInputs = document.querySelectorAll("input[name='occurTime']");
+
+// Add event listener for date change to each input
+occurTimeInputs.forEach(function(occurTimeInput) {
+  occurTimeInput.addEventListener('change', function() {
+    // Get the selected date from the input
+    var selectedDate = new Date(occurTimeInput.value);
+
+    // Get the current date
+    var currentDate = new Date();
+
+    // Set the current date and selected date to the same day at midnight
+    currentDate.setHours(0, 0, 0, 0);
+    selectedDate.setHours(0, 0, 0, 0);
+
+    // Compare the selected date with the current date
+    if (selectedDate > currentDate) {
+      // Display warning message using Swal
+      Swal.fire({
+        title: '경고',
+        text: '당일또는 이전날짜로 선택바랍니다.',
+        icon: 'warning',
+        confirmButtonText: '확인'
+      });
+
+      // Reset the date input value
+      occurTimeInput.value = "";
+    }
+  });
+});
+</script>
+
+
+
+
 
 
 <div style="height:300px;"></div>

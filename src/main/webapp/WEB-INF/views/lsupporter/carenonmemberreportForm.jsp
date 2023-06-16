@@ -517,7 +517,33 @@ function closeWindow(memberId, memberSCode) {
   parentWindow.postMessage(data, '*');
 }
 </script>
+<script>
+// Get the occurTime input element
+var occurTimeInput = document.querySelector("input[name='occurTime']");
 
+// Add event listener for date change
+occurTimeInput.addEventListener('change', function() {
+  // Get the selected date from the input
+  var selectedDate = new Date(occurTimeInput.value);
+
+  // Get the current date
+  var currentDate = new Date();
+
+  // Compare the selected date with the current date
+  if (selectedDate > currentDate) {
+    // Display warning message using Swal
+    Swal.fire({
+      title: '경고',
+      text: '날짜를 다시 선택해주세요.',
+      icon: 'warning',
+      confirmButtonText: '확인'
+    });
+    
+    // Reset the date input value
+    occurTimeInput.value = "";
+  }
+});
+</script>
 
 <div style="height:300px;"></div>
 

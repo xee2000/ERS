@@ -2,8 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@include file="../include/lsupporter/head.jspf"%>
-<link rel="stylesheet" href="/resources/lsupporter/css/main.css">
-<c:set var="specialDay" value="" />
 
 		<!-- Main content -->
 		<section class="content-header" style="height:1000px">
@@ -18,7 +16,7 @@
         <div class="col-lg-3 col-3">
           <div class="small-box bg-primary">
            <div class="inner" id="noweducationactive">
-      <h3>${futureDate+clearDate+notmachine }명</h3>
+      <h3>${futureDate+notmachine }명</h3>
       <p class="info_text">상담전체</p>
     </div>
             <div class="icon">
@@ -39,18 +37,7 @@
             <a href="carelist" class="small-box-footer">자세히 보기 <i class="fas fa-arrow-circle-right"></i></a>
           </div>
         </div>
-        <div class="col-lg-3 col-3">
-          <div class="small-box bg-primary">
-            <div class="inner" id="noweducationclear">
-              <h3>${clearDate }명</h3>
-              <p class="info_text">상담완료(기기수신)</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-bag"></i>
-            </div>
-            <a href="carelist" class="small-box-footer">자세히 보기 <i class="fas fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
+       
         <div class="col-lg-3 col-3">
           <div class="small-box bg-warning">
             <div class="inner" id="noweducationmiss">
@@ -132,41 +119,16 @@
 <div class="card card-outline">
   <div class="card-body box-profile">
     <div class="text-center">
-      <a href="/ers/lsupporter/carelist" onclick="zoomImage(event, this)">
+      <a href="/ers/lsupporter/list" onclick="zoomImage(event, this)">
         <img class="profile-user-img img-fluid rounded-circle" src="/resources/lsupporter/img/돌봄업무.jpg" style="width: 200px; height: 200px;" alt="" onmouseover="this.style.border='2px solid red';" onmouseout="this.style.border='none';">
       </a>
     </div>
-    <h3 class="profile-username text-center" onclick="location.href='/ers/lsupporter/carelist'" style="cursor: pointer;">돌봄업무</h3>
+    <h3 class="profile-username text-center" onclick="location.href='/ers/lsupporter/list'" style="cursor: pointer;">보고서</h3>
   </div>
 </div>
 
 </li>
 
-<li class="col-3">
-  <div class="card card-outline">
-    <div class="card-body box-profile">
-      <div class="text-center">
-        <a href="/ers/lsupporter/emergencylist" onclick="zoomImage(event, this)">
-          <img class="profile-user-img img-fluid rounded-circle" src="/resources/lsupporter/img/응급.png" style="width: 200px; height: 200px;" alt="" onmouseover="this.style.border='2px solid red';" onmouseout="this.style.border='none';">
-        </a>
-      </div>
-      <h3 class="profile-username text-center" onclick="location.href='/ers/lsupporter/emergencylist'" style="cursor: pointer;">응급발생내역</h3>
-    </div>
-  </div>
-</li>
-
-<li class="col-3">
-  <div class="card card-outline">
-    <div class="card-body box-profile">
-      <div class="text-center">
-        <a href="/ers/lsupporter/reportlist" onclick="zoomImage(event, this)">
-          <img class="profile-user-img img-fluid rounded-circle" src="/resources/lsupporter/img/보고서.jpg" style="width: 200px; height: 200px;" alt="" onmouseover="this.style.border='2px solid red';" onmouseout="this.style.border='none';">
-        </a>
-      </div>
-      <h3 class="profile-username text-center" onclick="location.href='/ers/lsupporter/reportlist'" style="cursor: pointer;">보고서</h3>
-    </div>
-  </div>
-</li>
 
 </ul>
 </div>
@@ -199,6 +161,7 @@ $("#noweducationclear").load(currentLocation + ' #noweducationclear');
 }
 setInterval('autoRefresh_div()', 3000);
 </script> 
+
 
 <Script>
 function zoomImage(event, element) {

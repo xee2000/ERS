@@ -16,8 +16,10 @@
 		<div class="col-12">
 		<div class="category_date_menubar">
 		<div class="date mb-4">
-		<input type="date"  name="startday" value="${startday }" style="width:250px;border:1px solid black;">&nbsp;&nbsp;<span class="dash">-</span>
-		&nbsp;&nbsp;<input type="date" name="endday" value="${endday }" id="enddayInput" oninput="datesearch();" style="width:250px;border:1px solid black;">
+		<input type="date" name="startday" value="${param.startday}" style="width:250px;border:1px solid black;">
+&nbsp;&nbsp;<span class="dash">-</span>
+&nbsp;&nbsp;<input type="date" name="endday" value="${param.endday}" id="enddayInput" oninput="datesearch();" style="width:250px;border:1px solid black;">
+
 		</div>
   <div class="search_bar search_bar_main flex mb-1">
  <div class="search_bar flex">
@@ -201,6 +203,20 @@ function deleteSelectedMembers() {
 }
 </script>
 
+
+<script>
+/* window.onload = function() {
+  // 페이지 로드 시 이전에 저장된 값을 불러옴.
+  var startday = localStorage.getItem("startday");
+  var endday = localStorage.getItem("endday");
+
+  if (startday && endday) { // 두 값 모두 있는 경우에만 적용
+    document.getElementsByName("startday")[0].value = startday;
+    document.getElementsByName("endday")[0].value = endday;
+  }
+} */
+
+</script>
 <%@include file="../include/lsupporter/foot.jspf"%>
 
 

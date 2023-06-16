@@ -72,7 +72,7 @@
       </div>
       <div class="card-body" style="display: none;" >
         <div class="form-group">
-          <form action="nonmemberreportregist" name="form" method="post" role="form" id="sendForm1">
+          <form action="emergencynonmeberreportregist" name="form" method="post" role="form" id="sendForm1">
        	   <input type="hidden" name="content"/>
         <div class="report-content">
             <table>
@@ -131,7 +131,7 @@
 <div class="form-group">
 <div class="report">
         <div class="report-content">
-<form action="emergencyreportregist" name="form" method="post" role="form" id="sendForm2">
+<form action="emergencynonmeberreportregist" name="form" method="post" role="form" id="sendForm2">
 <input type="hidden" name="wCode" value="${wCode}">
 <input type="hidden" name="id" value="">
 <input type="hidden" name="sCode" value="">
@@ -181,7 +181,7 @@
 </div>
 <div class="card-body" style="display: none;" >
 <div class="form-group">
-	<form action="emergencyreportregist" name="form" method="post" role="form" id="sendForm3" enctype="multipart/form-data">
+	<form action="emergencynonmeberreportregist" name="form" method="post" role="form" id="sendForm3" enctype="multipart/form-data">
 	<input type="hidden" name="wCode" value="${wCode}">
 	<input type="hidden" name="id" value="">
     <input type="hidden" name="sCode" value="">
@@ -228,7 +228,7 @@
 </div>
 <div class="card-body"  style="display: none;">
 <div class="form-group">
-<form action="emergencyreportregist" name="form" method="post" role="form" id="sendForm4">
+<form action="emergencynonmeberreportregist" name="form" method="post" role="form" id="sendForm4">
 <input type="hidden" name="id" value="">
 <input type="hidden" name="sCode" value="">
 <input type="hidden" name="wCode" value="${wCode}">
@@ -277,7 +277,7 @@
 </div>
 <div class="card-body" style="display: none;">
 <div class="form-group">
-<form action="emergencyreportregist" name="form" method="post" role="form" id="sendForm5"  enctype="multipart/form-data">
+<form action="emergencynonmeberreportregist" name="form" method="post" role="form" id="sendForm5"  enctype="multipart/form-data">
 <input type="hidden" name="wCode" value="${wCode}">
 <input type="hidden" name="id" value="">
 <input type="hidden" name="sCode" value="">
@@ -526,7 +526,33 @@ function closeWindow(memberId, memberSCode) {
   parentWindow.postMessage(data, '*');
 }
 </script>
+<script>
+// Get the occurTime input element
+var occurTimeInput = document.querySelector("input[name='occurTime']");
 
+// Add event listener for date change
+occurTimeInput.addEventListener('change', function() {
+  // Get the selected date from the input
+  var selectedDate = new Date(occurTimeInput.value);
+
+  // Get the current date
+  var currentDate = new Date();
+
+  // Compare the selected date with the current date
+  if (selectedDate > currentDate) {
+    // Display warning message using Swal
+    Swal.fire({
+      title: '경고',
+      text: '날짜를 다시 선택해주세요.',
+      icon: 'warning',
+      confirmButtonText: '확인'
+    });
+    
+    // Reset the date input value
+    occurTimeInput.value = "";
+  }
+});
+</script>
 
 <div style="height:300px;"></div>
 

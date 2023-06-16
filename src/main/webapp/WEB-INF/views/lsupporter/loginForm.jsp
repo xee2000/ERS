@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
   <title>Life Supporter</title>
   <style>
@@ -80,32 +81,53 @@
       </div>
     </div>
   </div>
+ 
 </body>
-</html>
 
-<script>
-function logincheck(){
-	  var loginwid = $('input[name="wid"]').val();
-	  var loginpwd = $('input[name="pwd"]').val();
-	  
-	
-	if(loginwid == ""){
-		   Swal.fire({
-	            icon: 'error',                       
-	            title: '아이디 미입력.',        
-	            text: '아이디를 입력해주세요.', 
-	        });
-		return false;
-	}
-	if(loginpwd == ""){
-		 Swal.fire({
-	            icon: 'error',                         // Alert 타입
-	            title: '비밀번호 미입력.',         // Alert 제목
-	            text: '비밀번호를 입력해주세요.',  // Alert 내용
-	        });
-		return false;
-	}
+ <script>
+function logincheck() {
+    var loginwid = $('input[name="wid"]').val();
+    var loginpwd = $('input[name="pwd"]').val();
 
-	
+    if (loginwid.trim() === "") {
+        Swal.fire({
+            icon: 'error',
+            title: 'ID not entered.',
+            text: 'Please enter your ID.',
+        });
+        return false;
+    }
+
+    if (loginpwd.trim() === "") {
+        Swal.fire({
+            icon: 'error',
+            title: 'Password not entered.',
+            text: 'Please enter your password.',
+        });
+        return false;
+    }
+    if (${param.error} === 1) {
+    	 Swal.fire({
+             icon: 'error',
+             title: 'ID 실패.',
+             text: '아이디를 잘못 입력하셨습니다.',
+         });
+       $('input[name="wid"]').val('');
+        return false;
+    }
+
+    if (${param.error} === 2) {
+        Swal.fire({
+            icon: 'error',
+            title: 'PWD 실패.',
+            text: '비밀번호를 잘못 입력하셨습니다..',
+        });
+        $('input[name="pwd"]').val('');
+        return false;
+    }
+    return true;
 }
 </script>
+
+
+</html>

@@ -13,8 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -261,7 +259,7 @@ public class LsupporterReportController {
 		return url;
 	}
 	
-	@PostMapping(value = "/ers/lsupporter/emergencynonmeberreportregist", produces = "text/plain;charset=utf-8")
+	@PostMapping(value = "/ers/lsupporter/emergencynonmemberreportregist", produces = "text/plain;charset=utf-8")
 	public String emergencyregist(@DateTimeFormat(pattern = "yyyy-MM-dd")MemberReportLsupporterVO reportlsupporter,HttpSession session, HttpServletRequest request) throws Exception {
 		String url = "redirect:/ers/lsupporter/emergencylist";
 		session = request.getSession();
