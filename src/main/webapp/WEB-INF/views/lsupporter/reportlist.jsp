@@ -1,8 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@include file="../include/lsupporter/head.jspf"%>
-<c:set var="memberList" value="${dataMap.memberList }"/>
+<c:set var="reportList" value="${dataMap.reportList }"/>
 <c:set var="pageMaker" value="${dataMap.pageMaker}"/>
 <c:set var="cri" value="${pageMaker.cri }"/>
 <link rel="stylesheet" href="/resources/lsupporter/css/emergencylist.css">
@@ -74,28 +73,28 @@
   </tr>
 </thead>
 <tbody>
-<c:forEach items="${memberList }" var="member">
-<fmt:formatDate value="${member.regDate}" var="regDate" pattern="yy-MM-dd" />
+<c:forEach items="${reportList }" var="report">
+<fmt:formatDate value="${report.regDate}" var="regDate" pattern="yy-MM-dd" />
   <tr>
-    <td class=tg-73oq> <input type="checkbox" class="text-center check_box checkbox" name="selectedMembers" value="${member.RNo}"/></td>
-<td class="tg-3xi5">${member.RNo }번</td> 
+    <td class=tg-73oq> <input type="checkbox" class="text-center check_box checkbox" name="selectedMembers" value="${report.RNo}"/></td>
+<td class="tg-3xi5">${report.RNo }번</td> 
     <td class="tg-73oq">
-    <span class="manPicture" data-id="${member.id }" style="width:80px;height:80px;display:block;margin:0 auto;"></span>
+    <span class="manPicture" data-id="${report.id }" style="width:80px;height:80px;display:block;margin:0 auto;"></span>
     </td>
-    <td class="tg-73oq membername" onclick="location.href='/ers/lsupporter/memberdetail?id='+${member.id}">${member.name }</td>
-    <td class="tg-73oq">${member.gender }</td>
- <td class="tg-73oq" onclick="location.href='/ers/lsupporter/reportdetail?rNo='+${member.RNo}">
-  <c:if test="${member.reType == 1}">응급상황</c:if>
-  <c:if test="${member.reType == 2}">고객면담</c:if>
-  <c:if test="${member.reType == 3}">건강상태</c:if>
-  <c:if test="${member.reType == 4}">서비스취소</c:if>
-  <c:if test="${member.reType == 5}">장기부재</c:if>
-  <c:if test="${member.reType == 6}">악성대상자신고</c:if>
-  <c:if test="${member.reType == 7}">장비점검</c:if>
+    <td class="tg-73oq membername" onclick="location.href='/ers/lsupporter/memberdetail?id='+${report.id}">${report.name }</td>
+    <td class="tg-73oq">${report.gender }</td>
+ <td class="tg-73oq" onclick="location.href='/ers/lsupporter/reportdetail?rNo='+${report.RNo}">
+  <c:if test="${report.reType == 1}">응급상황</c:if>
+  <c:if test="${report.reType == 2}">고객면담</c:if>
+  <c:if test="${report.reType == 3}">건강상태</c:if>
+  <c:if test="${report.reType == 4}">서비스취소</c:if>
+  <c:if test="${report.reType == 5}">장기부재</c:if>
+  <c:if test="${report.reType == 6}">악성대상자신고</c:if>
+  <c:if test="${report.reType == 7}">장비점검</c:if>
  </td>
     <td class="tg-73oq">${regDate }</td>
- <c:if test="${member.viewCheck == 0 }"><td class="tg-3xi5">미열람</td></c:if>
- <c:if test="${member.viewCheck == 1 }"><td class="tg-3xi5">열람</td></c:if>
+ <c:if test="${report.viewCheck == 0 }"><td class="tg-3xi5">미열람</td></c:if>
+ <c:if test="${report.viewCheck == 1 }"><td class="tg-3xi5">열람</td></c:if>
   </tr>
   </c:forEach>
 </tbody>
@@ -111,113 +110,10 @@
 
 </section>
 <!--foot -->
-<script>
-  // Get the "전체선택" checkbox element
-  var selectAllCheckbox = document.getElementById("selectAll");
-
-  // Get all other checkboxes in the table
-  var checkboxes = document.getElementsByClassName("check_box");
-
-  // Add an event listener to the "전체선택" checkbox
-  selectAllCheckbox.addEventListener("change", function () {
-    // Loop through all checkboxes and set their checked property to match the "전체선택" checkbox
-    for (var i = 0; i < checkboxes.length; i++) {
-      checkboxes[i].checked = selectAllCheckbox.checked;
-    }
-  });
-
-  // Add event listeners to the other checkboxes to update the "전체선택" checkbox
-  for (var i = 0; i < checkboxes.length; i++) {
-    checkboxes[i].addEventListener("change", function () {
-      // Check if all other checkboxes are checked
-      var allChecked = true;
-      for (var j = 0; j < checkboxes.length; j++) {
-        if (!checkboxes[j].checked) {
-          allChecked = false;
-          break;
-        }
-      }
-
-      // Update the "전체선택" checkbox based on the state of the other checkboxes
-      selectAllCheckbox.checked = allChecked;
-    });
-  }
-</script>
 
 
-<script>
-function deleteSelectedMembers() {
-  var selectedMembers = [];
-  var checkboxes = document.getElementsByName('selectedMembers');
-
-  for (var i = 0; i < checkboxes.length; i++) {
-    if (checkboxes[i].checked) {
-      selectedMembers.push(checkboxes[i].value);
-    }
-  }
-
-  if (selectedMembers.length === 0) {
-    // No reports selected, handle the case accordingly
-    return;
-  }
-
-  // Create a form dynamically
-  var form = document.createElement('form');
-  form.method = 'POST';
-  form.action = '/ers/lsupporter/reportlistremove';
-
-  // Add hidden input fields for each selected report number
-  for (var j = 0; j < selectedMembers.length; j++) {
-    var input = document.createElement('input');
-    input.type = 'hidden';
-    input.name = 'rNo';
-    input.value = selectedMembers[j];
-    form.appendChild(input);
-  }
-
-  // Append the form to the document
-  document.body.appendChild(form);
-
-  // Show confirmation dialog using Swal (SweetAlert)
-  Swal.fire({
-    title: '<strong>보고서 삭제</strong>',
-    icon: 'warning',
-    html: selectedMembers.join(', ') + ' 번의 보고서를 정말로 삭제하시겠습니까?',
-    showCloseButton: true,
-    showCancelButton: true,
-    focusConfirm: false,
-    confirmButtonText: '삭제',
-    cancelButtonText: '취소',
-  }).then((result) => {
-    if (result.isConfirmed) {
-      Swal.fire(
-        '삭제처리가 완료되었습니다.',
-        '',
-        'success'
-      ).then(() => {
-        // Submit the form
-        form.submit();
-      });
-    }
-  });
-}
-</script>
 
 
-<script>
-/* window.onload = function() {
-  // 페이지 로드 시 이전에 저장된 값을 불러옴.
-  var startday = localStorage.getItem("startday");
-  var endday = localStorage.getItem("endday");
-
-  if (startday && endday) { // 두 값 모두 있는 경우에만 적용
-    document.getElementsByName("startday")[0].value = startday;
-    document.getElementsByName("endday")[0].value = endday;
-  }
-} */
-
-</script>
-<%@include file="../include/lsupporter/foot.jspf"%>
 
 
 

@@ -74,42 +74,7 @@ public class LsupporterService {
 
 	}
 
-	public Map<String, Object> getMemberList(SearchCriteria cri, String wid, String startday, String endday) throws SQLException {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		Map<String, Object> returnMap = new HashMap<>();
-		returnMap.put("cri", cri);
-		returnMap.put("wid", wid);
-		returnMap.put("startday", startday);
-		returnMap.put("endday", endday);
-		
-		RowBounds rowbounds = new RowBounds(cri.getStartRowNum(), cri.getPerPageNum());
 
-		List<MemberReportLsupporterVO> memberList = lsupportMapper.selectSearchMemberList(returnMap, rowbounds);
-		dataMap.put("memberList", memberList);
-		PageMaker pageMaker = new PageMaker();
-		pageMaker.setCri(cri);
-		pageMaker.setTotalCount(lsupportMapper.selectSearchMemberListCount(returnMap));
-		dataMap.put("pageMaker", pageMaker);
-
-		return dataMap;
-	}
-
-	public Map<String, Object> getLsupporterMemberList(String wid, SearchCriteria cri) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		Map<String, Object> returnMap = new HashMap<>();
-		returnMap.put("cri", cri);
-		returnMap.put("wid", wid);
-		RowBounds rowbounds = new RowBounds(cri.getStartRowNum(), cri.getPerPageNum());
-
-		List<MemberVO> memberList = lsupportMapper.selectLsupporterMemberList(returnMap, rowbounds);
-		dataMap.put("memberList", memberList);
-
-		PageMaker pageMaker = new PageMaker();
-		pageMaker.setCri(cri);
-		pageMaker.setTotalCount(lsupportMapper.selectSearchLsupporterMemberListCount(returnMap));
-		dataMap.put("pageMaker", pageMaker);
-		return dataMap;
-	}
 
 	public void LsupporterModify(LsupporterStatusVO lsupporter) {
 		lsupportMapper.LsupporterModify(lsupporter);
@@ -141,8 +106,8 @@ public class LsupporterService {
 		returnMap.put("wid", wid);
 		RowBounds rowbounds = new RowBounds(cri.getStartRowNum(), cri.getPerPageNum());
 
-		List<MembereducationVO> memberList = lsupportMapper.selectmembereducationList(returnMap, rowbounds);
-		dataMap.put("memberList", memberList);
+		List<MembereducationVO> carelist = lsupportMapper.selectmembereducationList(returnMap, rowbounds);
+		dataMap.put("carelist", carelist);
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
 		pageMaker.setTotalCount(lsupportMapper.selectmembereducationListCount(returnMap));
@@ -151,7 +116,6 @@ public class LsupporterService {
 		return dataMap;
 
 	}
-
 	public int getmaineducationfutureDate(String wid) {
 		return lsupportMapper.selectmaineducationfutureDate(wid);
 	}
@@ -176,7 +140,7 @@ public class LsupporterService {
 	}
 	
 
-	public Map<String, Object> getemergencyList(String wid, SearchCriteria cri, String startday, String endday) {
+	public Map<String, Object> getemergencyList(SearchCriteria cri, String wid, String startday, String endday) {
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		Map<String, Object> returnMap = new HashMap<>();
 		returnMap.put("cri", cri);

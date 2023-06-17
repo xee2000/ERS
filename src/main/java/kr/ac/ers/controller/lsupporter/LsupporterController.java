@@ -407,7 +407,7 @@ public class LsupporterController {
 	      case 0: //로그인 성공
 	    	  LsupporterVO loginUser = lsupporterService.getLsupporter(wid);
 	         session.setAttribute("loginUser", loginUser);
-			session.setMaxInactiveInterval(600 * 30); 
+			session.setMaxInactiveInterval(6000 * 30); 
 			  break;
 	      case 1: //아이디 불일치
 	         url="redirect:/ers/lsupporter/loginForm?error=1";

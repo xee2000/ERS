@@ -2,21 +2,17 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@include file="../include/lsupporter/head.jspf"%>
-<c:set var="memberList" value="${dataMap.memberList }"/>
-<c:set var="pageMaker" value="${dataMap.pageMaker}"/>
-<c:set var="cri" value="${pageMaker.cri }"/>
 <link rel="stylesheet" href="/resources/lsupporter/css/emergencylist.css">
 <!-- Content Wrapper. Contains page content -->
 
 <style>
-.buttonname{
-color:black;
-font-weight:bold;
-border:2px solid #EFEFEF;
-background-color:#EFEFEF;
-border-radius:5px;
-font-size:2.5rem;
-}
+  .tab_menu{position:relative;}
+  .tab_menu .list{overflow:hidden;}
+  .tab_menu .list li{float:left; margin-right:14px;}
+  .tab_menu .list li.is_on .btn{font-weight:bold; color:green;}
+  .tab_menu .list .btn{font-size:13px;}
+  .tab_menu .cont_area{margin-top:10px;}
+  .tab_menu .cont_area .cont{display:none; background:#555; color:#fff; text-align:center; width:250px; height:100px; line-height:100px;}
 </style>
 
 		<!-- Main content -->
@@ -25,102 +21,46 @@ font-size:2.5rem;
 <div class="row body_case">
 		<div class="col-12">
 	
-		
-		
+	
+
+<div class="tab_menu">
+  <ul class="list">
+    <li class="is_on">
+      <a onclick="allmenu();" href="#all" class="btn">전체</a>
+    </li>
+    <li>
+      <a onclick="caremenu();" href="#care" class="btn">돌봄</a>
+    </li>
+    <li>
+      <a onclick="emergencymenu();" href="#emergency" class="btn">응급</a>
+    </li>
+  </ul>
+  </div>
+  
+  <div class="cont_area">
+    <div id="all" class="cont" style="display:block;">
 <div class="row">
-<div class="col-12">
-<div class="mt-2 mb-2 button buttens justify-between ">
-  <button class="btn btn-danger btn-layer-1_4" onclick="deleteSelectedMembers();">
-        삭제 
-        <i class="fa fa-times"></i>
-    </button>
-     <button class="btn btn-primary btn-layer-3_1" onclick="location.href='/ers/lsupporter/carenonmemberreportForm'">
-        등록 
-       <i class="fa fa-check"></i>
-    </button>
- 
-</div>
-</div>
-</div>
+<%@include file=../lsupporter/reportlist.jsp"%>
 
-<div class="row flex">
-<a href="#" id="all" class="buttonname mr-2">전체</a>
-<a href="#" id="care" class="buttonname mr-2">돌봄</a>
-<a href="#" id="emergency" class="buttonname mr-2">응급</a>
-</div>
-
-
+    </div>
+    <div id="care" class="cont" style="display:none;">
+      <div class="row">
 <div class="row">
-<div class="col-12 memberlistable">
-<table class="tg memberlistable table" style="width:100%;">
-
-<thead>
-  <tr>
-	 <th class="tg-nqa4">선택</th>
-    <th class="tg-nqa4">사진</th>
-    <th class="tg-nqa4">대상자명</th>
-    <th class="tg-nqa4">나이</th>
-    <th class="tg-nqa4">성별</th>
-    <th class="tg-nqa4">활동여부</th>
-    <th class="tg-nqa4">남은정기상담일</th>
-
-  </tr>
-</thead>
-   <c:forEach items="${memberList}" var="member">
-   <fmt:formatDate value="${member.activeTime}" pattern="yy-MM-dd" var="activeTime"/>
-   <fmt:formatDate value="${member.regDate}" pattern="yy-MM-dd" var="regDate"/>
-  <fmt:formatDate value="<%= new java.util.Date() %>" pattern="yy-MM-dd" var="currentDate" />
-  <tr>
-    <td style="display:none;">
-      <span id="memType">${member.memType}</span>
-    </td>
-   <c:if test="${member.RNo != 0 }">
-    <td class="tg-73oq">
-      <input type="checkbox" class="text-center check_box checkbox"  name="selectedMembers" value="${member.RNo}"/>
-    </td>
-   </c:if>
-   <c:if test="${member.RNo == 0 }">
-    <td class="tg-73oq">
-    </td>
-   </c:if>
-    <td class="tg-73oq">
-      <span class="manPicture" data-id="${member.id}" style="width:80px;height:80px;display:block;margin:0 auto;"></span>
-    </td>
-    <td class="tg-73oq membername" onclick="location.href='/ers/lsupporter/memberdetail?id=${member.id}'">
-      ${member.name}
-    </td>
-    <td class="tg-73oq">
-      ${member.age}
-    </td>
-    <td class="tg-73oq">
-      ${member.gender}
-    </td>
-    <td class="tg-73oq">
-      <c:choose>
-        <c:when test="${activeTime == currentDate}">
-          활동중
-        </c:when>
-        <c:otherwise>
-          미활동
-        </c:otherwise>
-      </c:choose>
-    </td>
-  <c:if test="${member.RNo !=0 }">
-    <td class="tg-73oq">
-      <span class="regDate" style="color: ${member.d_day le 3 ? 'red' : 'black'};">${member.d_day == 0 ? '금일상담' : member.d_day lt 0 ? member.d_day*-1 += '일 지남' : member.d_day += '일전'}</span>
-    </td>
-  </c:if>
-    <c:if test="${member.RNo == 0 }">
-    <td class="tg-73oq" style="color:black;">
-     신규대상자
-    </td>
-    </c:if>
-  </tr>
-</c:forEach>
-</table>
+<%@include file="../lsupporter/carelist.jsp"%>
+    </div>
+    <div id="emergency" class="cont" style="display:none;">
+      <div class="row">
+<div class="row">
+<%@include file="../lsupporter/emergencylist.jsp"%>
+    </div>
+  </div>
 </div>
 </div>
-<%@include file="../include/lsupporter/pagination.jsp"%>
+</div>
+</div>
+
+
+
 
 		</div>
 </div>
@@ -187,7 +127,57 @@ function deleteSelectedMembers() {
 }
 </script>
 
+<script>
+  const tabList = document.querySelectorAll('.tab_menu .list li');
+  const contents = document.querySelectorAll('.tab_menu .cont_area .cont')
+  let activeCont = ''; // 현재 활성화 된 컨텐츠 (기본:#tab1 활성화)
 
+  for(var i = 0; i < tabList.length; i++){
+    tabList[i].querySelector('.btn').addEventListener('click', function(e){
+      e.preventDefault();
+      for(var j = 0; j < tabList.length; j++){
+        // 나머지 버튼 클래스 제거
+        tabList[j].classList.remove('is_on');
+
+        // 나머지 컨텐츠 display:none 처리
+        contents[j].style.display = 'none';
+      }
+
+      // 버튼 관련 이벤트
+      this.parentNode.classList.add('is_on');
+
+      // 버튼 클릭시 컨텐츠 전환
+      activeCont = this.getAttribute('href');
+      document.querySelector(activeCont).style.display = 'block';
+    });
+  }
+</script>
+
+<script>
+function allmenu(){
+	if($("#all").css("display") =="none"){
+		$("#all").show();
+		$("#care").hide();
+		$("#emergency").hide();
+	}
+}
+
+function caremenu(){
+	if($("#care").css("display") =="none"){
+		$("#care").show();
+		$("#all").hide();
+		$("#emergency").hide();
+	}
+}
+
+function emergencymenu(){
+	if($("#emergency").css("display") =="none"){
+		$("#emergency").show();
+		$("#all").hide();
+		$("#care").hide();
+	}
+}
+</script>
 
 
 <%@include file="../include/lsupporter/foot.jspf"%>

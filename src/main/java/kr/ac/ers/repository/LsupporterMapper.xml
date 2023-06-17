@@ -89,12 +89,7 @@
 		<include refid="search" />
 	</select>
 	<!-- 생활지원사에게 배정된 대상자 리스트 -->
-	<select id="selectLsupporterMemberList" resultType="MemberVO">
-	select m.picture, m.name, m.gender, m.birth, m.id
-	from member m,lsupporter l
-	where m.wid = l.wid and l.wid = #{wid} and m.id is not null
-<include refid="search" /> 
-	</select>
+
 		<select id="selectlsupporterStatus" parameterType="String" resultType="LsupporterStatusVO">
 		    SELECT *
 		    FROM fieldstaff fs
@@ -262,9 +257,9 @@ WHERE l.wid = #{wid}
 	</select>
 	
 	<select id="selectReportList" resultType="MemberReportLsupporterVO">
-	select DISTINCT r.rno, r.regdate, fs.name, r.retype, r.viewcheck, m.id
-	from member m, report r, lsupporter l, fieldstaff fs
-	where m.wid = l.wid and r.id = m.id and fs.wcode = l.wcode and m.id = #{id}
+	select DISTINCT r.rno, r.regdate, m.name, m.gender, r.retype, r.viewcheck, m.id
+	from member m, report r, lsupporter l
+	where m.wid = l.wid and r.id = m.id and fs.wcode = l.wcode and l.wid = #{wid}
 	order by r.regDate desc
 	<if test="startday != null and startday != ''.toString()"> 
 		and r.regdate between to_date(#{startday}) and to_date(#{endday}) + 0.99999
