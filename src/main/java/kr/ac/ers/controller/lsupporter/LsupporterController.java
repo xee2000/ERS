@@ -66,13 +66,15 @@ public class LsupporterController {
 	public String Showlogin() {
 		return "lsupporter/loginForm";
 	}
+	
+	
 	@RequestMapping("/ers/lsupporter/mypage")
 	public String Showmypage() {
 		return "lsupporter/mypage";
 	}
 	
 	@RequestMapping("/ers/lsupporter/memberdetail")
-	public String Showmemberdetail(String searchType,String keyword, String perPageNum, String page, Model model,String id, HttpServletRequest request,HttpSession session) {
+	public String Showmemberdetail(String searchType,String keyword, String perPageNum, String page, Model model,String id, HttpServletRequest request,HttpSession session,String startday,String endday) {
 		 
 		SearchCriteria cri = new SearchCriteria();
 		if(perPageNum == null || perPageNum.isEmpty())perPageNum="5";
@@ -88,7 +90,7 @@ public class LsupporterController {
 		session= request.getSession();
 		Map<String,Object> dataMap = new HashMap<String,Object> ();
 		 LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");
-		 Map<String,Object> reportListMap =lsupporterService.getReportList(id,cri);
+		 Map<String,Object> reportListMap =lsupporterService.getReportList(cri,loginUser.getWid(),startday,endday);
 		MemberDetailVO memberdetail = lsupporterService.getMemberDetail(loginUser.getWid(),id);
 		List<MemberDetailVO> machinList = lsupporterService.getMembermachin(loginUser.getWid(),id);
 		List<MemberDetailVO> memberEcall = lsupporterService.getMemberEcall(loginUser.getWid(),id);
@@ -420,6 +422,14 @@ public class LsupporterController {
 
 	      return url;
 	   }
+	
+	@PostMapping("/ers/lsupporter/sociallogin")
+	   public String sociallogin() throws Exception {
+	      
+
+	      return "lsupporter/main";
+	   }
+	
 	
 	 
 	   @GetMapping("/ers/lsupporter/logout")

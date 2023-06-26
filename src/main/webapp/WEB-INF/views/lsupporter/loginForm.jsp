@@ -78,7 +78,9 @@
         <p class="mt-3 mb-1 password_search">
           <a href="pwcheckForm">비밀번호 찾기</a>
         </p>
-      </div>
+     <img src="/resources/lsupporter/img/카카오로그인.png" onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id=c9c8472218acd46339ee4205a433dcee&redirect_uri=http%3A%2F%2Flocalhost%3A80%2Foauth%2Fkakao&response_type=code'"/>
+</div>
+
     </div>
   </div>
  

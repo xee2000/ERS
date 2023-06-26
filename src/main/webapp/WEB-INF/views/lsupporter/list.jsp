@@ -3,8 +3,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@include file="../include/lsupporter/head.jspf"%>
 <link rel="stylesheet" href="/resources/lsupporter/css/emergencylist.css">
-<!-- Content Wrapper. Contains page content -->
-
 <style>
   .tab_menu{position:relative;}
   .tab_menu .list{overflow:hidden;}
@@ -17,12 +15,7 @@
 
 		<!-- Main content -->
 		<section class="content-header">
-<h3 class="emergancylist_title mb-4">대상자 돌봄내역</h3>
-<div class="row body_case">
 		<div class="col-12">
-	
-	
-
 <div class="tab_menu">
   <ul class="list">
     <li class="is_on">
@@ -40,14 +33,14 @@
   <div class="cont_area">
     <div id="all" class="cont" style="display:block;">
 <div class="row">
-<%@include file=../lsupporter/reportlist.jsp"%>
+<%@include file="../lsupporter/reportlist.jsp"%>
+</div>
 
-    </div>
     <div id="care" class="cont" style="display:none;">
-      <div class="row">
 <div class="row">
 <%@include file="../lsupporter/carelist.jsp"%>
     </div>
+    
     <div id="emergency" class="cont" style="display:none;">
       <div class="row">
 <div class="row">

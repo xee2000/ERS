@@ -1,7 +1,5 @@
 package kr.ac.ers.controller.lsupporter;
 
-import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,9 +60,8 @@ public class LsupporterListController {
 			model.addAttribute("dataMap", dataMap);		
 			return "lsupporter/carelist";
 		}
-		
 		@RequestMapping("/ers/lsupporter/reportlist")
-		public String Showreportlist(String searchType,String keyword, String perPageNum, String page, Model model, HttpServletRequest request,HttpSession session) {
+		public String Showreportlist(String searchType, String keyword, String perPageNum, String page,String startday, String endday, Model model, HttpSession session,HttpServletRequest request) {
 			SearchCriteria cri = new SearchCriteria();
 			if(perPageNum == null || perPageNum.isEmpty())perPageNum="5";
 			if(page == null || page.isEmpty())page="1";
@@ -74,12 +71,14 @@ public class LsupporterListController {
 			cri.setPerPageNum(perPageNum);
 			cri.setSearchType(searchType);
 			cri.setKeyword(keyword);
-			 session= request.getSession();
+			session= request.getSession();
 			 LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");
-			 Map<String, Object> dataMap = lsupporterService.getReportList(loginUser.getWid(),cri);
-			model.addAttribute("dataMap", dataMap);		
+			Map<String, Object> dataMap = lsupporterService.getReportList(cri,loginUser.getWid(),startday,endday);
+			model.addAttribute("dataMap", dataMap);
+			
 			return "lsupporter/reportlist";
 		}
+		
 
 		@RequestMapping("/ers/lsupporter/emergencylist")
 		public String Showemergancylist(String searchType, String keyword, String perPageNum, String page,Model model,String startday, String endday, HttpServletRequest request, HttpServletResponse response , HttpSession session) {
@@ -105,7 +104,8 @@ public class LsupporterListController {
 		
 		
 		@RequestMapping("/ers/lsupporter/list")
-		public String Showreportlist() throws SQLException {
+		public String Showtlist() {
+			
 			return "lsupporter/list";
 		}
 		

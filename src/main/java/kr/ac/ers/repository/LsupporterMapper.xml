@@ -257,9 +257,9 @@ WHERE l.wid = #{wid}
 	</select>
 	
 	<select id="selectReportList" resultType="MemberReportLsupporterVO">
-	select DISTINCT r.rno, r.regdate, m.name, m.gender, r.retype, r.viewcheck, m.id
+	select DISTINCT r.rno, r.regdate, m.name, m.gender, r.retype, r.viewcheck, r.id
 	from member m, report r, lsupporter l
-	where m.wid = l.wid and r.id = m.id and fs.wcode = l.wcode and l.wid = #{wid}
+	where m.wid = l.wid and r.id = m.id and l.wid = #{wid}
 	order by r.regDate desc
 	<if test="startday != null and startday != ''.toString()"> 
 		and r.regdate between to_date(#{startday}) and to_date(#{endday}) + 0.99999
@@ -269,8 +269,8 @@ WHERE l.wid = #{wid}
 	
 	<select id="selectReportListCount" resultType="int" parameterType="String">
 	select DISTINCT count(r.rno)
-	from member m, report r, lsupporter l, fieldstaff fs
-	where m.wid = l.wid and r.id = m.id and fs.wcode = l.wcode and m.id = #{id}
+	from member m, report r, lsupporter l
+	where m.wid = l.wid and r.id = m.id and l.wid = #{wid}
 	<include refid="search" /> 
 	</select>
 	

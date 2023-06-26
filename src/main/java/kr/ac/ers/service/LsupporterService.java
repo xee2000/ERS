@@ -181,22 +181,6 @@ public class LsupporterService {
 		return lsupportMapper.selectMemberDetailmachine(wid, id);
 	}
 
-	public Map<String, Object> getReportList(String id, SearchCriteria cri) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		Map<String, Object> returnMap = new HashMap<>();
-		returnMap.put("cri", cri);
-		returnMap.put("id", id);
-		RowBounds rowbounds = new RowBounds(cri.getStartRowNum(), cri.getPerPageNum());
-
-		List<MemberReportLsupporterVO> reportList = lsupportMapper.selectReportList(returnMap, rowbounds);
-		dataMap.put("reportList", reportList);
-		PageMaker pageMaker = new PageMaker();
-		pageMaker.setCri(cri);
-		pageMaker.setTotalCount(lsupportMapper.selectReportListCount(returnMap));
-		dataMap.put("pageMaker", pageMaker);
-
-		return dataMap;
-	}
 
 	public ReportVO getModifyreportForm(int rNo) {
 		ReportVO reportmodify = lsupportMapper.selectReportModifyForm(rNo);
@@ -318,6 +302,25 @@ public class LsupporterService {
 
 	public void getlifemodify(String orgdisease, String drug, String mentalstatus, String allergy, String id, String wid) {
 		lsupportMapper.lifemodify(orgdisease,drug,mentalstatus,allergy,id,wid);
+	}
+
+	public Map<String, Object> getReportList(SearchCriteria cri, String wid, String startday, String endday) {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		Map<String, Object> returnMap = new HashMap<>();
+		returnMap.put("cri", cri);
+		returnMap.put("wid", wid);
+		returnMap.put("startday", startday);
+		returnMap.put("endday", endday);
+		RowBounds rowbounds = new RowBounds(cri.getStartRowNum(), cri.getPerPageNum());
+
+		List<MemberReportLsupporterVO> reportList = lsupportMapper.selectReportList(returnMap, rowbounds);
+		dataMap.put("reportList", reportList);
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(lsupportMapper.selectReportListCount(returnMap));
+		dataMap.put("pageMaker", pageMaker);
+
+		return dataMap;
 	}
 
 
