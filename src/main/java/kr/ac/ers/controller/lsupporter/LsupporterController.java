@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -400,7 +401,7 @@ public class LsupporterController {
 		        return key.toString();
 	}
 	@PostMapping("/ers/lsupporter/login")
-	   public String login(String wid, String pwd, HttpSession session) throws Exception {
+	   public String login(String wid, String pwd, HttpSession session,@RequestParam(defaultValue = "/") String redirectURL) throws Exception {
 	      String url = "redirect:/ers/lsupporter/main";
 
 	      int result = lsupporterService.login(wid, pwd);
@@ -410,7 +411,9 @@ public class LsupporterController {
 	    	  LsupporterVO loginUser = lsupporterService.getLsupporter(wid);
 	         session.setAttribute("loginUser", loginUser);
 			session.setMaxInactiveInterval(6000 * 30); 
-			  break;
+
+
+			 return url;
 	      case 1: //아이디 불일치
 	         url="redirect:/ers/lsupporter/loginForm?error=1";
 	         break;
@@ -422,15 +425,7 @@ public class LsupporterController {
 
 	      return url;
 	   }
-	
-	@PostMapping("/ers/lsupporter/sociallogin")
-	   public String sociallogin() throws Exception {
-	      
 
-	      return "lsupporter/main";
-	   }
-	
-	
 	 
 	   @GetMapping("/ers/lsupporter/logout")
 	   public String logout(HttpSession session) throws Exception {
