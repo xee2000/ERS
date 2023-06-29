@@ -48,15 +48,15 @@
 	</select>
 	
 	
-	<select id="selectcountemail" resultType="int" parameterType="String">
-	select count(*)
+	<select id="selectcountemail" resultType="int">
+		select count(*)
 	from fieldstaff
-	where email = #{email} and name = #{name}
+	where email = #{email} and name= #{name}
 	</select>
 	<select id="selectLsupportByemail" resultType="LsupporterVO" parameterType="String">
-	select l.wid
+		select l.wid
 	from fieldstaff f, lsupporter l
-	where f.email = #{email}
+	where l.wcode = f.wcode and f.email = #{email}
 	</select>
 	<select id="selectLsupportBypwd" resultType="int">
 	select count(*)

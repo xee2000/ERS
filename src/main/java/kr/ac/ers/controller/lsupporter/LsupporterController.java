@@ -246,14 +246,14 @@ public class LsupporterController {
 	public String Showidcheck(String name, String email, HttpServletRequest request, HttpServletResponse response) {
 		String url = null;
 		
-		int result = lsupporterService.findwidLsupporter(name,email);
+		int result = lsupporterService.selectcountemail(name,email);
 		System.out.println("name :" +name);
 		if(result == 1) {
 			
-			LsupporterVO lsupporterwid = lsupporterService.getLsupporterByWid(email);
+			LsupporterVO lsupporterwid = lsupporterService.getLsupportByemail(email);
 			String mailSet_Server="smtp.naver.com"; // 보내는 메일 server
 			String mailSet_ID="xee2000";        // 보내는 메일 ID
-			String mailSet_PW="dlwjdgh0***";        // 보내는 메일 비밀번호
+			String mailSet_PW="dlwjdgh0**^";        // 보내는 메일 비밀번호
 			
 			String mailFromName ="응급안심안전서비스 입니다.";            // 보내는 사람 이름
 			String mailFromAddress ="<xee2000@naver.com>"; // 보내는 메일 주소
@@ -410,10 +410,7 @@ public class LsupporterController {
 	      case 0: //로그인 성공
 	    	  LsupporterVO loginUser = lsupporterService.getLsupporter(wid);
 	         session.setAttribute("loginUser", loginUser);
-			session.setMaxInactiveInterval(6000 * 30); 
-
-
-			 return url;
+	         session.setMaxInactiveInterval(6000 * 30); 
 	      case 1: //아이디 불일치
 	         url="redirect:/ers/lsupporter/loginForm?error=1";
 	         break;

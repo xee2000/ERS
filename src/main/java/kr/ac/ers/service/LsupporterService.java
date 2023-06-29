@@ -54,12 +54,12 @@ public class LsupporterService {
 		return lsupportMapper.selectLsupportBywid(wid);
 	}
 
-	public int findwidLsupporter(String name, String email) {
+	public int selectcountemail(String name, String email) {
 
 		return lsupportMapper.selectcountemail(name, email);
 	}
 
-	public LsupporterVO getLsupporterByWid(String email) {
+	public LsupporterVO getLsupportByemail(String email) {
 
 		return lsupportMapper.selectLsupportByemail(email);
 	}
