@@ -255,7 +255,7 @@ public class LsupporterController {
 			String mailSet_ID="xee2000";        // 보내는 메일 ID
 			String mailSet_PW="dlwjdgh0**^";        // 보내는 메일 비밀번호
 			
-			String mailFromName ="응급안심안전서비스 입니다.";            // 보내는 사람 이름
+			String mailFromName ="EmergencyService.";            // 보내는 사람 이름
 			String mailFromAddress ="<xee2000@naver.com>"; // 보내는 메일 주소
 			
 			String mailTo   = (request).getParameter("email");           // 받는  메일 주소
@@ -401,11 +401,10 @@ public class LsupporterController {
 		        return key.toString();
 	}
 	@PostMapping("/ers/lsupporter/login")
-	   public String login(String wid, String pwd, HttpSession session,@RequestParam(defaultValue = "/") String redirectURL) throws Exception {
+	   public String login(String wid, String pwd, HttpSession session) throws Exception {
 	      String url = "redirect:/ers/lsupporter/main";
 
 	      int result = lsupporterService.login(wid, pwd);
-
 	      switch (result) {
 	      case 0: //로그인 성공
 	    	  LsupporterVO loginUser = lsupporterService.getLsupporter(wid);

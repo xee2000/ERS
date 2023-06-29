@@ -108,7 +108,14 @@ function logincheck() {
         });
         return false;
     }
-    if (${param.error} === 1) {
+   
+    return true;
+}
+</script>
+
+<script>
+window.onload=function(){
+	 if (${param.error} === 1) {
     	 Swal.fire({
              icon: 'error',
              title: 'ID 실패.',
@@ -128,7 +135,7 @@ function logincheck() {
         return false;
     }
     return true;
-}
+	}
 </script>
 
 
