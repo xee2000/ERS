@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,13 +18,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import kr.ac.ers.command.SearchCriteria;
+import kr.ac.ers.dto.CalinderVO;
 import kr.ac.ers.dto.LsupporterStatusVO;
 import kr.ac.ers.dto.LsupporterVO;
 import kr.ac.ers.dto.MemberDetailVO;
@@ -236,10 +238,17 @@ public class LsupporterController {
 	public String Showsitemain() {
 		return "lsupporter/sitemain";
 	}
+
 	
-	@RequestMapping("/ers/lsupporter/calmain")
-	public String Showcalmain() {
-		return "lsupporter/calmain";
+	@RequestMapping("/ers/lsupporter/calinder")
+	public String ShowcalinderList(HttpSession session, HttpServletRequest request, Model model) {
+		
+		session= request.getSession();
+		 LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");	
+		 List<CalinderVO> calinderList = new ArrayList<CalinderVO>();
+		 calinderList = lsupporterService.getcalinderList(loginUser.getWid());
+		 model.addAttribute("calinderList",calinderList);
+		return "lsupporter/calinder" ;
 	}
 	
 	@PostMapping("/ers/lsupporter/idcheck")
@@ -401,26 +410,26 @@ public class LsupporterController {
 		        return key.toString();
 	}
 	@PostMapping("/ers/lsupporter/login")
-	   public String login(String wid, String pwd, HttpSession session) throws Exception {
-	      String url = "redirect:/ers/lsupporter/main";
+	public String login(String wid, String pwd, HttpSession session) throws Exception {
+	    String url = "redirect:/ers/lsupporter/main";
 
-	      int result = lsupporterService.login(wid, pwd);
-	      switch (result) {
-	      case 0: //로그인 성공
-	    	  LsupporterVO loginUser = lsupporterService.getLsupporter(wid);
-	         session.setAttribute("loginUser", loginUser);
-	         session.setMaxInactiveInterval(6000 * 30); 
-	      case 1: //아이디 불일치
-	         url="redirect:/ers/lsupporter/loginForm?error=1";
-	         break;
-	      case 2: //패스워드 불일치
-	    	  url="redirect:/ers/lsupporter/loginForm?error=2";
-	          break;
-	    	  
-	      }
+	    int result = lsupporterService.login(wid, pwd);
+	    switch (result) {
+	        case 0: // login successful
+	            LsupporterVO loginUser = lsupporterService.getLsupporter(wid);
+	            session.setAttribute("loginUser", loginUser);
+	            session.setMaxInactiveInterval(6000 * 30);
+	            break; 
+	        case 1: // ID mismatch
+	            url = "redirect:/ers/lsupporter/loginForm?error=1";
+	            break;
+	        case 2: // password mismatch
+	            url = "redirect:/ers/lsupporter/loginForm?error=2";
+	            break;
+	    }
 
-	      return url;
-	   }
+	    return url;
+	}
 
 	 
 	   @GetMapping("/ers/lsupporter/logout")

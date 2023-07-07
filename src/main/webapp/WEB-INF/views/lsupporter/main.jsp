@@ -107,11 +107,15 @@
   <div class="card-body box-profile">
       <div class="text-center">
         <img class="profile-user-img img-fluid rounded-circle" onclick="location.href='/ers/lsupporter/list'" src="/resources/lsupporter/img/보고서.jpg" style="width: 200px; height: 200px;" alt="" onmouseover="this.style.border='2px solid red';" onmouseout="this.style.border='none';">
-        <a href="/ers/lsupporter/list" onclick="zoomImage(event, this)">
-          <img class="profile-user-img img-fluid rounded-circle" src="/resources/lsupporter/img/보고서.jpg" style="width: 200px; height: 200px;" alt="" onmouseover="this.style.border='2px solid red';" onmouseout="this.style.border='none';">
-        </a>
       </div>
       <h3 class="profile-username text-center" onclick="location.href='/ers/lsupporter/list'" style="cursor: pointer;">보고서</h3>
+    </div>
+    
+    <div class="card-body box-profile">
+      <div class="text-center">
+        <img class="profile-user-img img-fluid rounded-circle" onclick="location.href='/ers/lsupporter/calinder'" src="/resources/lsupporter/img/보고서.jpg" style="width: 200px; height: 200px;" alt="" onmouseover="this.style.border='2px solid red';" onmouseout="this.style.border='none';">
+      </div>
+      <h3 class="profile-username text-center" onclick="location.href='/ers/lsupporter/calinder'" style="cursor: pointer;">캘린더</h3>
     </div>
   </div>
    </div>

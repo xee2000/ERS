@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import kr.ac.ers.command.PageMaker;
 import kr.ac.ers.command.SearchCriteria;
+import kr.ac.ers.dto.CalinderVO;
 import kr.ac.ers.dto.LsupporterStatusVO;
 import kr.ac.ers.dto.LsupporterVO;
 import kr.ac.ers.dto.MemberDetailVO;
@@ -321,6 +322,11 @@ public class LsupporterService {
 		dataMap.put("pageMaker", pageMaker);
 
 		return dataMap;
+	}
+
+	public List<CalinderVO> getcalinderList(String wid) {
+		
+		return lsupportMapper.selectcalinderList(wid);
 	}
 
 

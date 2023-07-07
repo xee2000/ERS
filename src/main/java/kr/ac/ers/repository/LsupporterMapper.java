@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
 
+import kr.ac.ers.dto.CalinderVO;
 import kr.ac.ers.dto.LsupporterStatusVO;
 import kr.ac.ers.dto.LsupporterVO;
 import kr.ac.ers.dto.MemberDetailVO;
@@ -132,6 +133,8 @@ public interface LsupporterMapper {
 	MemberReportLsupporterVO selectlifemodifyForm(String id, int wCode);
 
 	void lifemodify(String orgdisease, String drug, String mentalstatus, String allergy, String id, String wid);
+
+	List<CalinderVO> selectcalinderList(String wid);
 
 
 }

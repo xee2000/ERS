@@ -415,4 +415,10 @@ WHERE l.wid = #{wid}
 			where id= #{id} and wid= #{wid}
 	</update>
 	
+	<select id="selectcalinderList" parameterType="String" resultType="CalinderVO">
+	select *
+	from calinder
+	where wid= #{wid}
+	</select>
+	
 	</mapper>

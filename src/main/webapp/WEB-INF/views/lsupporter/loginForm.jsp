@@ -55,7 +55,7 @@
       <div class="card-body">
         <img style="width: 200px; height: 200px;" src="/resources/lsupporter/img/사회복지사.jpg">
         <p class="login-box-msg">로그인해주시기 바랍니다.</p>
-        <form action="login" method="post" onsubmit="return logincheck()">
+        <form action="login" method="post" onsubmit="return logincheck()" id="loginForm">
           <div class="input-group mb-3">
             <input type="text" class="form-control" name="wid" style="" placeholder="아이디를 입력해주세요.">
             <div class="input-group-append">
@@ -108,8 +108,10 @@ function logincheck() {
         });
         return false;
     }
+    document.getElementById('loginForm').submit();
    
     return true;
+    
 }
 </script>
 

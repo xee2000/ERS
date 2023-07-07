@@ -1,0 +1,11 @@
+<mvc:interceptors>
+
+         <mvc:interceptor>
+
+                  <mvc:mapping path="/**" /> 
+
+                  <bean class="com.victolee.interceptor.MyInterceptor" />
+
+         </mvc:interceptor>
+
+</mvc:interceptors>
