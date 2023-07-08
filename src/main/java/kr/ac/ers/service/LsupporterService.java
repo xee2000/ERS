@@ -334,5 +334,11 @@ public class LsupporterService {
 		return lsupportMapper.selectcalinderDetail(wid,id);
 	}
 
+	public void calinderregist(String wid, CalinderVO calinder) {
+		String id = lsupportMapper.selectcalinderSequenceNextValue();
+		calinder.setId(id);
+		lsupportMapper.insertcalinder(wid,calinder);
+	}
+
 
 }

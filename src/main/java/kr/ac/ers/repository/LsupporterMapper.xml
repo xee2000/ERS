@@ -431,5 +431,9 @@ WHERE l.wid = #{wid}
 		select CALINDER_SEQ.nextVal
 		from dual
 		</select>
+		
+		<insert id="insertcalinder">
+		
+		</insert>
 	
 	</mapper>

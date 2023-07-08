@@ -138,5 +138,7 @@ public interface LsupporterMapper {
 
 	CalinderVO selectcalinderDetail(String wid, String id);
 
+	void insertcalinder(String wid, CalinderVO calinder);
 
+    String selectcalinderSequenceNextValue();
 }
