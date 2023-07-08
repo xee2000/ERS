@@ -12,6 +12,7 @@ import lombok.ToString;
 public class CalinderVO {
 
 		private String title;
+		private String id;
 		private String content;
 		private String wid;
 		private Date regDate;

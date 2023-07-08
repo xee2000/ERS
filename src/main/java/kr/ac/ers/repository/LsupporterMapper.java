@@ -136,5 +136,7 @@ public interface LsupporterMapper {
 
 	List<CalinderVO> selectcalinderList(String wid);
 
+	CalinderVO selectcalinderDetail(String wid, String id);
+
 
 }

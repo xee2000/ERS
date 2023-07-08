@@ -329,5 +329,10 @@ public class LsupporterService {
 		return lsupportMapper.selectcalinderList(wid);
 	}
 
+	public CalinderVO getcalinderDetail(String wid, String id) {
+
+		return lsupportMapper.selectcalinderDetail(wid,id);
+	}
+
 
 }

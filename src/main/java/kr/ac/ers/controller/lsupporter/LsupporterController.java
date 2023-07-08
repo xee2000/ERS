@@ -251,6 +251,16 @@ public class LsupporterController {
 		return "lsupporter/calinder" ;
 	}
 	
+	@RequestMapping("/ers/lsupporter/calinderdetail")
+	public String ShowcalinderList(HttpSession session, HttpServletRequest request, Model model, String id) {
+		
+		session= request.getSession();
+		 LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");	
+		 CalinderVO calinder = lsupporterService.getcalinderDetail(loginUser.getWid(),id);
+		 model.addAttribute("calinder",calinder);
+		return "lsupporter/calinderdetail" ;
+	}
+	
 	@PostMapping("/ers/lsupporter/idcheck")
 	public String Showidcheck(String name, String email, HttpServletRequest request, HttpServletResponse response) {
 		String url = null;

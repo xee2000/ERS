@@ -421,4 +421,15 @@ WHERE l.wid = #{wid}
 	where wid= #{wid}
 	</select>
 	
+	<select id="selectcalinderDetail" parameterType="String" resultType="CalinderVO">
+	select *
+	from calinder
+	where wid= #{wid} and id = #{id}
+	</select>
+	
+	<select id="selectcalindernextnumber" resultType="int">
+		select CALINDER_SEQ.nextVal
+		from dual
+		</select>
+	
 	</mapper>
