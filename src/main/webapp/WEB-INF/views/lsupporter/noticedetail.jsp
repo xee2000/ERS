@@ -4,9 +4,6 @@
 <c:set var="pageTitle" value="게시물 내용"/>
 <%@include file="../include/lsupporter/head.jspf"%>
 <link rel="stylesheet" href="/resources/lsupporter/css/noticedetail.css">
-<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet"> 
-  <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
-  <script src=" https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/lang/summernote-ko-KR.min.js"></script>
 	
 
 	<div class="row">
@@ -27,7 +24,7 @@
 </div>
 </div>
 
-<section class="" style="height:950px;">
+<section class="" style="height:650px;">
 	<div class="px-3">
     <div class="table-box-type-1">
       
@@ -56,7 +53,57 @@
 </table>
     </div>
   </div>
-</section>
+
+
+<div class="reply_list">
+<p>댓글리스트</p>
+<table class="tg" style="undefined;table-layout: fixed; width: 100%;">
+<c:forEach items="${replyList }" var="reply">
+<thead>
+<fmt:formatDate value="${reply.regDate }"  var="regDate" pattern="yyyy-MM-dd"/>
+<fmt:formatDate value="${reply.updateDate }"  var="updateDate" pattern="yyyy-MM-dd"/>
+  <tr>
+    <th class="tg-ynlj">작성일</th>
+    <th class="tg-l8qj">${regDate }</th>
+    
+   <c:if test="${updateDate != null }">
+     <th class="tg-ynlj">수정일</th>
+    <th class="tg-l8qj">${updateDate }</th>
+   </c:if>
+    <fmt:formatDate value="${notice.regDate }" var="regDate" pattern="yyyy-MM-dd"/>
+    <th class="tg-baqh">${regDate }</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-c3ow">내용 </td>
+    <td class="tg-0pky" colspan="3">${reply.content }</td>
+  </tr>
+</tbody>
+</c:forEach>
+</table>
+</div>
+
+
+<form action="/ers/lsupporter/reply/write" method="POST" role="form">
+<label for="content">내용</label>
+<input type="text" name="content">
+<input type="hidden" name="write" value="${wid }">
+<input type="hidden" name="nNo" value="${notice.NNo }">
+</form>
+<button onclick="write();" class="btn btn-primary">작성</button>
+
+
+<script>
+function write(){
+	var form = $('form[role="form"]');
+	alert("작성하시겠습니까?");
+	if(form){
+	form.submit();
+	}
+}
+</script>
+</section>	
 
 
 <%@include file="../include/lsupporter/foot.jspf"%>

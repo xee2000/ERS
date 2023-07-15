@@ -116,7 +116,7 @@ public class LsupporterListController {
 		   public String logout(String searchType, String keyword, String perPageNum, String page,Model model,String startday, String endday) throws Exception {
 		      
 		      SearchCriteria cri = new SearchCriteria();
-				if(perPageNum == null || perPageNum.isEmpty())perPageNum="5";
+				if(perPageNum == null || perPageNum.isEmpty())perPageNum="10";
 				if(page == null || page.isEmpty())page="1";
 				if(searchType == null) searchType="";
 				if(keyword==null) keyword="";

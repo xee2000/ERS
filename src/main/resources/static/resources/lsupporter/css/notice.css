@@ -47,6 +47,12 @@ margin-left:18%;
 .fa-search{
 font-size:2rem;
 }
+.reply_list{
+	margin:0 auto;
+	text-align:center;
+	margin-top:20px;
+	margin-left:10px;
+}
 .tg  {border-collapse:collapse;border-spacing:0;}
 .tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:1.2rem;
   overflow:hidden;padding:10px 5px;word-break:normal;}

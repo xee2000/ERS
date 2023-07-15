@@ -17,6 +17,7 @@ import kr.ac.ers.dto.MemberReportLsupporterVO;
 import kr.ac.ers.dto.MemberVO;
 import kr.ac.ers.dto.MembereducationVO;
 import kr.ac.ers.dto.NoticeVO;
+import kr.ac.ers.dto.ReplyVO;
 import kr.ac.ers.dto.ReportVO;
 
 @Mapper
@@ -154,6 +155,12 @@ public interface LsupporterMapper {
 	int selectnoticeListCount(Map<String, Object> returnMap);
 
 	NoticeVO noticeDetail(int nNo);
+
+	List<ReplyVO> replyList(int nNo);
+
+	void replyWrite(ReplyVO reply);
+
+	int selectreplySequenceNextValue();
 	
 	
 }

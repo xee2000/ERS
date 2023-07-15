@@ -20,6 +20,7 @@ import kr.ac.ers.dto.MemberReportLsupporterVO;
 import kr.ac.ers.dto.MemberVO;
 import kr.ac.ers.dto.MembereducationVO;
 import kr.ac.ers.dto.NoticeVO;
+import kr.ac.ers.dto.ReplyVO;
 import kr.ac.ers.dto.ReportFileVO;
 import kr.ac.ers.dto.ReportVO;
 import kr.ac.ers.repository.LsupporterMapper;
@@ -370,6 +371,17 @@ public class LsupporterService {
 
 	public NoticeVO noticeDetail(int nNo) {
 			return lsupportMapper.noticeDetail(nNo);
+	}
+
+	public List<ReplyVO> replyList(int nNo) {
+		
+		return lsupportMapper.replyList(nNo);
+	}
+	
+
+	public void replyWrite(ReplyVO reply) {
+		reply.setRNo(lsupportMapper.selectreplySequenceNextValue());	
+		lsupportMapper.replyWrite(reply);
 	}
 
 

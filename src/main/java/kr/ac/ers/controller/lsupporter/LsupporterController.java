@@ -32,6 +32,7 @@ import kr.ac.ers.dto.LsupporterVO;
 import kr.ac.ers.dto.MemberDetailVO;
 import kr.ac.ers.dto.MemberReportLsupporterVO;
 import kr.ac.ers.dto.NoticeVO;
+import kr.ac.ers.dto.ReplyVO;
 import kr.ac.ers.service.LsupporterService;
 import kr.ac.ers.utils.MailContentSend;
 import kr.ac.ers.utils.MakeFileName;
@@ -506,13 +507,22 @@ public class LsupporterController {
 			session = request.getSession();
 			 LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");
 			NoticeVO notice =  lsupporterService.noticeDetail(nNo);
-			 model.addAttribute("loginUser",loginUser.getWid());
+		List<ReplyVO> replyList = lsupporterService.replyList(nNo);
+			 model.addAttribute("wid",loginUser.getWid());
 			 model.addAttribute("notice",notice);
-			 
+			 model.addAttribute("replyList", replyList);
 	      return "lsupporter/noticedetail";
 	   }
 	   
-	
-	
+	  
+	   @PostMapping("/reply/write")
+	   public String replyWrite(HttpSession session, Model model, ReplyVO reply) {
+	       String url = "redirect:/ers/lsupporter/noticedetail?nNo=" + reply.getNNo();
+	       LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");
+	       reply.setWriter(loginUser.getWid());
+	       lsupporterService.replyWrite(reply);
+	       return url;
+	   }
+
 	
 }

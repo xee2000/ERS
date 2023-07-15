@@ -49,20 +49,20 @@
 		</if>
 	</sql>
 
-<sql id="noticesearch">
-  <where>
-    <if test="cri.searchType == 'tc'.toString()">
-      and (
-      title like '%'||#{cri.keyword}||'%'
-      or
-      content like '%'||#{cri.keyword}||'%'
-      )
-    </if>
-    <if test="cri.searchType == 't'.toString()">
-      and title like '%'||#{cri.keyword}||'%'
-    </if>
-  </where>
-</sql>
+	<sql id="noticesearch">
+		<where>
+			<if test="cri.searchType == 'tc'.toString()">
+				and (
+				title like '%'||#{cri.keyword}||'%'
+				or
+				content like '%'||#{cri.keyword}||'%'
+				)
+			</if>
+			<if test="cri.searchType == 't'.toString()">
+				and title like '%'||#{cri.keyword}||'%'
+			</if>
+		</where>
+	</sql>
 
 
 	<select id="selectLsupportBywid" resultType="LsupporterVO"
@@ -75,19 +75,23 @@
 
 	<select id="selectcountemail" resultType="int">
 		select count(*)
-		from fieldstaff
+		from
+		fieldstaff
 		where email = #{email} and name= #{name}
 	</select>
 	<select id="selectLsupportByemail" resultType="LsupporterVO"
 		parameterType="String">
 		select l.wid
 		from fieldstaff f, lsupporter l
-		where l.wcode = f.wcode and f.email = #{email}
+		where l.wcode
+		= f.wcode and f.email = #{email}
 	</select>
 	<select id="selectLsupportBypwd" resultType="int">
 		select count(*)
-		from fieldstaff f, lsupporter l
-		where f.name = #{name} and f.email = #{email} and l.wid = #{wid}
+		from
+		fieldstaff f, lsupporter l
+		where f.name = #{name} and f.email =
+		#{email} and l.wid = #{wid}
 	</select>
 	<!--생활지원사에게 배정된 대상자의 보고서 리스트 뽑아주는 쿼리 -->
 	<select id="selectSearchMemberList"
@@ -98,7 +102,8 @@
 		where m.id = r.id and m.wid = l.wid and l.wid= #{wid} and m.id is not
 		null
 		<if test="startday != null and startday != ''.toString()">
-			and r.regdate between to_date(#{startday}) and to_date(#{endday}) +
+			and r.regdate between to_date(#{startday}) and
+			to_date(#{endday}) +
 			0.99999
 		</if>
 		<include refid="search" />
@@ -117,7 +122,8 @@
 		resultType="int">
 		select count(m.id)
 		from member m ,lsupporter l
-		where m.wid = l.wid and l.wid = #{wid} and m.id is not null
+		where m.wid = l.wid and
+		l.wid = #{wid} and m.id is not null
 		<include refid="search" />
 	</select>
 	<!-- 생활지원사에게 배정된 대상자 리스트 -->
@@ -126,14 +132,17 @@
 		resultType="LsupporterStatusVO">
 		SELECT *
 		FROM fieldstaff fs
-		LEFT JOIN lsupporter l ON l.wcode = fs.wcode
+		LEFT JOIN lsupporter l ON l.wcode
+		= fs.wcode
 		WHERE l.wid = #{wid}
 	</select>
 	<update id="insertMemberReport"
 		parameterType="MemberReportLsupporterVO">
-		INSERT INTO report (rNo, id, content, wCode, reDone, viewCheck, reType,
+		INSERT INTO report (rNo, id, content, wCode, reDone,
+		viewCheck, reType,
 		occurTime, occurType, sCode)
-		VALUES (#{rNo}, #{id}, #{content},
+		VALUES (#{rNo}, #{id},
+		#{content},
 		#{wCode}, #{reDone}, #{viewCheck}, #{reType}, #{occurTime},
 		${occurType},
 		CASE WHEN ${sCode} = 0 THEN NULL ELSE ${sCode} END)
@@ -151,13 +160,16 @@
 		memtype, round(case when memtype = '독거노인' then regdate+30 else
 		regdate+14 end - sysdate) as d_day
 		FROM (
-		SELECT m.id, r.rno, m.picture, m.name, m.birth, m.gender, ss.activetime,
+		SELECT m.id, r.rno, m.picture,
+		m.name, m.birth, m.gender, ss.activetime,
 		r.regdate, m.memtype,
-		ROW_NUMBER() OVER (PARTITION BY m.id ORDER BY COALESCE(r.rno, 0) DESC, r.regdate
+		ROW_NUMBER() OVER (PARTITION BY m.id ORDER BY COALESCE(r.rno, 0) DESC,
+		r.regdate
 		DESC) AS rn
 		FROM member m
 		JOIN lsupporter l ON m.wid = l.wid
-		LEFT JOIN report r ON r.wcode = l.wcode AND r.id = m.id AND r.retype = '2'
+		LEFT JOIN report r ON r.wcode = l.wcode AND r.id = m.id AND r.retype =
+		'2'
 		JOIN sensorck ss ON ss.id = m.id
 		WHERE l.wid = #{wid}
 		) subquery
@@ -170,12 +182,16 @@
 		parameterType="String">
 		SELECT count(*)
 		FROM (
-		SELECT m.id, r.rno, m.picture, m.name, m.birth, m.gender, ss.activetime,
+		SELECT m.id, r.rno, m.picture, m.name, m.birth,
+		m.gender, ss.activetime,
 		r.regdate, m.memtype,
-		ROW_NUMBER() OVER (PARTITION BY m.id ORDER BY r.rno DESC) AS rn
+		ROW_NUMBER() OVER
+		(PARTITION BY m.id ORDER BY r.rno DESC) AS rn
 		FROM member m
-		JOIN lsupporter l ON m.wid = l.wid
-		LEFT JOIN report r ON r.wcode = l.wcode AND r.id = m.id AND r.retype = '2'
+		JOIN
+		lsupporter l ON m.wid = l.wid
+		LEFT JOIN report r ON r.wcode = l.wcode
+		AND r.id = m.id AND r.retype = '2'
 		JOIN sensorck ss ON ss.id = m.id
 		WHERE l.wid = #{wid}
 		) subquery
@@ -187,7 +203,8 @@
 		parameterType="String">
 		SELECT count(*)
 		FROM report r, lsupporter l, sensorck ss
-		WHERE r.wcode = l.wcode
+		WHERE r.wcode =
+		l.wcode
 		AND l.wid = #{wid} and r.retype =2
       <![CDATA[
   AND TRUNC(r.regdate + 14) - TRUNC(SYSDATE) = 1
@@ -198,7 +215,8 @@
 		parameterType="String">
 		SELECT count(*)
 		FROM report r, lsupporter l, sensorck ss
-		WHERE r.wcode = l.wcode
+		WHERE r.wcode =
+		l.wcode
 		AND l.wid = #{wid} and r.retype =2
        <![CDATA[
   AND TRUNC(r.regdate) =TRUNC(SYSDATE)
@@ -211,7 +229,8 @@
 		FROM report r, lsupporter l, sensorck ss, member m
 		WHERE r.wcode = l.wcode
 		AND l.wid = #{wid} and r.retype =2
-		and m.wid = l.wid and m.id = r.id and ss.id = m.id
+		and m.wid =
+		l.wid and m.id = r.id and ss.id = m.id
          <![CDATA[
   AND TRUNC(r.regdate + 14) - TRUNC(SYSDATE) = 1
   and TRUNC(ss.activetime) <> TRUNC(SYSDATE)
@@ -222,7 +241,8 @@
 		parameterType="String">
 		select count(*)
 		from member m, lsupporter l, emergency e
-		where m.wid = l.wid and e.id = m.id and l.wid = #{wid}
+		where m.wid =
+		l.wid and e.id = m.id and l.wid = #{wid}
          <![CDATA[
   AND e.occurtime >= TRUNC(SYSDATE) - 2
     ]]>
@@ -233,7 +253,8 @@
 		SELECT count(*)
 		FROM emergency e
 		JOIN member m ON e.id = m.id
-		JOIN lsupporter l ON m.wid = l.wid
+		JOIN
+		lsupporter l ON m.wid = l.wid
 		LEFT JOIN report r ON e.scode = r.scode
 		WHERE l.wid = #{wid} AND r.scode IS NULL
  <![CDATA[
@@ -246,7 +267,8 @@
 		SELECT count(*)
 		FROM emergency e
 		JOIN member m ON e.id = m.id
-		JOIN lsupporter l ON m.wid = l.wid
+		JOIN
+		lsupporter l ON m.wid = l.wid
 		LEFT JOIN report r ON e.scode = r.scode
 		WHERE l.wid = #{wid} AND r.scode IS NOT NULL
  <![CDATA[
@@ -261,9 +283,11 @@
 		r.regdate
 		FROM emergency e
 		JOIN member m ON e.id = m.id
-		JOIN lsupporter l ON m.wid = l.wid
+		JOIN lsupporter l
+		ON m.wid = l.wid
 		LEFT JOIN report r ON e.scode = r.scode
-		WHERE l.wid = #{wid}
+		WHERE l.wid =
+		#{wid}
 		<include refid="search" />
 		order by e.occurtime desc
 	</select>
@@ -272,7 +296,8 @@
 		SELECT count(*)
 		FROM emergency e
 		JOIN member m ON e.id = m.id
-		JOIN lsupporter l ON m.wid = l.wid
+		JOIN
+		lsupporter l ON m.wid = l.wid
 		LEFT JOIN report r ON e.scode = r.scode
 		WHERE l.wid = #{wid}
 		<include refid="search" />
@@ -283,34 +308,42 @@
 		m.memtype, m.orgdisease,m.drug, m.mentalstatus,m.fam_rel, m.allergy
 		FROM member m
 		JOIN lsupporter l ON m.wid = l.wid
-		JOIN fieldstaff f ON l.wcode = f.wcode
+		JOIN fieldstaff f ON
+		l.wcode = f.wcode
 		WHERE m.id = #{id} AND l.wid = #{wid}
 	</select>
 	<select id="selectMemberEcall" resultType="MemberDetailVO">
-		select e.name, e.phone,e.relation
+		select e.name,
+		e.phone,e.relation
 		from member m, ecall e, lsupporter l
-		where m.id = e.id and m.id = #{id} and l.wid = m.wid and l.wid= #{wid}
+		where m.id =
+		e.id and m.id = #{id} and l.wid = m.wid and l.wid= #{wid}
 	</select>
 
 	<!--대상자정보페이지 응급카운트 -->
 	<select id="selectemergencyCount" resultType="int">
 		select count(e.id)
 		from member m, emergency e, lsupporter l
-		where m.wid = l.wid and e.scode='1' and l.wid= #{wid} and m.id= #{id}
+		where m.wid = l.wid and
+		e.scode='1' and l.wid= #{wid} and m.id= #{id}
 	</select>
 
 	<!--대상자정보페이지 화재카운트 -->
 	<select id="selectfireCount" resultType="int">
 		select count(e.id)
-		from member m, emergency e, lsupporter l
-		where m.wid = l.wid and e.scode='3' and l.wid= #{wid} and m.id= #{id}
+		from
+		member m, emergency e, lsupporter l
+		where m.wid = l.wid and e.scode='3'
+		and l.wid= #{wid} and m.id= #{id}
 	</select>
 
 	<select id="selectMemberDetailmachine"
 		resultType="MemberDetailVO">
-		select mcc.name, mcc.mCode, mc.regDate, mc.changeStatus, mc.changeDate
+		select mcc.name, mcc.mCode, mc.regDate, mc.changeStatus,
+		mc.changeDate
 		from member m, machine mc, machinecode mcc, lsupporter l
-		where m.id = mc.id and m.wid = l.wid and l.wid= #{wid} and m.id = #{id} and
+		where m.id = mc.id and m.wid = l.wid and l.wid= #{wid} and m.id =
+		#{id} and
 		mc.mcode = mcc.mcode
 	</select>
 
@@ -319,10 +352,12 @@
 		select DISTINCT r.rno, r.regdate, m.name, m.gender, r.retype,
 		r.viewcheck, r.id
 		from member m, report r, lsupporter l
-		where m.wid = l.wid and r.id = m.id and l.wid = #{wid}
+		where m.wid =
+		l.wid and r.id = m.id and l.wid = #{wid}
 		order by r.regDate desc
 		<if test="startday != null and startday != ''.toString()">
-			and r.regdate between to_date(#{startday}) and to_date(#{endday}) +
+			and r.regdate between to_date(#{startday}) and
+			to_date(#{endday}) +
 			0.99999
 		</if>
 		<include refid="search" />
@@ -346,7 +381,8 @@
 	<select id="selectLsupporterreport"
 		resultType="MemberReportLsupporterVO" parameterType="int">
 		select *
-		from report r, member m
+		from
+		report r, member m
 		where rno= #{rNo} and r.id = m.id
 	</select>
 
@@ -362,12 +398,14 @@
 		parameterType="int">
 		select *
 		from report r, member m
-		where r.id = m.id and r.rno=#{rNo}
+		where r.id = m.id and
+		r.rno=#{rNo}
 	</select>
 	<update id="remove" parameterType="int">
 		delete
 		from report
-		where rNo = #{rNo}
+		where rNo =
+		#{rNo}
 	</update>
 
 	<select id="selectMemberById" parameterType="String"
@@ -382,7 +420,8 @@
 		SELECT e.scode,e.stype, m.id, m.birth, m.gender, m.name, m.picture
 		FROM member m
 		JOIN lsupporter l ON m.wid = l.wid
-		LEFT JOIN emergency e ON e.id = m.id
+		LEFT JOIN emergency e
+		ON e.id = m.id
 		WHERE l.wid = #{wid}
 		<include refid="search" />
 	</select>
@@ -392,7 +431,8 @@
 		SELECT count(*)
 		FROM member m
 		JOIN lsupporter l ON m.wid = l.wid
-		LEFT JOIN emergency e ON e.id = m.id
+		LEFT
+		JOIN emergency e ON e.id = m.id
 		WHERE l.wid = #{wid}
 		<include refid="search" />
 	</select>
@@ -413,7 +453,8 @@
 		FROM member m
 		JOIN report r ON m.id = r.id
 		JOIN lsupporter l ON m.wid = l.wid
-		WHERE l.wid = #{wid} AND m.id IS NOT NULL
+		WHERE l.wid = #{wid} AND m.id IS NOT
+		NULL
 		AND TRUNC(r.regdate) = TRUNC(SYSDATE)
 		<include refid="search" />
 	</select>
@@ -422,7 +463,8 @@
 		SELECT count(*)
 		FROM member m
 		JOIN report r ON m.id = r.id
-		JOIN lsupporter l ON m.wid = l.wid
+		JOIN
+		lsupporter l ON m.wid = l.wid
 		WHERE l.wid = #{wid} AND m.id IS NOT NULL
 		AND TRUNC(r.regdate) = TRUNC(SYSDATE)
 		<include refid="search" />
@@ -434,7 +476,8 @@
 		FROM member m
 		JOIN report r ON m.id = r.id
 		JOIN lsupporter l ON m.wid = l.wid
-		WHERE l.wid = #{wid} AND m.id IS NOT NULL
+		WHERE l.wid = #{wid} AND m.id IS NOT
+		NULL
 		AND TRUNC(r.regdate) = TRUNC(SYSDATE) and r.retype= 2
 	</select>
 	<select id="lifereportCount" parameterType="String"
@@ -443,7 +486,8 @@
 		FROM member m
 		JOIN report r ON m.id = r.id
 		JOIN lsupporter l ON m.wid = l.wid
-		WHERE l.wid = #{wid} AND m.id IS NOT NULL
+		WHERE l.wid = #{wid} AND m.id IS NOT
+		NULL
 		AND TRUNC(r.regdate) = TRUNC(SYSDATE) and r.retype= 3
 	</select>
 	<select id="falsereportCount" parameterType="String"
@@ -452,7 +496,8 @@
 		FROM member m
 		JOIN report r ON m.id = r.id
 		JOIN lsupporter l ON m.wid = l.wid
-		WHERE l.wid = #{wid} AND m.id IS NOT NULL
+		WHERE l.wid = #{wid} AND m.id IS NOT
+		NULL
 		AND TRUNC(r.regdate) = TRUNC(SYSDATE) and r.retype= 4
 	</select>
 	<select id="longreportCount" parameterType="String"
@@ -461,7 +506,8 @@
 		FROM member m
 		JOIN report r ON m.id = r.id
 		JOIN lsupporter l ON m.wid = l.wid
-		WHERE l.wid = #{wid} AND m.id IS NOT NULL
+		WHERE l.wid = #{wid} AND m.id IS NOT
+		NULL
 		AND TRUNC(r.regdate) = TRUNC(SYSDATE) and r.retype= 5
 	</select>
 	<select id="devilreportCount" parameterType="String"
@@ -470,7 +516,8 @@
 		FROM member m
 		JOIN report r ON m.id = r.id
 		JOIN lsupporter l ON m.wid = l.wid
-		WHERE l.wid = #{wid} AND m.id IS NOT NULL
+		WHERE l.wid = #{wid} AND m.id IS NOT
+		NULL
 		AND TRUNC(r.regdate) = TRUNC(SYSDATE) and r.retype= 6
 	</select>
 
@@ -480,7 +527,8 @@
 		FROM (
 		SELECT *
 		FROM report
-		WHERE retype = 3 AND id = #{id} and report.wcode =#{wCode}
+		WHERE retype = 3 AND id =
+		#{id} and report.wcode =#{wCode}
 		ORDER BY regdate DESC
 		)
 		WHERE ROWNUM = 1
@@ -491,7 +539,8 @@
 		set
 		drug=#{drug},orgdisease=#{orgdisease},
 		allergy=#{allergy},mentalstatus=#{mentalstatus}
-		where id= #{id} and wid= #{wid}
+		where id= #{id} and
+		wid= #{wid}
 	</update>
 
 	<select id="selectcalinderList" parameterType="String"
@@ -503,7 +552,8 @@
 
 	<select id="selectcalinderDetail" resultType="CalinderVO">
 		select *
-		from calinder
+		from
+		calinder
 		where wid= #{wid} and id = #{id}
 	</select>
 
@@ -540,6 +590,12 @@
 		<include refid="noticesearch" />
 		order by regDate desc
 	</select>
+	
+	<select id="selectreplySequenceNextValue" resultType="int">
+		select
+		reply_seq.nextVal
+		from dual
+	</select>
 
 	<select id="selectnoticeListCount" resultType="int">
 		select count(*)
@@ -547,10 +603,22 @@
 		<include refid="noticesearch" />
 		order by regDate desc
 	</select>
-	
+
 	<select id="noticeDetail" resultType="NoticeVO">
-	select *
-	from notice
-	where nNo = #{nNo}
+		select *
+		from notice
+		where nNo = #{nNo}
 	</select>
+
+	<select id="replyList" resultType="ReplyVO">
+		select *
+		from reply
+		where nNo = #{nNo}
+	</select>
+
+	<update id="replyWrite" parameterType="ReplyVO">
+		INSERT INTO reply (wirter, rNo, content,nNo)
+		VALUES(#{wirter},
+		#{rNo}, #{content}, #{nNo})
+	</update>
 </mapper>
