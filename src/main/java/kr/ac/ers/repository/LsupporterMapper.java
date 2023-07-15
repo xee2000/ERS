@@ -1,11 +1,13 @@
 package kr.ac.ers.repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
 
+import kr.ac.ers.command.CalinderRegistCommand;
 import kr.ac.ers.dto.CalinderVO;
 import kr.ac.ers.dto.LsupporterStatusVO;
 import kr.ac.ers.dto.LsupporterVO;
@@ -14,6 +16,7 @@ import kr.ac.ers.dto.MemberEmergencyReportVO;
 import kr.ac.ers.dto.MemberReportLsupporterVO;
 import kr.ac.ers.dto.MemberVO;
 import kr.ac.ers.dto.MembereducationVO;
+import kr.ac.ers.dto.NoticeVO;
 import kr.ac.ers.dto.ReportVO;
 
 @Mapper
@@ -136,9 +139,19 @@ public interface LsupporterMapper {
 
 	List<CalinderVO> selectcalinderList(String wid);
 
-	CalinderVO selectcalinderDetail(String wid, String id);
+	CalinderVO selectcalinderDetail(String wid, int id);
 
-	void insertcalinder(String wid, CalinderVO calinder);
+    int selectcalinderSequenceNextValue();
 
-    String selectcalinderSequenceNextValue();
+	void insertcalinder(int id, String wid, String title, String content, Date regDate);
+
+	void modifycalinder(int id, String wid, String title, String content, Date regDate, Date updateDate);
+
+	void calinderremove(String wid, int id);
+
+	List<NoticeVO> selectnoticeList(Map<String, Object> returnMap, RowBounds rowbounds);
+
+	int selectnoticeListCount(Map<String, Object> returnMap);
+	
+	
 }

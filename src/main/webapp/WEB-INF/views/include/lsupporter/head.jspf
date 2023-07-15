@@ -63,7 +63,7 @@
       </c:if>
       <!-- 공지사항 -->
       <li class="item_bar">
-        <img style="width: 70px; height: 70px;"src="/resources/lsupporter/img/확성기.png" alt="">
+        <img style="width: 70px; height: 70px;" onclick="location.href='/ers/lsupporter/notice'" src="/resources/lsupporter/img/확성기.png" alt="">
         <div class="header_menu_name">공지사항</div>
       </li>
       <!-- 마이페이지 -->

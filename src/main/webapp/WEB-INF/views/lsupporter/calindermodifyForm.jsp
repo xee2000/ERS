@@ -20,7 +20,7 @@
       <div class="callist">
         <div class="row">
           <div class="col-12">
-            <h3 class="caltitle mt-2" style="text-align:center;">대상자 일정조회</h3>
+            <h3 class="caltitle mt-2" style="text-align:center;">일정수정</h3>
           </div>
         </div>
         
@@ -28,39 +28,34 @@
   <span class="button-icon">&larr;</span>
   <span class="button-text">뒤로가기</span>
 </button>
-<button type="button" onclick="location.href='calindermodifyForm?id=${calinder.id}'" class="btn btn-primary">수정하기</button>
-<button type="button" onclick="remove();" class="btn btn-primary">삭제하기</button>
+<button onclick="modify();">수정</button>
+
   
 <div class="row">
 <div class="col-12">
 
-<form action="calinderremove" method="POST" id="sendForm">
+<form action="calindermodify" method="POST" id="sendForm">
 <table>
-
+<fmt:formatDate value="${calinder.regDate }" var="regDate" pattern="yyyy-MM-dd"/>
 <thead>
-  <fmt:formatDate value="${calinder.regDate}" pattern="MM-dd kk시mm분" var="regDate" />
-  <fmt:formatDate value="${calinder.updateDate}" pattern="MM-dd kk시mm분" var="updateDate" />
   <tr>
     <th style="text-align:center;" class="">제목</th>
      <td style="display:none" class="modal_content">
-        <input type="hidden" name="id" value="${calinder.id }">
       </td>
       <td class="modal_content">
-       ${calinder.title }
+      <input type="text" name="title"value="${calinder.title }"/>
+      <input type="hidden" name="id" value="${calinder.id }"/>
       </td>
     <th style="text-align:center;" class="">내용</th>
       <td class="modal_content">
-      ${calinder.content }
+    <textarea rows="5" cols="5" name="content" placeholder="${calinder.content }"></textarea>
       </td>
     <th style="text-align:center;" class="">날짜</th>
       <td class="modal_content">
-       ${regDate }
+  <input type="date" name="regDate" value="${regDate }">
+  <input style="display:none;" type="date" name="updateDate"  id='currentDate'/>
+
       </td>
-      <c:if test="${calinder.updateDate != null}">
-        <td class="modal_content">
-         ${updateDate }
-        </td>
-      </c:if>
   </tr>
 </thead>
   <tbody>
@@ -74,8 +69,8 @@
 
 
 
-</table>
-</form>
+</table></form>
+
 
 
 </div>
@@ -85,14 +80,17 @@
     </div>
   </div>
 </div>
- <script>
- function remove(){
-	 var form = $('#sendForm');
-	 form.submit();
-	 }
 
- </script>
- 
+<script>
+function modify(){
+var form = $('#sendForm');
+form.submit();
+}
+</script>
+
+<script>
+  document.getElementById('currentDate').value = new Date().toISOString().substring(0, 10);;
+</script>
  
   </div>
 

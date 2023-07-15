@@ -1,4 +1,4 @@
-package kr.ac.ers.dto;
+package kr.ac.ers.command;
 
 import java.util.Date;
 
@@ -6,18 +6,17 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 @Getter
 @Setter
-@ToString
-public class CalinderVO {
+public class CalinderRegistCommand {
 
-		private String title;
-		private int id;
-		private String content;
 		private String wid;
+		private String title;
+		private String content;
+		@DateTimeFormat(pattern = "yyyy-MM-dd")
 		private Date regDate;
-		private Date updateDate;
-		private Date endDate;
+		private int id;
+		
+		
 }

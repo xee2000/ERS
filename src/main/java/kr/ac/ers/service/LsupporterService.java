@@ -1,6 +1,6 @@
 package kr.ac.ers.service;
 
-import java.sql.SQLException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +19,7 @@ import kr.ac.ers.dto.MemberEmergencyReportVO;
 import kr.ac.ers.dto.MemberReportLsupporterVO;
 import kr.ac.ers.dto.MemberVO;
 import kr.ac.ers.dto.MembereducationVO;
+import kr.ac.ers.dto.NoticeVO;
 import kr.ac.ers.dto.ReportFileVO;
 import kr.ac.ers.dto.ReportVO;
 import kr.ac.ers.repository.LsupporterMapper;
@@ -329,15 +330,42 @@ public class LsupporterService {
 		return lsupportMapper.selectcalinderList(wid);
 	}
 
-	public CalinderVO getcalinderDetail(String wid, String id) {
+	public CalinderVO getcalinderDetail(String wid, int id) {
 
 		return lsupportMapper.selectcalinderDetail(wid,id);
 	}
 
-	public void calinderregist(String wid, CalinderVO calinder) {
-		String id = lsupportMapper.selectcalinderSequenceNextValue();
-		calinder.setId(id);
-		lsupportMapper.insertcalinder(wid,calinder);
+	public void calinderregist(String wid, String title, String content, Date regDate) {
+		int id = lsupportMapper.selectcalinderSequenceNextValue();
+		lsupportMapper.insertcalinder(id,wid,title,content,regDate);
+		
+	}
+
+	public void calindermodify(String wid, int id, String title, String content, Date regDate, Date updateDate) {
+		
+		lsupportMapper.modifycalinder(id,wid,title,content,regDate,updateDate);
+	}
+
+	public void calinderremove(String wid, int id) {
+		
+		lsupportMapper.calinderremove(wid,id);
+	}
+
+	public Map<String, Object> noticeList(SearchCriteria cri, String startday, String endday) {
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		Map<String, Object> returnMap = new HashMap<>();
+		returnMap.put("cri", cri);
+		returnMap.put("startday", startday);
+		returnMap.put("endday", endday);
+		RowBounds rowbounds = new RowBounds(cri.getStartRowNum(), cri.getPerPageNum());
+
+		List<NoticeVO> noticeList = lsupportMapper.selectnoticeList(returnMap, rowbounds);
+		dataMap.put("noticeList", noticeList);
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(lsupportMapper.selectnoticeListCount(returnMap));
+		dataMap.put("pageMaker", pageMaker);
+		return dataMap;
 	}
 
 

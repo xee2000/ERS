@@ -8,10 +8,11 @@
 <div class="col-12">
 <h3 class="loginname mb-4">${lsupporterstatus.name }생활지원사님 환영합니다.</h3>
 </div>
+<button class="btn btn-primary" onclick="OpenWindow('calinderregistForm?wid=${lsupporterstatus.wid}','대상자일정조회',800,800);">작성하기</button>
+
 		<div id="calendar">
 		
 		</div>
-
 </section>
 <!--foot -->
 
@@ -32,53 +33,51 @@
       droppable: true,
       editable: true,
       events: [
-    	  // Use JSTL forEach to generate events dynamically
-    	  <c:forEach items="${calinderList}" var="calinder">
-    	    {
-    	      title: '${calinder.title}',
-    	      content: '${calinder.content}',
-    	      start: '<fmt:formatDate value="${calinder.regDate}" pattern="yyyy-MM-dd" />',
-    	      end: '<fmt:formatDate value="${calinder.endDate}" pattern="yyyy-MM-dd" />',
-    	      extendedProps: {
-    	        id: '${calinder.id}'
-    	      }
-    	    },
-    	  </c:forEach>
-    	],
-    	eventRender: function(info) {
-    	  info.el.querySelector('.fc-event-title').textContent = info.event.title;
-    	},
-    	eventClick: function(arg) {
-    	  var event = arg.event;
-    	  var title = event.title;
-    	  var content = event.extendedProps.content;
-    	  var id = event.extendedProps.id;
+        // Use JSTL forEach to generate events dynamically
+        <c:forEach items="${calinderList}" var="calinder">
+          {
+            title: '${calinder.title}',
+            content: '${calinder.content}',
+            start: '<fmt:formatDate value="${calinder.regDate}" pattern="yyyy-MM-dd" />',
+            end: '<fmt:formatDate value="${calinder.endDate}" pattern="yyyy-MM-dd" />',
+            extendedProps: {
+              id: '${calinder.id}'
+            }
+          },
+        </c:forEach>
+      ],
+      eventRender: function(info) {
+        info.el.querySelector('.fc-event-title').textContent = info.event.title;
+      },
+      eventClick: function(arg) {
+        var event = arg.event;
+        var title = event.title;
+        var content = event.extendedProps.content;
+        var id = event.extendedProps.id;
 
-    	  var url;
-    	  if (id) {
-    	    url = 'calinderdetail?id=' + encodeURIComponent(id);
-    	  } else {
-    	    url = 'calinderregist';
-    	  }
+        var url;
+        if (id) {
+        	  url = 'calinderdetail?id=' + encodeURIComponent(id);
+        	} 
+		if(!id){
+			url ='calinderregistForm'
+		}
 
+        var winWidth = 600;
+        var winHeight = 400;
+        OpenWindow(url, 'Window Title', winWidth, winHeight);
 
-    	  var winWidth = 600; 
-    	  var winHeight = 400; 
-    	  OpenWindow(url, 'Window Title', winWidth, winHeight);
-
-    	  function OpenWindow(urlStr, winTitle, winWidth, winHeight) {
-    	    var winLeft = (screen.width - winWidth) / 2;
-    	    var winTop = (screen.height - winHeight) / 2;
-    	    var win = window.open(urlStr, winTitle, "scrollbars=yes,width=" + winWidth + ",height=" + winHeight + ",top=" + winTop + ",left=" + winLeft + ",resizable=yes");
-    	    win.focus();
-    	  }
-    	}
-
+        function OpenWindow(urlStr, winTitle, winWidth, winHeight) {
+          var winLeft = (screen.width - winWidth) / 2;
+          var winTop = (screen.height - winHeight) / 2;
+          var win = window.open(urlStr, winTitle, "scrollbars=yes,width=" + winWidth + ",height=" + winHeight + ",top=" + winTop + ",left=" + winLeft + ",resizable=yes");
+          win.focus();
+        }
+      }
     });
     calendar.render();
   });
 </script>
-
 
 
 

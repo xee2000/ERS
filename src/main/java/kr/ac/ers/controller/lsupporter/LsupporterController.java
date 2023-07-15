@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,12 +14,12 @@ import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,6 +31,7 @@ import kr.ac.ers.dto.LsupporterStatusVO;
 import kr.ac.ers.dto.LsupporterVO;
 import kr.ac.ers.dto.MemberDetailVO;
 import kr.ac.ers.dto.MemberReportLsupporterVO;
+import kr.ac.ers.dto.NoticeVO;
 import kr.ac.ers.service.LsupporterService;
 import kr.ac.ers.utils.MailContentSend;
 import kr.ac.ers.utils.MakeFileName;
@@ -241,7 +243,7 @@ public class LsupporterController {
 
 	
 	@RequestMapping("/ers/lsupporter/calinder")
-	public String ShowcalinderList(HttpSession session, HttpServletRequest request, Model model) {
+	public String Showcalinder(HttpSession session, HttpServletRequest request, Model model) {
 		
 		session= request.getSession();
 		 LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");	
@@ -252,7 +254,7 @@ public class LsupporterController {
 	}
 	
 	@RequestMapping("/ers/lsupporter/calinderdetail")
-	public String ShowcalinderList(HttpSession session, HttpServletRequest request, Model model, String id) {
+	public String Showcalinderdetail(HttpSession session, HttpServletRequest request, Model model, int id) {
 		
 		session= request.getSession();
 		 LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");	
@@ -261,14 +263,53 @@ public class LsupporterController {
 		return "lsupporter/calinderdetail" ;
 	}
 	
-	@RequestMapping("/ers/lsupporter/calinderregist")
-	public String Showcalinderregist(HttpSession session, HttpServletRequest request, Model model,CalinderVO calinder) {
+	@RequestMapping("/ers/lsupporter/calinderregistForm")
+	public String ShowcalinderregistForm(HttpSession session, HttpServletRequest request, Model model) {
 		
 		session= request.getSession();
 		 LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");	
-		lsupporterService.calinderregist(loginUser.getWid(),calinder);
-		return "lsupporter/calinder" ;
+		 model.addAttribute("wid",loginUser.getWid());
+		 return "lsupporter/calinderregistForm" ;
 	}
+	
+	@RequestMapping("/ers/lsupporter/calindermodifyForm")
+	public String ShowcalindermodfiyForm(HttpSession session, HttpServletRequest request, Model model, int id) {
+		
+		session= request.getSession();
+		 LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");	
+		 CalinderVO calinder = lsupporterService.getcalinderDetail(loginUser.getWid(),id);
+		 model.addAttribute("calinder",calinder);
+		 return "lsupporter/calindermodifyForm" ;
+	}
+	
+	@PostMapping(value = "/ers/lsupporter/calinderregist", produces = "text/plain;charset=utf-8")
+	public String Showcalinder(HttpSession session, HttpServletRequest request, Model model,
+			String title, String content, @DateTimeFormat(pattern = "yyyy-MM-dd")Date regDate){
+			session = request.getSession();
+			LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");
+			lsupporterService.calinderregist(loginUser.getWid(),title,content,regDate);
+
+	    return "lsupporter/calinder";
+	}
+	
+	@PostMapping(value = "/ers/lsupporter/calindermodify", produces = "text/plain;charset=utf-8")
+	public String Showcalindermodify(HttpSession session, HttpServletRequest request, Model model,int id,
+			String title, String content, @DateTimeFormat(pattern = "yyyy-MM-dd")Date regDate, @DateTimeFormat(pattern ="yyyy-MM-dd")Date updateDate){
+			session = request.getSession();
+			LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");
+			lsupporterService.calindermodify(loginUser.getWid(),id,title,content,regDate,updateDate);
+	    return "lsupporter/calinder";
+	}
+	
+	@PostMapping(value = "/ers/lsupporter/calinderremove", produces = "text/plain;charset=utf-8")
+	public String Showcalinderremove(HttpSession session, HttpServletRequest request, Model model,int id
+			){
+			session = request.getSession();
+			LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");
+			lsupporterService.calinderremove(loginUser.getWid(),id);
+	    return "lsupporter/calinder";
+	}
+
 	
 	@PostMapping("/ers/lsupporter/idcheck")
 	public String Showidcheck(String name, String email, HttpServletRequest request, HttpServletResponse response) {
@@ -459,7 +500,8 @@ public class LsupporterController {
 
 	      return url;
 	   }
-
+	   
+	
 	
 	
 }

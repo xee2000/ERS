@@ -28,6 +28,7 @@
   <span class="button-icon">&larr;</span>
   <span class="button-text">뒤로가기</span>
 </button>
+<button onclick="regist();">등록</button>
 
   
 <div class="row">
@@ -50,7 +51,8 @@
       </td>
     <th style="text-align:center;" class="">날짜</th>
       <td class="modal_content">
-    <input type="date" name="regDate"/>
+  <input type="date" name="regDate">
+
       </td>
   </tr>
 </thead>
@@ -78,8 +80,10 @@
 </div>
 
 <script>
+function regist(){
 var form = $('#sendForm');
 form.submit();
+}
 </script>
  
   </div>

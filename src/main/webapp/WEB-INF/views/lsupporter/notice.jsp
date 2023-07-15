@@ -1,8 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@include file="../include/lsupporter/head.jspf"%>
 <link rel="stylesheet" href="/resources/lsupporter/css/notice.css">
-
+<c:set var="noticeList" value="${dataMap.noticeList }"/>
+<c:set var="pageMaker" value="${dataMap.pageMaker}"/>
+<c:set var="cri" value="${pageMaker.cri }"/>
 
 		<!-- Main content -->
 		<section class="content-header" style="height:1100px;">
@@ -14,19 +17,27 @@
 <div class="row body_case">
 		<div class="col-12">
 		<div class="category_date_menubar">
-  <div class="search_bar flex mb-5">
-  <select class="keywordoption"id="카테고리" name="category">
-    <option value="전체">전체</option>
-      <option value="대상자명">대상자명</option>
-      <option value="수신여부">성별</option>
-      <option value="기타1">활동여부</option>
-  </select>
-<div class="search_container flex items-center">
-  <input class="searchinput w-full" type="text" id="검색어" name="q" required>
-  <button type="submit" class="absolute right-0 top-0 bottom-0 p-2 right-1.25">
+		<div class="date mb-4">
+		<input type="date" name="startday" value="${param.startday}" style="width:250px;border:1px solid black;">
+&nbsp;&nbsp;<span class="dash">-</span>
+&nbsp;&nbsp;<input type="date" name="endday" value="${param.endday}" id="enddayInput" oninput="datesearch();" style="width:250px;border:1px solid black;">
+
+		</div>
+  <div class="search_bar search_bar_main flex mb-1">
+ <div class="search_bar flex">
+ <select class="keywordoption mr-2" name="searchType" id="searchType">
+  <option value="" disabled selected>검색</option>
+  <option value="tc" ${cri.searchType eq 'all' ? 'selected':'' }>전체</option>
+  <option value="t" ${cri.searchType eq 'n' ? 'selected':'' }>제목</option>
+  <option value="tc" ${cri.searchType eq 'g' ? 'selected':'' }>제목+내용</option>
+</select>
+<div class="search_container flex items-center border border-gray-300 rounded-md overflow-hidden">
+  <input class="searchinput w-full py-2 px-4 pr-10" autocomplete="off" type="text" name="keyword" required value="${cri.keyword}" id="search_keyword" onkeyup="handleEnterKey(event)">
+  <button type="button" class="absolute right-0 top-0 bottom-0 p-2" id="button" data-card-widget="search" onclick="list_go(1);">
     <i class="fa fa-search"></i>
   </button>
 </div>
+  </div>
   </div>
   
   
@@ -48,82 +59,21 @@
     <th class="tg-c3ow">번호</th>
     <th class="tg-c3ow">제목</th>
     <th class="tg-c3ow">등록일자</th>
-    <th class="tg-c3ow">첨부파일</th>
   </tr>
 </thead>
 <tbody>
+<c:forEach items="${noticeList }" var="notice">
+<fmt:formatDate value="${notice.regDate }" var="regDate" pattern="yyyy-MM-dd"/>
   <tr>
-    <td class="tg-0pky">1</td>
-    <td class="tg-0pkk" onclick="location.href='/usr/home/noticedetail'">중요공지</td>
-    <td class="tg-0pky">2020-01-01</td>
-    <td class="tg-0pky">
-    </td>
+    <td class="tg-0pky">${notice.NNo }</td>
+    <td class="tg-0pkk" onclick="location.href='/ers/lsupporter/noticedetail'">${notice.title }</td>
+    <td class="tg-0pky">${regDate }</td>
   </tr>
-  <tr>
-    <td class="tg-0pky">2</td>
-    <td class="tg-0pkk">악성대상자 조건 변경</td>
-    <td class="tg-0pky">2020-01-01</td>
-    <td class="tg-0pky">
-    </td>
-  </tr>
-  <tr>
-    <td class="tg-0pky">3</td>
-    <td class="tg-0pkk">악성대상자 추가건에 대한....</td>
-    <td class="tg-0pky">2020-01-01</td>
-    <td class="tg-0pky">
-    </td>
-  </tr>
-  <tr>
-    <td class="tg-0pky">4</td>
-    <td class="tg-0pkk">서비스 취소명단 확인바랍니다.</td>
-    <td class="tg-0pky">2020-01-01</td>
-    <td class="tg-0pky">
-    </td>
-  </tr>
-  <tr>
-    <td class="tg-0pky">5</td>
-    <td class="tg-0pkk">기기 설치법 변경에 대한 추가공지</td>
-    <td class="tg-0pky">2020-01-01</td>
-    <td class="tg-0pky">
-    </td>
-  </tr>
-  <tr>
-    <td class="tg-0pky">6</td>
-    <td class="tg-0pkk">서비스 장애</td>
-    <td class="tg-0pky">2020-01-01</td>
-    <td class="tg-0pky">
-    </td>
-  </tr>
-  <tr>
-    <td class="tg-0pky">7</td>
-    <td class="tg-0pkk">시스템 재점검</td>
-    <td class="tg-0pky">2020-01-01</td>
-    <td class="tg-0pky">
-    </td>
-  </tr>
-  <tr>
-    <td class="tg-0pky">8</td>
-    <td class="tg-0pkk">직원을 칭찬합니다.</td>
-    <td class="tg-0pky">2020-01-01</td>
-    <td class="tg-0pky">
-    </td>
-  </tr>
-  <tr>
-    <td class="tg-0pky">9</td>
-    <td class="tg-0pkk">우수사원 공지</td>
-    <td class="tg-0pky">2020-01-01</td>
-    <td class="tg-0pky">
-    </td>
-  </tr>
-  <tr>
-    <td class="tg-0pky">10</td>
-    <td class="tg-0pkk">생활지원사 추가 지역 공지</td>
-    <td class="tg-0pky">2020-01-01</td>
-    <td class="tg-0pky">
-    </td>
-  </tr>
+  
+</c:forEach>
 </tbody>
 </table>
+<%@include file="../include/lsupporter/pagination.jsp"%>
 </div>
 </div>
 
