@@ -501,6 +501,17 @@ public class LsupporterController {
 	      return url;
 	   }
 	   
+	   @GetMapping("/ers/lsupporter/noticedetail")
+	   public String logout(Model model, HttpSession session, HttpServletRequest request,int nNo) throws Exception {
+			session = request.getSession();
+			 LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");
+			NoticeVO notice =  lsupporterService.noticeDetail(nNo);
+			 model.addAttribute("loginUser",loginUser.getWid());
+			 model.addAttribute("notice",notice);
+			 
+	      return "lsupporter/noticedetail";
+	   }
+	   
 	
 	
 	

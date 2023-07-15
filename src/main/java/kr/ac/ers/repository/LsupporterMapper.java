@@ -152,6 +152,8 @@ public interface LsupporterMapper {
 	List<NoticeVO> selectnoticeList(Map<String, Object> returnMap, RowBounds rowbounds);
 
 	int selectnoticeListCount(Map<String, Object> returnMap);
+
+	NoticeVO noticeDetail(int nNo);
 	
 	
 }

@@ -547,4 +547,10 @@
 		<include refid="noticesearch" />
 		order by regDate desc
 	</select>
+	
+	<select id="noticeDetail" resultType="NoticeVO">
+	select *
+	from notice
+	where nNo = #{nNo}
+	</select>
 </mapper>

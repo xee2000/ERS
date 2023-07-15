@@ -368,5 +368,9 @@ public class LsupporterService {
 		return dataMap;
 	}
 
+	public NoticeVO noticeDetail(int nNo) {
+			return lsupportMapper.noticeDetail(nNo);
+	}
+
 
 }

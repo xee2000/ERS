@@ -34,7 +34,6 @@
 
 </head>
 <body class="body">
-<input type="hidden" value="${loginUser.wid }">
 	<nav class="main-header navbar navbar-expand-md navbar-light navbar-white" style="padding: 0px;">
   <div class="header_main">
     <a href="/ers/lsupporter/main" class="navbar-brand">
