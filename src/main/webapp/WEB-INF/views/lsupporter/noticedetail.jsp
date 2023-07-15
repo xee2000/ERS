@@ -88,23 +88,26 @@
 <form action="/ers/lsupporter/reply/write" method="POST" role="form">
 <label for="content">내용</label>
 <input type="text" name="content">
-<input type="hidden" name="write" value="${wid }">
+<input type="hidden" name="writer" value="${wid}">
 <input type="hidden" name="nNo" value="${notice.NNo }">
 </form>
-<button onclick="write();" class="btn btn-primary">작성</button>
+<button onclick="regist()" class="btn btn-primary">작성</button>
 
 
+
+</section>	
 <script>
-function write(){
-	var form = $('form[role="form"]');
-	alert("작성하시겠습니까?");
-	if(form){
-	form.submit();
-	}
+function regist() {
+  var form = $('form[role="form"]');
+  if (form.length > 0) {
+    // Display a confirmation dialog
+    var confirmed = confirm("작성하시겠습니가?");
+    if (confirmed) {
+      form.submit();
+    }
+  }
 }
 </script>
-</section>	
-
 
 <%@include file="../include/lsupporter/foot.jspf"%>
  

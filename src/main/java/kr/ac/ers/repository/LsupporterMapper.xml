@@ -617,8 +617,8 @@
 	</select>
 
 	<update id="replyWrite" parameterType="ReplyVO">
-		INSERT INTO reply (wirter, rNo, content,nNo)
-		VALUES(#{wirter},
+		INSERT INTO reply (writer, rNo, content,nNo)
+		VALUES(#{writer},
 		#{rNo}, #{content}, #{nNo})
 	</update>
 </mapper>

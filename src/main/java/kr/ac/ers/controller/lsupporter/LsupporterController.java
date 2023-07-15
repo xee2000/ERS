@@ -515,7 +515,7 @@ public class LsupporterController {
 	   }
 	   
 	  
-	   @PostMapping("/reply/write")
+	   @PostMapping("/ers/lsupporter/reply/write")
 	   public String replyWrite(HttpSession session, Model model, ReplyVO reply) {
 	       String url = "redirect:/ers/lsupporter/noticedetail?nNo=" + reply.getNNo();
 	       LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");
