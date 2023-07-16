@@ -523,6 +523,12 @@ public class LsupporterController {
 	       lsupporterService.replyWrite(reply);
 	       return url;
 	   }
-
+	   
+	   @PostMapping("/ers/lsupporter/reply/removereply")
+	   public String replyWrite(int rNo) {
+	       String url = "redirect:/ers/lsupporter/noticedetail";
+	       lsupporterService.replyRemove(rNo);
+	       return url;
+	   }
 	
 }

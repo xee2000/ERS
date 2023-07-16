@@ -15,10 +15,10 @@
 <div class="row">
 <div class="col-12 flex justify-start mb-1">
 <button type="button" class="btn btn-dark btn-lg ml-3" onclick="location.href='notice'">목록</button>
-<c:if test="${loginUser == notice.manId}">
+<c:if test="${wid == notice.manId}">
 <button type="button" class="btn btn-dark btn-lg ml-3">수정</button>
 </c:if>
-<c:if test="${loginUser == notice.manId}">
+<c:if test="${wid == notice.manId}">
 <button type="button" class="btn btn-dark btn-lg ml-3">삭제</button>
 </c:if>
 </div>
@@ -42,6 +42,7 @@
   <tr>
     <td class="tg-c3ow">작성자 </td>
     <td class="tg-0pky" colspan="3">${notice.manId }</td>
+   
   </tr>
   <tr>
     <td class="tg-baqh">내용</td>
@@ -51,45 +52,60 @@
   </tr>
 </tbody>
 </table>
+<input type="hidden" name="nNo" id="nNo" value="${notice.NNo }">
     </div>
   </div>
 
 
+<c:if test="${replyList != null }">
 <div class="reply_list">
-<p>댓글리스트</p>
-<table class="tg" style="undefined;table-layout: fixed; width: 100%;">
-<c:forEach items="${replyList }" var="reply">
-<thead>
-<fmt:formatDate value="${reply.regDate }"  var="regDate" pattern="yyyy-MM-dd"/>
-<fmt:formatDate value="${reply.updateDate }"  var="updateDate" pattern="yyyy-MM-dd"/>
-  <tr>
-    <th class="tg-ynlj">작성일</th>
-    <th class="tg-l8qj">${regDate }</th>
-    
-   <c:if test="${updateDate != null }">
-     <th class="tg-ynlj">수정일</th>
-    <th class="tg-l8qj">${updateDate }</th>
-   </c:if>
-    <fmt:formatDate value="${notice.regDate }" var="regDate" pattern="yyyy-MM-dd"/>
-    <th class="tg-baqh">${regDate }</th>
-  </tr>
-</thead>
-<tbody>
-  <tr>
-    <td class="tg-c3ow">내용 </td>
-    <td class="tg-0pky" colspan="3">${reply.content }</td>
-  </tr>
-</tbody>
-</c:forEach>
-</table>
+  <p>댓글리스트</p>
+  <c:forEach items="${replyList}" var="reply">
+    <c:if test="${wid == reply.writer}">
+      <button onclick="modify()" class="btn btn-primary">수정</button>
+    </c:if>
+    <c:if test="${wid == reply.writer}">
+      <button onclick="remove()" class="btn btn-primary">삭제</button>
+    </c:if>
+    <table class="tg" style="undefined;table-layout: fixed; width: 100%;">
+      <thead>
+        <fmt:formatDate value="${reply.regDate}" var="regDate" pattern="yyyy-MM-dd" />
+        <fmt:formatDate value="${reply.updateDate}" var="updateDate" pattern="yyyy-MM-dd" />
+        <tr>
+          <th class="tg-ynlj">작성자</th>
+          <th class="tg-ynlj">${reply.writer}</th>
+          <th class="tg-ynlj">작성일</th>
+          <th class="tg-l8qj">${regDate}</th>
+          <c:if test="${updateDate != null}">
+            <th class="tg-ynlj">수정일</th>
+            <th class="tg-l8qj">${updateDate}</th>
+          </c:if>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="tg-c3ow">내용</td>
+          <td class="tg-0pky" colspan="3">${reply.content}</td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- Hidden input field for rNo -->
+    <input type="hidden" id="rNo" value="${reply.RNo}" />
+  </c:forEach>
 </div>
 
+</c:if>
+
+
+
+<c:if test="${replyList == null }">
+<p>댓글리스트</p>
+<p>등록된 댓글이 없습니다.</p>
+</c:if>
 
 <form action="/ers/lsupporter/reply/write" method="POST" role="form">
 <label for="content">내용</label>
 <input type="text" name="content">
-<input type="hidden" name="writer" value="${wid}">
-<input type="hidden" name="nNo" value="${notice.NNo }">
 </form>
 <button onclick="regist()" class="btn btn-primary">작성</button>
 
@@ -100,13 +116,43 @@
 function regist() {
   var form = $('form[role="form"]');
   if (form.length > 0) {
-    // Display a confirmation dialog
     var confirmed = confirm("작성하시겠습니가?");
     if (confirmed) {
       form.submit();
     }
   }
 }
+
+function remove() {
+	  var rNo = document.getElementById("rNo").value;
+	  var nNo = document.getElementById("nNo").value;
+	  var confirmed = confirm("정말로 삭제하시겠습니까?");
+	  
+	  if (confirmed) {
+	    var form = document.createElement('form');
+	    form.method = 'POST';
+	    form.action = '/ers/lsupporter/reply/removereply'; // Make sure the URL is correct
+	    
+	    var inputRNo = document.createElement('input');
+	    inputRNo.type = 'hidden';
+	    inputRNo.name = 'rNo';
+	    inputRNo.value = rNo;
+	    form.appendChild(inputRNo);
+	    
+	    var inputNNo = document.createElement('input');
+	    inputNNo.type = 'hidden';
+	    inputNNo.name = 'nNo';
+	    inputNNo.value = nNo;
+	    form.appendChild(inputNNo);
+
+	    document.body.appendChild(form); // Add the form to the document
+
+	    form.submit();	
+	  }
+	}
+
+
+
 </script>
 
 <%@include file="../include/lsupporter/foot.jspf"%>

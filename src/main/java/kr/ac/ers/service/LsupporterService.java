@@ -384,5 +384,10 @@ public class LsupporterService {
 		lsupportMapper.replyWrite(reply);
 	}
 
+	public void replyRemove(int rNo) {
+		
+		lsupportMapper.replyRemove(rNo);
+	}
+
 
 }

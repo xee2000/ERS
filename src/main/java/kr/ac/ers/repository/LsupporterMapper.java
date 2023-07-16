@@ -161,6 +161,8 @@ public interface LsupporterMapper {
 	void replyWrite(ReplyVO reply);
 
 	int selectreplySequenceNextValue();
+
+	void replyRemove(int rNo);
 	
 	
 }

@@ -621,4 +621,10 @@
 		VALUES(#{writer},
 		#{rNo}, #{content}, #{nNo})
 	</update>
+	
+	<update id="replyRemove" parameterType="int">
+		delete
+		from reply
+		where rNo = #{rNo}
+	</update>
 </mapper>
