@@ -408,6 +408,7 @@ public class LsupporterService {
 				noticefile.setFiletype(noticeFileList.get(0).getFiletype());
 				noticefile.setNFo(nNo);
 				noticefile.setUploadpath(noticeFileList.get(0).getUploadpath());
+				noticefile.setFilesize(noticeFileList.get(0).getFilesize());
 				lsupportMapper.insertnoticeFile(noticefile);
 				
 				}

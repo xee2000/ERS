@@ -642,8 +642,8 @@
 	</update>
 	
 	<update id="insertnoticeFile" parameterType="NoticeFileVO">
-		INSERT INTO noticefile (nFo, fNo, filename, filetype, Uploadpath)
-		VALUES(#{nFo},#{fNo}, #{filename}, #{filetype}, #{Uploadpath})
+		INSERT INTO noticefile (nFo, fNo, filename, filetype, filesize, Uploadpath)
+		VALUES(#{nFo},#{fNo}, #{filename}, #{filetype}, #{filesize}, #{Uploadpath})
 	</update>
 	
 	<select id="selectNoticeFileSequenceNextValue" resultType="int">

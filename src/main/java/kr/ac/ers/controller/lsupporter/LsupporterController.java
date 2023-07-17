@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -512,10 +513,28 @@ public class LsupporterController {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-				//DB 	
 		  
 		   return url;
 	   }
+	   
+	   public class FileSizeConverter {
+		    public static String convertFileSize(long bytes) {
+		        if (bytes < 1024) {
+		            return bytes + " B";
+		        } else if (bytes < 1024 * 1024) {
+		            double kb = bytes / 1024.0;
+		            return formatDouble(kb) + " KB";
+		        } else {
+		            double mb = bytes / (1024.0 * 1024.0);
+		            return formatDouble(mb) + " MB";
+		        }
+		    }
+		    
+		    private static String formatDouble(double value) {
+		        DecimalFormat df = new DecimalFormat("#.##");
+		        return df.format(value);
+		    }
+		}
 	   
 	   private List<NoticeFileVO> saveFileToAttaches(List<MultipartFile> multiFiles, String savePath) throws Exception {
 			List<NoticeFileVO> noticeFileList = new ArrayList<NoticeFileVO>();
@@ -531,6 +550,9 @@ public class LsupporterController {
 					noticeFile.setUploadpath(savePath);
 					noticeFile.setFilename(fileName);
 					noticeFile.setFiletype(fileName.substring(fileName.lastIndexOf('.') + 1).toUpperCase());
+					 long fileSizeInBytes = multi.getSize();
+			            String formattedFileSize = FileSizeConverter.convertFileSize(fileSizeInBytes);
+			            noticeFile.setFilesize(formattedFileSize);				
 					noticeFileList.add(noticeFile);
 				}
 			}
