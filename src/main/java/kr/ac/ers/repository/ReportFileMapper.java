@@ -24,6 +24,7 @@ public interface ReportFileMapper {
 
 	void remove(int rNo);
 
+
 	
 
 }

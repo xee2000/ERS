@@ -8,7 +8,9 @@ import java.util.Map;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import kr.ac.ers.command.NoticeFileWriteCommand;
 import kr.ac.ers.command.PageMaker;
 import kr.ac.ers.command.SearchCriteria;
 import kr.ac.ers.dto.CalinderVO;
@@ -19,6 +21,7 @@ import kr.ac.ers.dto.MemberEmergencyReportVO;
 import kr.ac.ers.dto.MemberReportLsupporterVO;
 import kr.ac.ers.dto.MemberVO;
 import kr.ac.ers.dto.MembereducationVO;
+import kr.ac.ers.dto.NoticeFileVO;
 import kr.ac.ers.dto.NoticeVO;
 import kr.ac.ers.dto.ReplyVO;
 import kr.ac.ers.dto.ReportFileVO;
@@ -387,6 +390,28 @@ public class LsupporterService {
 	public void replyRemove(int rNo) {
 		
 		lsupportMapper.replyRemove(rNo);
+	}
+
+	public void noticewrite(List<NoticeFileVO> noticeFileList, String wid, NoticeFileWriteCommand noticeReq) {
+		int nNo = lsupportMapper.selectNoticeSequenceNextValue();
+		NoticeVO notice = new NoticeVO();
+		notice.setNNo(nNo);
+		notice.setManId(wid);
+		notice.setTitle(noticeReq.getTitle());
+		notice.setContent(noticeReq.getContent());
+		lsupportMapper.insertNotice(notice);
+		if (noticeReq.getUploadFile() != null)
+			for (NoticeFileVO noticefile : noticeFileList) {
+				System.out.println("noticeFileList : " +noticeFileList);
+				noticefile.setFNo(lsupportMapper.selectNoticeFileSequenceNextValue());
+				noticefile.setFilename(noticeFileList.get(0).getFilename());		
+				noticefile.setFiletype(noticeFileList.get(0).getFiletype());
+				noticefile.setNFo(nNo);
+				noticefile.setUploadpath(noticeFileList.get(0).getUploadpath());
+				lsupportMapper.insertnoticeFile(noticefile);
+				
+				}
+		
 	}
 
 

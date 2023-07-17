@@ -16,6 +16,7 @@ import kr.ac.ers.dto.MemberEmergencyReportVO;
 import kr.ac.ers.dto.MemberReportLsupporterVO;
 import kr.ac.ers.dto.MemberVO;
 import kr.ac.ers.dto.MembereducationVO;
+import kr.ac.ers.dto.NoticeFileVO;
 import kr.ac.ers.dto.NoticeVO;
 import kr.ac.ers.dto.ReplyVO;
 import kr.ac.ers.dto.ReportVO;
@@ -163,6 +164,14 @@ public interface LsupporterMapper {
 	int selectreplySequenceNextValue();
 
 	void replyRemove(int rNo);
+
+	int selectNoticeSequenceNextValue();
+
+	void insertNotice(NoticeVO notice);
+
+	int selectNoticeFileSequenceNextValue();
+
+	void insertnoticeFile(NoticeFileVO noticefile);
 	
 	
 }

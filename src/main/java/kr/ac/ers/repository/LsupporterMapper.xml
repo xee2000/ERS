@@ -627,4 +627,28 @@
 		from reply
 		where rNo = #{rNo}
 	</update>
+	
+		
+	<select id="selectNoticeSequenceNextValue" resultType="int">
+		select
+		notice_seq.nextVal
+		from dual
+	</select>
+	
+	<update id="insertNotice" parameterType="NoticeVO">
+		INSERT INTO notice (nNo, title, content, manId)
+		VALUES(#{nNo},
+		#{title}, #{content}, #{manId})
+	</update>
+	
+	<update id="insertnoticeFile" parameterType="NoticeFileVO">
+		INSERT INTO noticefile (nFo, fNo, filename, filetype, Uploadpath)
+		VALUES(#{nFo},#{fNo}, #{filename}, #{filetype}, #{Uploadpath})
+	</update>
+	
+	<select id="selectNoticeFileSequenceNextValue" resultType="int">
+		select
+		noticefile_seq.nextVal
+		from dual
+	</select>	
 </mapper>

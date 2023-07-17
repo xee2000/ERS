@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<c:set var="pageTitle" value="게시물 작성"/>
 <%@include file="../include/lsupporter/head.jspf"%>
 <link rel="stylesheet" href="/resources/lsupporter/css/noticedetail.css">
  <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
@@ -19,6 +18,7 @@
 </div>
 </div>
 
+<button class="btn btn-primary" onclick="regist()">작성하기</button>
 <section class="" style="height:650px;">
 	<div class="px-3">
     <div class="table-box-type-1">
@@ -27,7 +27,7 @@
 <table>
 <tr>
 <th><label for="title">제목</label></th>
-<td><textarea cols="100" placeholder="제목을 입력해주세요." style="border:2px solid black; border-radius:5px;"></textarea></td>
+<td><textarea cols="100" placeholder="제목을 입력해주세요." name="title" style="border:2px solid black; border-radius:5px;"></textarea></td>
 </tr>
 <tr>
 <th><label for="title">내용</label></th>
@@ -35,12 +35,11 @@
 </tr>	
 <tr>
 <th><label for="file">파일추가</label></th>
-<td><input type="file" multiple name="fileList"></td>
+<td><input type="file" multiple name="uploadFile"></td>
 </tr>
 </table>
 </form>
 
-<button class="btn btn-primary" onclick="write()">작성하기</button>
 </div>
 </div>
 
@@ -64,14 +63,16 @@
       });
     </script>
     
-    <script>
-    function write(){
-    	var form = $('form[role="form"]');
-    	var confirm = "작성을 완료하시겠습니까?";
-    	if(confirm){
-    		form.submit();
-    	}
+<script>
+  function regist() {
+    var form = $('form[role="form"]');
+    alert("작성");
+    var confirmationMessage = "작성하시겠습니까?";
+    
+    if (confirm(confirmationMessage)) {
+      form.submit();
     }
-    </script>
+  }
+</script>
 <%@include file="../include/lsupporter/foot.jspf"%>
  

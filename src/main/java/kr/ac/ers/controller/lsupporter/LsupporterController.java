@@ -9,7 +9,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -23,23 +22,23 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import kr.ac.ers.command.NoticeFileWriteCommand;
 import kr.ac.ers.command.SearchCriteria;
 import kr.ac.ers.dto.CalinderVO;
 import kr.ac.ers.dto.LsupporterStatusVO;
 import kr.ac.ers.dto.LsupporterVO;
 import kr.ac.ers.dto.MemberDetailVO;
 import kr.ac.ers.dto.MemberReportLsupporterVO;
+import kr.ac.ers.dto.NoticeFileVO;
 import kr.ac.ers.dto.NoticeVO;
 import kr.ac.ers.dto.ReplyVO;
 import kr.ac.ers.service.LsupporterService;
 import kr.ac.ers.utils.MailContentSend;
 import kr.ac.ers.utils.MakeFileName;
-import lombok.extern.log4j.Log4j;
 
 @Controller
 public class LsupporterController {
@@ -50,8 +49,9 @@ public class LsupporterController {
 	 @Value("${lsupporterpicturePath}")
 		private String lsupporterpicturePath;
 	 
-	 private static final String CURR_IMAGE_REPO_PATH = 
-             "C:\\user\\file";
+
+		@Value("${noticefileuploadpath}")
+		private String noticefileuploadpath;
 	
 	@RequestMapping("/ers/lsupporter/main")
 	public String Showmain(Model model, HttpServletRequest request,HttpSession session) {
@@ -162,18 +162,6 @@ public class LsupporterController {
 	    return "lsupporter/lsupporterstatus";
 	}
 	
-	/*
-	 * @GetMapping("/ers/lsupporter/getLsuppPicture")
-	 * 
-	 * @ResponseBody public byte[] getPicture(String wid)throws Exception{
-	 * LsupporterStatusVO lsupporterstatus =
-	 * lsupporterService.selectlsupporterStatus(wid); if(lsupporterstatus ==null)
-	 * return null;
-	 * 
-	 * String picture = lsupporterstatus.getPicture(); String imaPath =
-	 * this.lsupporterpicturePath; InputStream in = new FileInputStream(new
-	 * File(imaPath, picture)); return IOUtils.toByteArray(in); }
-	 */
 	
 	@GetMapping("/ers/lsupporter/lsupporterstatusModifyForm")
 	public String showLsupporterStatusModifyForm(Model model, HttpSession session, HttpServletRequest request) {
@@ -184,24 +172,7 @@ public class LsupporterController {
 	    return "lsupporter/lsupporterstatusModifyForm";
 	}
 	
-	/*
-	 * @PostMapping(value= "/ers/lsupporter/statusmodify",
-	 * produces="text/plain;charset=utf-8") public String modify(LsupporterStatusVO
-	 * lsupporter,HttpSession session)throws Exception{ String
-	 * url="redirect:/ers/lsupporter/lsupporterstatus?id="+lsupporter.getWid();
-	 * String wid = lsupporter.getWid(); String oldPicture =
-	 * lsupporterService.selectlsupporterStatus(wid); if(lsupporter.getPicture() !=
-	 * null && lsupporter.getPicture().getSize()>0) { String fileName =
-	 * savePicture(oldPicture, lsupporter.getPicture());
-	 * lsupporter.setPicture(fileName); }else { lsupporter.setPicture(oldPicture); }
-	 * lsupporterService.LsupporterModify(lsupporter); LsupporterVO loginUser =
-	 * (LsupporterVO) session.getAttribute("loginUser"); if(loginUser != null &&
-	 * lsupporter.getId().equals(loginUser.getWid())) {
-	 * session.setAttribute("loginUser",
-	 * lsupporterService.getLsupporter(lsupporter.getWid()));
-	 * 
-	 * } return url; }
-	 */
+
 	
 	public String savePicture(String oldPicture, MultipartFile multi) throws Exception {
 
@@ -526,30 +497,45 @@ public class LsupporterController {
 	       return "lsupporter/noticewriteForm";
 	   }
 	   
-	   @PostMapping("/ers/lsupporter/notice/write")
-	   @Log4j
-	   public String noticewrrite(MultipartHttpServletRequest multipartRequest, NoticeVO notice) {
-		   
-		   List<String> fileList = new ArrayList<String>();
-	        Iterator<String> fileNames = multipartRequest.getFileNames();
-		   
-	        while(fileNames.hasNext()) {
-	            String fileName = fileNames.next();
-	            MultipartFile mFile = multipartRequest.getFile(fileName);
-	            String originalFileName = mFile.getOriginalFilename();
-	            fileList.add(originalFileName);
-	            File file = new File(CURR_IMAGE_REPO_PATH + "\\" + fileName);
-	            if(mFile.getSize() != 0) {
-	                if(!file.exists()) {
-	                    if(file.getParentFile().mkdir()) {
-	                        file.createNewFile();
-	                    }
-	                }
-	                mFile.transferTo(new File(CURR_IMAGE_REPO_PATH + "\\" + originalFileName));
-	            }
-	        }
-		   return "lsupporter/notice";
+	   @PostMapping(value = "/ers/lsupporter/notice/write", produces = "text/plain;charset=utf-8")
+	   public String noticewrrite(HttpSession session, HttpServletRequest request, NoticeFileWriteCommand noticeReq) {
+		   String url = "redirect:/ers/lsupporter/notice";
+		   session = request.getSession();
+		   LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");
+		   List<MultipartFile> multiFiles = noticeReq.getUploadFile();
+			String savePath = this.noticefileuploadpath;		
+			List<NoticeFileVO> noticeFileList;
+			try {
+				noticeFileList = saveFileToAttaches(multiFiles,savePath);
+				lsupporterService.noticewrite(noticeFileList,loginUser.getWid(),noticeReq);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+				//DB 	
+		  
+		   return url;
 	   }
+	   
+	   private List<NoticeFileVO> saveFileToAttaches(List<MultipartFile> multiFiles, String savePath) throws Exception {
+			List<NoticeFileVO> noticeFileList = new ArrayList<NoticeFileVO>();
+			// 저장 -> attachVO -> list.add
+			if (multiFiles  != null) {
+				for (MultipartFile multi : multiFiles) {
+					String fileName = MakeFileName.toUUIDFileName(multi.getOriginalFilename(), "$$");
+					File target = new File(savePath, fileName);
+					target.mkdirs();
+					multi.transferTo(target);
+						
+					NoticeFileVO noticeFile = new NoticeFileVO();
+					noticeFile.setUploadpath(savePath);
+					noticeFile.setFilename(fileName);
+					noticeFile.setFiletype(fileName.substring(fileName.lastIndexOf('.') + 1).toUpperCase());
+					noticeFileList.add(noticeFile);
+				}
+			}
+			return noticeFileList;
+		}
 	   
 	  
 	   @PostMapping("/ers/lsupporter/reply/write")
