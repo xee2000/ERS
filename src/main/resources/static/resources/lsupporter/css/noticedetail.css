@@ -15,3 +15,6 @@ font-size:2rem;
 .tg .tg-l8qj{background-color:#ffffff;border-color:inherit;font-size:1.5rem;text-align:left;vertical-align:center}
 .tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:center}
 .tg .tg-0lax{text-align:left;vertical-align:center}
+#modal.modal-overlay {
+    display: none;
+}

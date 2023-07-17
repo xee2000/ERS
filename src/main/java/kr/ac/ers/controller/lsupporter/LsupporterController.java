@@ -1,6 +1,7 @@
 package kr.ac.ers.controller.lsupporter;
 
 
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -8,6 +9,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -36,6 +39,7 @@ import kr.ac.ers.dto.ReplyVO;
 import kr.ac.ers.service.LsupporterService;
 import kr.ac.ers.utils.MailContentSend;
 import kr.ac.ers.utils.MakeFileName;
+import lombok.extern.log4j.Log4j;
 
 @Controller
 public class LsupporterController {
@@ -45,6 +49,9 @@ public class LsupporterController {
 	 
 	 @Value("${lsupporterpicturePath}")
 		private String lsupporterpicturePath;
+	 
+	 private static final String CURR_IMAGE_REPO_PATH = 
+             "C:\\user\\file";
 	
 	@RequestMapping("/ers/lsupporter/main")
 	public String Showmain(Model model, HttpServletRequest request,HttpSession session) {
@@ -512,6 +519,36 @@ public class LsupporterController {
 			 model.addAttribute("notice",notice);
 			 model.addAttribute("replyList", replyList);
 	      return "lsupporter/noticedetail";
+	   }
+	   
+	   @GetMapping("/ers/lsupporter/notice/writeForm")
+	   public String noticeWriteForm() {
+	       return "lsupporter/noticewriteForm";
+	   }
+	   
+	   @PostMapping("/ers/lsupporter/notice/write")
+	   @Log4j
+	   public String noticewrrite(MultipartHttpServletRequest multipartRequest, NoticeVO notice) {
+		   
+		   List<String> fileList = new ArrayList<String>();
+	        Iterator<String> fileNames = multipartRequest.getFileNames();
+		   
+	        while(fileNames.hasNext()) {
+	            String fileName = fileNames.next();
+	            MultipartFile mFile = multipartRequest.getFile(fileName);
+	            String originalFileName = mFile.getOriginalFilename();
+	            fileList.add(originalFileName);
+	            File file = new File(CURR_IMAGE_REPO_PATH + "\\" + fileName);
+	            if(mFile.getSize() != 0) {
+	                if(!file.exists()) {
+	                    if(file.getParentFile().mkdir()) {
+	                        file.createNewFile();
+	                    }
+	                }
+	                mFile.transferTo(new File(CURR_IMAGE_REPO_PATH + "\\" + originalFileName));
+	            }
+	        }
+		   return "lsupporter/notice";
 	   }
 	   
 	  

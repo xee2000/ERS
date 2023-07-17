@@ -42,7 +42,7 @@
   
   
 		</div>
-		
+		<button type="button" class="btn btn-dark btn-lg ml-3" onclick="location.href='write'">작성</button>
 
 <div class="row">
 <div class="col-12 memberlistable">

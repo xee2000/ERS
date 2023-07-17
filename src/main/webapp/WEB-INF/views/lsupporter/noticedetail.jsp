@@ -62,7 +62,7 @@
   <p>댓글리스트</p>
   <c:forEach items="${replyList}" var="reply">
     <c:if test="${wid == reply.writer}">
-      <button onclick="modify()" class="btn btn-primary">수정</button>
+     <button id="btn-modal" onclick="modify()" class="btn btn-primary">수정</button>
     </c:if>
     <c:if test="${wid == reply.writer}">
       <button onclick="remove()" class="btn btn-primary">삭제</button>
@@ -95,6 +95,41 @@
 </div>
 
 </c:if>
+
+<!-- 댓글 수정폼 모달창 -->
+<div id="modal" class="modal-overlay">
+        <div class="modal-window">
+            <div class="title">
+                <h2>댓글</h2>
+            </div>
+            <div class="close-area">X</div>
+            <div class="content">
+              <table class="tg" style="undefined;table-layout: fixed; width: 100%;">
+      <thead>
+        <fmt:formatDate value="${reply.regDate}" var="regDate" pattern="yyyy-MM-dd" />
+        <fmt:formatDate value="${reply.updateDate}" var="updateDate" pattern="yyyy-MM-dd" />
+        <tr>
+          <th class="tg-ynlj">작성자</th>
+          <th class="tg-ynlj">${reply.writer}</th>
+          <th class="tg-ynlj">작성일</th>
+          <th class="tg-l8qj">${regDate}</th>
+          <c:if test="${updateDate != null}">
+            <th class="tg-ynlj">수정일</th>
+            <th class="tg-l8qj">${updateDate}</th>
+          </c:if>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="tg-c3ow">내용</td>
+          <td class="tg-0pky" colspan="3">${reply.content}</td>
+        </tr>
+      </tbody>
+    </table>
+                
+            </div>
+        </div>
+    </div>
 
 
 
@@ -131,7 +166,7 @@ function remove() {
 	  if (confirmed) {
 	    var form = document.createElement('form');
 	    form.method = 'POST';
-	    form.action = '/ers/lsupporter/reply/removereply'; // Make sure the URL is correct
+	    form.action = '/ers/lsupporter/reply/removereply'; 
 	    
 	    var inputRNo = document.createElement('input');
 	    inputRNo.type = 'hidden';
@@ -145,7 +180,7 @@ function remove() {
 	    inputNNo.value = nNo;
 	    form.appendChild(inputNNo);
 
-	    document.body.appendChild(form); // Add the form to the document
+	    document.body.appendChild(form);
 
 	    form.submit();	
 	  }
@@ -155,5 +190,18 @@ function remove() {
 
 </script>
 
+
+<script>
+var modal = document.getElementById("modal");
+var btnModal = document.getElementById("btn-modal");
+btnModal.addEventListener("click", e => {
+    modal.style.display = "flex"
+})
+
+var closeBtn = modal.querySelector(".close-area")
+closeBtn.addEventListener("click", e => {
+    modal.style.display = "none"
+})
+</script>
 <%@include file="../include/lsupporter/foot.jspf"%>
  

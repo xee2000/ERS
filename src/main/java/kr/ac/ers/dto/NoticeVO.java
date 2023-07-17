@@ -1,6 +1,9 @@
 package kr.ac.ers.dto;
 
 import java.util.Date;
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -17,4 +20,5 @@ public class NoticeVO {
 	private Date regDate;
 	private Date updateDate;
 	private String manId;
+	private List<MultipartFile> uploadFile;
 }
