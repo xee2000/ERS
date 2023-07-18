@@ -13,7 +13,7 @@ import lombok.ToString;
 @ToString
 public class NoticeFileVO {
 	
-	private int nFo;
+	private int nNo;
 	private int fNo;
 	private String filename;
 	private String filesize;

@@ -172,6 +172,10 @@ public interface LsupporterMapper {
 	int selectNoticeFileSequenceNextValue();
 
 	void insertnoticeFile(NoticeFileVO noticefile);
+
+	List<NoticeFileVO> selectNoticeFileList(int nNo);
+
+	NoticeFileVO selectNoticeByfNo(int fNo);
 	
 	
 }

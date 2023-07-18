@@ -23,28 +23,61 @@
 	<div class="px-3">
     <div class="table-box-type-1">
       
-<form action="/ers/lsupporter/notice/write" method="POST" role="form" enctype="Multipart/form-data">
-<table>
-<tr>
-<th><label for="title">제목</label></th>
-<td><textarea cols="100" placeholder="제목을 입력해주세요." name="title" style="border:2px solid black; border-radius:5px;"></textarea></td>
-</tr>
-<tr>
-<th><label for="title">내용</label></th>
-<td>     <textarea class="summernote" id="content" name="content" rows="3"></textarea></td>
-</tr>	
-<tr>
-<th><label for="file">파일추가</label></th>
-<td><input type="file" multiple name="uploadFile"></td>
-</tr>
-</table>
-</form>
+<form role="form" method="post" action="/ers/lsupporter/notice/write" name="registForm" enctype="multipart/form-data">
+							
+							<div class="form-group">
+								<label for="title">제 목</label> 
+								<input type="text" id="title"
+									name='title' class="form-control" placeholder="제목을 쓰세요">
+							</div>
+							<div class="form-group">
+								<label for="content">내 용</label>
+								<textarea class="form-control" name="content" id="content" rows="5"
+									placeholder="1000자 내외로 작성하세요."></textarea>
+							</div>
+							<div class="form-group">								
+								<div class="card card-outline card-success">
+									<div class="card-header">
+										<h5 style="display:inline;line-height:40px;">첨부파일 : </h5>
+										&nbsp;&nbsp;<button class="btn btn-xs btn-primary"
+										onclick="addFile_go();"	type="button" id="addFileBtn">Add File</button>
+									</div>									
+									<div class="card-footer fileInput">
+									</div>
+								</div>
+							</div>
+						</form>
 
 </div>
 </div>
 
 
 </section>	
+
+<script>
+
+var dataNum=0;
+function addFile_go(){
+	
+	if($('input[name="uploadFile"]').length >= 5){
+		alert("파일추가는 5개까지만 가능합니다.");
+		return;
+	}
+		
+	var div=$('<div>').addClass("inputRow").attr("data-no",dataNum);
+	var input=$('<input>').attr({"type":"file","name":"uploadFile"}).css("display","inline");
+	
+	div.append(input).append("<button onclick='remove_go("+dataNum+");'style='border:0;outline:0;'class='bage bg-red' type='button'>X</button>");
+	$('.fileInput').append(div);
+	dataNum++;
+}
+
+function remove_go(dataNum){
+	//alert(dataNum);
+	$('div[data-no="'+dataNum+'"]').remove();
+}
+</script>
+
 
 <script>
       $('#content').summernote({
@@ -74,5 +107,8 @@
     }
   }
 </script>
+
+
+
 <%@include file="../include/lsupporter/foot.jspf"%>
  

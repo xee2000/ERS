@@ -651,4 +651,16 @@
 		noticefile_seq.nextVal
 		from dual
 	</select>	
+	
+	<select id="selectNoticeFileList" resultType="NoticeFileVO" parameterType="int">
+	select *
+	from noticefile
+	where nNo = #{nNo}
+	</select>
+	
+	<select id="selectNoticeByfNo" resultType="NoticeFileVO" parameterType="int">
+	select *
+	from noticefile
+	where fNo = #{fNo}
+	</select>
 </mapper>

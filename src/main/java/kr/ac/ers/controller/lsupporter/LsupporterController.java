@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -37,9 +38,11 @@ import kr.ac.ers.dto.MemberReportLsupporterVO;
 import kr.ac.ers.dto.NoticeFileVO;
 import kr.ac.ers.dto.NoticeVO;
 import kr.ac.ers.dto.ReplyVO;
+import kr.ac.ers.dto.ReportFileVO;
 import kr.ac.ers.service.LsupporterService;
 import kr.ac.ers.utils.MailContentSend;
 import kr.ac.ers.utils.MakeFileName;
+import kr.ac.ers.view.FileDownloadView;
 
 @Controller
 public class LsupporterController {
@@ -487,9 +490,13 @@ public class LsupporterController {
 			 LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");
 			NoticeVO notice =  lsupporterService.noticeDetail(nNo);
 		List<ReplyVO> replyList = lsupporterService.replyList(nNo);
+		List<NoticeFileVO> noticeFileList = lsupporterService.noticeFileList(nNo);
+		
+		
 			 model.addAttribute("wid",loginUser.getWid());
 			 model.addAttribute("notice",notice);
 			 model.addAttribute("replyList", replyList);
+			 model.addAttribute("noticeFileList", noticeFileList);
 	      return "lsupporter/noticedetail";
 	   }
 	   
@@ -575,5 +582,17 @@ public class LsupporterController {
 	       lsupporterService.replyRemove(rNo);
 	       return url;
 	   }
+	   
+	   @GetMapping("/ers/lsupporter/noticegetFile")
+		public ModelAndView getFile(int fNo, Model model) throws Exception {
+		    ModelAndView modelAndView = new ModelAndView(new FileDownloadView());
+
+		    NoticeFileVO noticefile = lsupporterService.getNoticeFileByfNo(fNo);
+		    modelAndView.addObject("savedPath", noticefile.getUploadpath());
+		    modelAndView.addObject("fileName", noticefile.getFilename());
+
+		    return modelAndView;
+		}
+
 	
 }

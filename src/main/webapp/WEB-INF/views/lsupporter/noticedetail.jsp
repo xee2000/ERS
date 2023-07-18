@@ -55,8 +55,34 @@
 <input type="hidden" name="nNo" id="nNo" value="${notice.NNo }">
     </div>
   </div>
+  
+  					<div class="card-footer">
+<!-- attaches -->
+<c:forEach items="${noticeFileList}" var="noticefile">
+  <div class="col-md-12 col-sm-12 col-xs-12" style="cursor:pointer;" onclick="location.href='<%=request.getContextPath()%>/ers/lsupporter/noticegetFile?fNo=${noticefile.FNo }';">
+    <div class="info-box">
+      <span class="info-box-icon bg-yellow">
+        <i class="fa fa-copy"></i>
+      </span>
+      <div class="info-box-content">
+        <%-- JavaScript to extract the filename without the UUID --%>
+        <span class="info-box-number">
+          <script>
+            var filename = "${noticefile.filename}";
+            if (filename.indexOf("$$") !== -1) {
+              filename = filename.substring(filename.indexOf("$$") + 2);
+            }
+            document.write(filename);
+          </script>
+        </span>
+      </div>
+    </div>
+  </div>
+</c:forEach>
+</div>
 
-
+  
+  
 <c:if test="${replyList != null }">
 <div class="reply_list">
   <p>댓글리스트</p>

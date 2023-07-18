@@ -393,27 +393,34 @@ public class LsupporterService {
 	}
 
 	public void noticewrite(List<NoticeFileVO> noticeFileList, String wid, NoticeFileWriteCommand noticeReq) {
-		int nNo = lsupportMapper.selectNoticeSequenceNextValue();
-		NoticeVO notice = new NoticeVO();
-		notice.setNNo(nNo);
-		notice.setManId(wid);
-		notice.setTitle(noticeReq.getTitle());
-		notice.setContent(noticeReq.getContent());
-		lsupportMapper.insertNotice(notice);
-		if (noticeReq.getUploadFile() != null)
-			for (NoticeFileVO noticefile : noticeFileList) {
-				System.out.println("noticeFileList : " +noticeFileList);
-				noticefile.setFNo(lsupportMapper.selectNoticeFileSequenceNextValue());
-				noticefile.setFilename(noticeFileList.get(0).getFilename());		
-				noticefile.setFiletype(noticeFileList.get(0).getFiletype());
-				noticefile.setNFo(nNo);
-				noticefile.setUploadpath(noticeFileList.get(0).getUploadpath());
-				noticefile.setFilesize(noticeFileList.get(0).getFilesize());
-				lsupportMapper.insertnoticeFile(noticefile);
-				
-				}
-		
+	    int nNo = lsupportMapper.selectNoticeSequenceNextValue();
+	    NoticeVO notice = new NoticeVO();
+	    notice.setNNo(nNo);
+	    notice.setManId(wid);
+	    notice.setTitle(noticeReq.getTitle());
+	    notice.setContent(noticeReq.getContent());
+	    lsupportMapper.insertNotice(notice);
+
+	    if (noticeReq.getUploadFile() != null) {
+	        for (int i = 0; i < noticeFileList.size(); i++) {
+	            NoticeFileVO noticefile = noticeFileList.get(i);
+	            System.out.println("noticeFileList : " + noticeFileList);
+	            int fNo = lsupportMapper.selectNoticeFileSequenceNextValue();
+	            noticefile.setFNo(fNo);
+	            noticefile.setNNo(nNo);
+	            lsupportMapper.insertnoticeFile(noticefile);
+	        }
+	    }
 	}
+
+	public NoticeFileVO getNoticeFileByfNo(int fNo) {
+		return lsupportMapper.selectNoticeByfNo(fNo);
+	}
+
+	public List<NoticeFileVO> noticeFileList(int nNo) {
+		return lsupportMapper.selectNoticeFileList(nNo);
+	}
+
 
 
 }
