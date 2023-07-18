@@ -18,7 +18,7 @@
 </div>
 </div>
 
-<button class="btn btn-primary" onclick="regist()">작성하기</button>
+<button class="btn btn-primary" onclick="modify()">수정하기</button>
 <section class="" style="height:650px;">
 	<div class="px-3">
     <div class="table-box-type-1">
@@ -28,12 +28,12 @@
 							<div class="form-group">
 								<label for="title">제 목</label> 
 								<input type="text" id="title"
-									name='title' class="form-control" placeholder="제목을 쓰세요">
+									name='title' class="form-control" placeholder="제목을 쓰세요" value="${notice.title }">
 							</div>
 							<div class="form-group">
 								<label for="content">내 용</label>
 								<textarea class="form-control" name="content" id="content" rows="5"
-									placeholder="1000자 내외로 작성하세요."></textarea>
+									placeholder="1000자 내외로 작성하세요.">${notice.content }</textarea>
 							</div>
 							<div class="form-group">								
 								<div class="card card-outline card-success">
@@ -97,10 +97,9 @@ function remove_go(dataNum){
     </script>
     
 <script>
-  function regist() {
+  function modify() {
     var form = $('form[role="form"]');
-    alert("작성");
-    var confirmationMessage = "작성하시겠습니까?";
+    var confirmationMessage ="수정하시겠습니까?";
     
     if (confirm(confirmationMessage)) {
       form.submit();

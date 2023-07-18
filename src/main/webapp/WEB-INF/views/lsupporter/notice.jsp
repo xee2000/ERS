@@ -66,7 +66,7 @@
 <fmt:formatDate value="${notice.regDate }" var="regDate" pattern="yyyy-MM-dd"/>
   <tr>
     <td class="tg-0pky">${notice.NNo }</td>
-    <td class="tg-0pkk" onclick="location.href='/ers/lsupporter/noticedetail?nNo='+${notice.NNo}">${notice.title }</td>
+    <td class="tg-0pkk" onclick="location.href='/ers/lsupporter/notice/detail?nNo='+${notice.NNo}">${notice.title }</td>
     <td class="tg-0pky">${regDate }</td>
   </tr>
   

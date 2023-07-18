@@ -625,7 +625,7 @@
 	<update id="replyRemove" parameterType="int">
 		delete
 		from reply
-		where rNo = #{rNo}
+		where rNo = #{rNo} and nNo = #{nNo}
 	</update>
 	
 		
@@ -642,8 +642,8 @@
 	</update>
 	
 	<update id="insertnoticeFile" parameterType="NoticeFileVO">
-		INSERT INTO noticefile (nFo, fNo, filename, filetype, filesize, Uploadpath)
-		VALUES(#{nFo},#{fNo}, #{filename}, #{filetype}, #{filesize}, #{Uploadpath})
+		INSERT INTO noticefile (nNo, fNo, filename, filetype, filesize, Uploadpath)
+		VALUES(#{nNo},#{fNo}, #{filename}, #{filetype}, #{filesize}, #{Uploadpath})
 	</update>
 	
 	<select id="selectNoticeFileSequenceNextValue" resultType="int">
@@ -663,4 +663,17 @@
 	from noticefile
 	where fNo = #{fNo}
 	</select>
+	
+	<update id="removeNoticeFileByfNo" parameterType="int">
+		delete
+		from noticefile
+		where fNo = #{fNo}
+	</update>
+	
+	<update id="NoticeModify" parameterType="NoticeVO">
+	update notice
+		set title = #{title}, content =
+		#{content}
+		where nNo = #{nNo}
+	</update>
 </mapper>

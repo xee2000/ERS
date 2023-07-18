@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.ac.ers.command.NoticeFileWriteCommand;
+import kr.ac.ers.command.NoticeModifyCommand;
 import kr.ac.ers.command.PageMaker;
 import kr.ac.ers.command.SearchCriteria;
 import kr.ac.ers.dto.CalinderVO;
@@ -384,12 +385,13 @@ public class LsupporterService {
 
 	public void replyWrite(ReplyVO reply) {
 		reply.setRNo(lsupportMapper.selectreplySequenceNextValue());	
+		System.out.println("reply : " +reply);
 		lsupportMapper.replyWrite(reply);
 	}
 
-	public void replyRemove(int rNo) {
+	public void replyRemove(int rNo, int nNo) {
 		
-		lsupportMapper.replyRemove(rNo);
+		lsupportMapper.replyRemove(rNo, nNo);
 	}
 
 	public void noticewrite(List<NoticeFileVO> noticeFileList, String wid, NoticeFileWriteCommand noticeReq) {
@@ -419,6 +421,27 @@ public class LsupporterService {
 
 	public List<NoticeFileVO> noticeFileList(int nNo) {
 		return lsupportMapper.selectNoticeFileList(nNo);
+	}
+
+	public void removeNoticeFileByfNo(int fNo) {
+		
+		lsupportMapper.removeNoticeFileByfNo(fNo);
+	}
+
+
+	public void NoticeModify(List<NoticeFileVO> noticeFileList, NoticeModifyCommand modifyReq) {
+		lsupportMapper.NoticeModify(modifyReq);
+		   if (noticeFileList != null) {
+		        for (int i = 0; i < noticeFileList.size(); i++) {
+		        	System.out.println("noticeFileList : " + noticeFileList);
+		            NoticeFileVO noticefile = noticeFileList.get(i);
+		            int fNo = lsupportMapper.selectNoticeFileSequenceNextValue();
+		            noticefile.setFNo(fNo);
+		            noticefile.setNNo(modifyReq.getNNo());
+		            lsupportMapper.insertnoticeFile(noticefile);
+		        }
+		    }
+		
 	}
 
 

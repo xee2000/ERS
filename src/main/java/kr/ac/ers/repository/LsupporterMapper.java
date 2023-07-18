@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
 
 import kr.ac.ers.command.CalinderRegistCommand;
+import kr.ac.ers.command.NoticeModifyCommand;
 import kr.ac.ers.dto.CalinderVO;
 import kr.ac.ers.dto.LsupporterStatusVO;
 import kr.ac.ers.dto.LsupporterVO;
@@ -163,7 +164,7 @@ public interface LsupporterMapper {
 
 	int selectreplySequenceNextValue();
 
-	void replyRemove(int rNo);
+	void replyRemove(int rNo, int nNo);
 
 	int selectNoticeSequenceNextValue();
 
@@ -176,6 +177,10 @@ public interface LsupporterMapper {
 	List<NoticeFileVO> selectNoticeFileList(int nNo);
 
 	NoticeFileVO selectNoticeByfNo(int fNo);
+
+	void removeNoticeFileByfNo(int fNo);
+
+	void NoticeModify(NoticeModifyCommand modifyReq);
 	
 	
 }

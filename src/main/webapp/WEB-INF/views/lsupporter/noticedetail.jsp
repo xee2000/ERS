@@ -16,7 +16,7 @@
 <div class="col-12 flex justify-start mb-1">
 <button type="button" class="btn btn-dark btn-lg ml-3" onclick="location.href='notice'">목록</button>
 <c:if test="${wid == notice.manId}">
-<button type="button" class="btn btn-dark btn-lg ml-3">수정</button>
+<button type="button" class="btn btn-dark btn-lg ml-3" onclick="location.href='/ers/lsupporter/notice/ModifyForm?nNo=${notice.NNo}'">수정</button>
 </c:if>
 <c:if test="${wid == notice.manId}">
 <button type="button" class="btn btn-dark btn-lg ml-3">삭제</button>
@@ -32,7 +32,7 @@
 <thead>
   <tr>
     <th class="tg-ynlj">제목 </th>
-    <th class="tg-l8qj">중요공지</th>
+    <th class="tg-l8qj">${notice.title }</th>
     <th class="tg-baqh">등록날짜 </th>
     <fmt:formatDate value="${notice.regDate }" var="regDate" pattern="yyyy-MM-dd"/>
     <th class="tg-baqh">${regDate }</th>
@@ -59,13 +59,12 @@
   					<div class="card-footer">
 <!-- attaches -->
 <c:forEach items="${noticeFileList}" var="noticefile">
-  <div class="col-md-12 col-sm-12 col-xs-12" style="cursor:pointer;" onclick="location.href='<%=request.getContextPath()%>/ers/lsupporter/noticegetFile?fNo=${noticefile.FNo }';">
+  <div class="col-md-12 col-sm-12 col-xs-12" style="cursor:pointer;" onclick="location.href='<%=request.getContextPath()%>/ers/lsupporter/notice/getFile?fNo=${noticefile.FNo }';">
     <div class="info-box">
       <span class="info-box-icon bg-yellow">
         <i class="fa fa-copy"></i>
       </span>
       <div class="info-box-content">
-        <%-- JavaScript to extract the filename without the UUID --%>
         <span class="info-box-number">
           <script>
             var filename = "${noticefile.filename}";
@@ -167,6 +166,7 @@
 <form action="/ers/lsupporter/reply/write" method="POST" role="form">
 <label for="content">내용</label>
 <input type="text" name="content">
+<input type="hidden" name="nNo" value="${notice.NNo }">
 </form>
 <button onclick="regist()" class="btn btn-primary">작성</button>
 

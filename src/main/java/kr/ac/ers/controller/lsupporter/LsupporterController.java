@@ -29,6 +29,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import kr.ac.ers.command.NoticeFileWriteCommand;
+import kr.ac.ers.command.NoticeModifyCommand;
+import kr.ac.ers.command.ReportModifyCommand;
 import kr.ac.ers.command.SearchCriteria;
 import kr.ac.ers.dto.CalinderVO;
 import kr.ac.ers.dto.LsupporterStatusVO;
@@ -484,7 +486,7 @@ public class LsupporterController {
 	      return url;
 	   }
 	   
-	   @GetMapping("/ers/lsupporter/noticedetail")
+	   @GetMapping("/ers/lsupporter/notice/detail")
 	   public String logout(Model model, HttpSession session, HttpServletRequest request,int nNo) throws Exception {
 			session = request.getSession();
 			 LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");
@@ -577,13 +579,13 @@ public class LsupporterController {
 	   }
 	   
 	   @PostMapping("/ers/lsupporter/reply/removereply")
-	   public String replyWrite(int rNo) {
-	       String url = "redirect:/ers/lsupporter/noticedetail";
-	       lsupporterService.replyRemove(rNo);
+	   public String replyWrite(int rNo, int nNo) {
+	       String url = "redirect:/ers/lsupporter/noticedetail?nNo="+nNo;
+	       lsupporterService.replyRemove(rNo, nNo);
 	       return url;
 	   }
 	   
-	   @GetMapping("/ers/lsupporter/noticegetFile")
+	   @GetMapping("/ers/lsupporter/notice/getFile")
 		public ModelAndView getFile(int fNo, Model model) throws Exception {
 		    ModelAndView modelAndView = new ModelAndView(new FileDownloadView());
 
@@ -593,6 +595,41 @@ public class LsupporterController {
 
 		    return modelAndView;
 		}
+	   
+	   @GetMapping("/ers/lsupporter/notice/ModifyForm")
+	   public String noticemodifyForm(int nNo, Model model) {
+		   NoticeVO notice =  lsupporterService.noticeDetail(nNo);
+		 List<NoticeFileVO> noticeFileList = lsupporterService.noticeFileList(nNo);
+		 model.addAttribute("notice",notice);
+		 model.addAttribute("noticeFileList",noticeFileList);
+	       return "lsupporter/noticemodifyForm";
+	   }
+	   
 
+		@PostMapping(value="/ers/lsupporter/notice/modify", produces = "text/plain;charset=utf-8")
+		public String modifyPOST(NoticeModifyCommand modifyReq ,Model model)throws Exception{
+		    String url = "redirect:/ers/lsupporter/notice/detail?nNo="+modifyReq.getNNo();
+		    // 파일 삭제
+			if (modifyReq.getDeleteFile() != null && modifyReq.getDeleteFile().length > 0) {
+				for (String anoStr : modifyReq.getDeleteFile()) {
+					int fNo = Integer.parseInt(anoStr);
+					NoticeFileVO noticeFile = lsupporterService.getNoticeFileByfNo(fNo);
+					File deleteFile = new File(noticeFile.getUploadpath(), noticeFile.getFilename());
+					
+					if (deleteFile.exists()) {
+						deleteFile.delete(); // File 삭제
+					}
+					lsupporterService.removeNoticeFileByfNo(fNo); // DB 삭제
+					
+				}
+			}
+			
+			//파일저장
+			List<NoticeFileVO> NoticeFileList = saveFileToAttaches(modifyReq.getUploadFile(),noticefileuploadpath);
+			lsupporterService.NoticeModify(NoticeFileList,modifyReq);
+			
+			
+			return url;
+		}
 	
 }
