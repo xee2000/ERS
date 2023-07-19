@@ -444,6 +444,14 @@ public class LsupporterService {
 		
 	}
 
+	public ReplyVO replyDetail(int rNo) {
+			return lsupportMapper.selectreplyDetail(rNo);
+	}
+
+	public void replymodify(String content, int rNo) {
+		lsupportMapper.replymodify(content,rNo);
+	}
+
 
 
 }

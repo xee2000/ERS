@@ -22,15 +22,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.google.gson.Gson;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import kr.ac.ers.command.NoticeFileWriteCommand;
 import kr.ac.ers.command.NoticeModifyCommand;
-import kr.ac.ers.command.ReportModifyCommand;
 import kr.ac.ers.command.SearchCriteria;
 import kr.ac.ers.dto.CalinderVO;
 import kr.ac.ers.dto.LsupporterStatusVO;
@@ -40,7 +42,6 @@ import kr.ac.ers.dto.MemberReportLsupporterVO;
 import kr.ac.ers.dto.NoticeFileVO;
 import kr.ac.ers.dto.NoticeVO;
 import kr.ac.ers.dto.ReplyVO;
-import kr.ac.ers.dto.ReportFileVO;
 import kr.ac.ers.service.LsupporterService;
 import kr.ac.ers.utils.MailContentSend;
 import kr.ac.ers.utils.MakeFileName;
@@ -571,7 +572,7 @@ public class LsupporterController {
 	  
 	   @PostMapping("/ers/lsupporter/reply/write")
 	   public String replyWrite(HttpSession session, Model model, ReplyVO reply) {
-	       String url = "redirect:/ers/lsupporter/noticedetail?nNo=" + reply.getNNo();
+	       String url = "redirect:/ers/lsupporter/notice/detail?nNo=" + reply.getNNo();
 	       LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");
 	       reply.setWriter(loginUser.getWid());
 	       lsupporterService.replyWrite(reply);
@@ -580,7 +581,7 @@ public class LsupporterController {
 	   
 	   @PostMapping("/ers/lsupporter/reply/removereply")
 	   public String replyWrite(int rNo, int nNo) {
-	       String url = "redirect:/ers/lsupporter/noticedetail?nNo="+nNo;
+	       String url = "redirect:/ers/lsupporter/notice/detail?nNo="+nNo;
 	       lsupporterService.replyRemove(rNo, nNo);
 	       return url;
 	   }
@@ -605,6 +606,24 @@ public class LsupporterController {
 	       return "lsupporter/noticemodifyForm";
 	   }
 	   
+	   @GetMapping("/reply/modifyForm")
+	   @ResponseBody
+	   public String replyModifyForm(String rNo, Model model) {
+	       int replyNo = Integer.parseInt(rNo);
+	       ReplyVO reply = lsupporterService.replyDetail(replyNo);
+	       Gson gson = new Gson();
+	       String json = gson.toJson(reply);
+	       return json;
+	   }
+	   
+	   @PostMapping("/reply/modify")
+	   public String replymodify(String content, int nNo, int rNo, HttpSession session, Model model) {
+		   String url="redirect:/ers/lsupporter/notice/detail?nNo="+nNo;
+		     lsupporterService.replymodify(content,rNo);
+		     
+		   return url;
+	   }
+
 
 		@PostMapping(value="/ers/lsupporter/notice/modify", produces = "text/plain;charset=utf-8")
 		public String modifyPOST(NoticeModifyCommand modifyReq ,Model model)throws Exception{

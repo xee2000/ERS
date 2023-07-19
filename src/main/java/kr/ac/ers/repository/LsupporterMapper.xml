@@ -676,4 +676,16 @@
 		#{content}
 		where nNo = #{nNo}
 	</update>
+	
+	<select id="selectreplyDetail" parameterType="int" resultType="ReplyVO">
+	select *
+	from reply
+	where rNo = #{rNo}
+	</select>
+	
+	<update id="replymodify" parameterType="ReplyVO">
+		update reply
+		set content = #{content}
+		where rNo = #{rNo}
+	</update>
 </mapper>

@@ -181,6 +181,10 @@ public interface LsupporterMapper {
 	void removeNoticeFileByfNo(int fNo);
 
 	void NoticeModify(NoticeModifyCommand modifyReq);
+
+	ReplyVO selectreplyDetail(int rNo);
+
+	void replymodify(String content, int rNo);
 	
 	
 }
