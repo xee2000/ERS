@@ -18,4 +18,5 @@ public class NoticeVO {
 	private Date regDate;
 	private Date updateDate;
 	private String manId;
+	private int count;
 }

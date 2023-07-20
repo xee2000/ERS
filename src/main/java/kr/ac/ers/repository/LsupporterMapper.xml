@@ -688,4 +688,16 @@
 		set content = #{content}
 		where rNo = #{rNo}
 	</update>
+	
+	<update id="noticeremove" parameterType="int">
+		delete
+		from notice
+		where nNo = #{nNo}
+	</update>
+	
+	<update id="updateviewCount" parameterType="int" >
+		update notice
+		set count = count+1
+		where nNo = #{nNo}
+	</update>
 </mapper>

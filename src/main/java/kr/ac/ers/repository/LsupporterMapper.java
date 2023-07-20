@@ -185,6 +185,10 @@ public interface LsupporterMapper {
 	ReplyVO selectreplyDetail(int rNo);
 
 	void replymodify(String content, int rNo);
+
+	void noticeremove(int nNo);
+
+	void updateviewCount(int nNo);
 	
 	
 }

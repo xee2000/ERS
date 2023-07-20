@@ -1,12 +1,14 @@
 package kr.ac.ers.controller.lsupporter;
 
-
-
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -28,6 +30,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -488,13 +491,44 @@ public class LsupporterController {
 	   }
 	   
 	   @GetMapping("/ers/lsupporter/notice/detail")
-	   public String logout(Model model, HttpSession session, HttpServletRequest request,int nNo) throws Exception {
+	   public String logout(Model model, HttpSession session, HttpServletRequest request, HttpServletResponse response, int nNo) throws Exception {
 			session = request.getSession();
 			 LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");
+			 Cookie[] cookies = request.getCookies();
+		        Cookie cookie = null;
+		        boolean isCookie = false;
+		        // request에 쿠키들이 있을 때
+		        for (int i = 0; cookies != null && i < cookies.length; i++) {
+		        	// postView 쿠키가 있을 때
+		            if (cookies[i].getName().equals("postView")) {
+		            	// cookie 변수에 저장
+		                cookie = cookies[i];
+		                // 만약 cookie 값에 현재 게시글 번호가 없을 때
+		                if (!cookie.getValue().contains("[" + nNo + "]")) {
+		                	// 해당 게시글 조회수를 증가시키고, 쿠키 값에 해당 게시글 번호를 추가
+		                    lsupporterService.addviewCount(nNo);
+		                    cookie.setValue(cookie.getValue() + "[" + nNo + "]");
+		                }
+		                isCookie = true;
+		                break;
+		            }
+		        }
+		        // 만약 postView라는 쿠키가 없으면 처음 접속한 것이므로 새로 생성
+		        if (!isCookie) { 
+		        	lsupporterService.addviewCount(nNo);
+		            cookie = new Cookie("postView", "[" + nNo + "]"); // oldCookie에 새 쿠키 생성
+		        }
+		        
+		        long todayEndSecond = LocalDate.now().atTime(LocalTime.MAX).toEpochSecond(ZoneOffset.UTC);
+		        long currentSecond = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC);
+		        cookie.setPath("/"); // 모든 경로에서 접근 가능
+		        cookie.setMaxAge((int) (todayEndSecond - currentSecond));
+		        response.addCookie(cookie);
+
+			 
 			NoticeVO notice =  lsupporterService.noticeDetail(nNo);
 		List<ReplyVO> replyList = lsupporterService.replyList(nNo);
 		List<NoticeFileVO> noticeFileList = lsupporterService.noticeFileList(nNo);
-		
 		
 			 model.addAttribute("wid",loginUser.getWid());
 			 model.addAttribute("notice",notice);
@@ -604,6 +638,30 @@ public class LsupporterController {
 		 model.addAttribute("notice",notice);
 		 model.addAttribute("noticeFileList",noticeFileList);
 	       return "lsupporter/noticemodifyForm";
+	   }
+	   
+	   @PostMapping("/notice/remove")
+	   public String noticeremove(int nNo) {
+		   String url="redirect:/ers/lsupporter/notice";
+		   List<NoticeFileVO> noticefileList = lsupporterService.noticeFileList(nNo);
+			if(noticefileList != null) for(NoticeFileVO noticefile: noticefileList) {
+				
+				String savedPath = noticefile.getUploadpath();
+				String fileName = noticefile.getFilename();
+				
+				File file = new File(savedPath+File.separator+fileName);
+				
+				if(file.exists())file.delete();
+				lsupporterService.removeNoticeFileByfNo(noticefile.getFNo());
+				
+			}
+		List<ReplyVO> replyList = lsupporterService.replyList(nNo);
+		if(replyList != null) for(ReplyVO reply: replyList) {
+			lsupporterService.replyRemove(nNo, reply.getRNo());
+		}
+
+			lsupporterService.noticeremove(nNo);
+			return url;
 	   }
 	   
 	   @GetMapping("/reply/modifyForm")

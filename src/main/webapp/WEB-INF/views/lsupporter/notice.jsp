@@ -44,38 +44,43 @@
 		</div>
 		<button type="button" class="btn btn-dark btn-lg ml-3" onclick="location.href='/ers/lsupporter/notice/writeForm'">작성</button>
 
-<div class="row">
-<div class="col-12 memberlistable">
-
-<table class="tg notice_table" style="undefined;table-layout: fixed; width: 498px">
-<colgroup>
-<col style="width: 100.333333px">
-<col style="width: 250.333333px">
-<col style="width: 200px">
-<col style="width: 150.666666px">
-</colgroup>
-<thead>
-  <tr>
-    <th class="tg-c3ow">번호</th>
-    <th class="tg-c3ow">제목</th>
-    <th class="tg-c3ow">등록일자</th>
-  </tr>
-</thead>
-<tbody>
-<c:forEach items="${noticeList }" var="notice">
-<fmt:formatDate value="${notice.regDate }" var="regDate" pattern="yyyy-MM-dd"/>
-  <tr>
-    <td class="tg-0pky">${notice.NNo }</td>
-    <td class="tg-0pkk" onclick="location.href='/ers/lsupporter/notice/detail?nNo='+${notice.NNo}">${notice.title }</td>
-    <td class="tg-0pky">${regDate }</td>
-  </tr>
-  
-</c:forEach>
-</tbody>
-</table>
-<%@include file="../include/lsupporter/pagination.jsp"%>
-</div>
-</div>
+	<div class="row">
+	<div class="col-12 memberlistable">
+	
+	<table class="tg notice_table" style="undefined;table-layout: fixed; width: 498px">
+	<colgroup>
+	<col style="width: 100.333333px">
+	<col style="width: 250.333333px">
+	<col style="width: 200px">
+	<col style="width: 150.666666px">
+	<col style="width: 150.666666px">
+	</colgroup>
+	<thead>
+	  <tr>
+	    <th class="tg-c3ow">번호</th>
+	    <th class="tg-c3ow">제목</th>
+	    <th class="tg-c3ow">등록일자</th>
+	    <th class="tg-c3ow">작성자</th>
+	    <th class="tg-c3ow">조회수</th>
+	  </tr>
+	</thead>
+	<tbody>
+	<c:forEach items="${noticeList }" var="notice">
+	<fmt:formatDate value="${notice.regDate }" var="regDate" pattern="yyyy-MM-dd"/>
+	  <tr>
+	    <td class="tg-0pky">${notice.NNo }</td>
+	    <td class="tg-0pkk" onclick="location.href='/ers/lsupporter/notice/detail?nNo='+${notice.NNo}">${notice.title }</td>
+	    <td class="tg-0pky">${regDate }</td>
+	    <td class="tg-0pky">${notice.manId }</td>
+	    <td class="tg-0pky">${notice.count }</td>
+	  </tr>
+	  
+	</c:forEach>
+	</tbody>
+	</table>
+	<%@include file="../include/lsupporter/pagination.jsp"%>
+	</div>
+	</div>
 
 
 		</div>

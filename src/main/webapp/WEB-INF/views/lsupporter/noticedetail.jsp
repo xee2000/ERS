@@ -19,7 +19,7 @@
 <button type="button" class="btn btn-dark btn-lg ml-3" onclick="location.href='/ers/lsupporter/notice/ModifyForm?nNo=${notice.NNo}'">수정</button>
 </c:if>
 <c:if test="${wid == notice.manId}">
-<button type="button" class="btn btn-dark btn-lg ml-3" onclick="delete(${notice.NNo})">삭제</button>
+<button type="button" class="btn button-danger btn-lg ml-3" onclick="deleteNotice(${notice.NNo})">삭제</button>
 </c:if>
 </div>
 </div>
@@ -33,6 +33,8 @@
   <tr>
     <th class="tg-ynlj">제목 </th>
     <th class="tg-l8qj">${notice.title }</th>
+     <th class="tg-ynlj">조회수 </th>
+    <th class="tg-l8qj">${notice.count }</th>
     <th class="tg-baqh">등록날짜 </th>
     <fmt:formatDate value="${notice.regDate }" var="regDate" pattern="yyyy-MM-dd"/>
     <th class="tg-baqh">${regDate }</th>
@@ -226,8 +228,6 @@ function modifyForm(RNo) {
       
       $('#editRNo').val(data.rNo);
       $('#editContent').val(data.content);
-
-      
       $('#editModal').css('display', 'block');
     },
     error: function onError(error) {
@@ -240,38 +240,43 @@ function modifyForm(RNo) {
 
 
 <script>
-const modal = document.getElementById("modal");
-const btnModals = document.querySelectorAll(".btn-modal"); // Select all buttons with the class "btn-modal"
+document.addEventListener("DOMContentLoaded", function() {
 
-btnModals.forEach(function(btnModal) {
-  btnModal.addEventListener("click", function(e) {
-    modal.style.display = "flex";
+  const modal = document.getElementById("modal");
+  const btnModals = document.querySelectorAll(".btn-modal");
+
+  btnModals.forEach(function(btnModal) {
+    btnModal.addEventListener("click", function(e) {
+      modal.style.display = "flex";
+    });
+  });
+
+  const closeBtn = modal.querySelector(".close-area");
+  closeBtn.addEventListener("click", function(e) {
+    modal.style.display = "none";
+  });
+
+  modal.addEventListener("click", function(e) {
+    const evTarget = e.target;
+    if (evTarget.classList.contains("modal-overlay")) {
+      modal.style.display = "none";
+    }
   });
 });
-
-const closeBtn = modal.querySelector(".close-area");
-closeBtn.addEventListener("click", function(e) {
-  modal.style.display = "none";
-});
-
-modal.addEventListener("click", function(e) {
-  const evTarget = e.target;
-  if (evTarget.classList.contains("modal-overlay")) {
-    modal.style.display = "none";
-  }
-});
 </script>
+
 
 <script>
 function updateContent() {
   var form = $('#editForm');
-  
-  var confirmed = confirm("정말로 수정하시겠습니까?");
+  var confirmed = confirm("수정하시겠습니까?");
   if (confirmed) {
-    form.submit(); 
+    form.submit();
   }
 }
 </script>
+
+
 
 <!--댓글수정시 유효성체크  -->
 <script>
@@ -286,7 +291,22 @@ function checkIt() {
 </script>
 
 <script>
-
+function deleteNotice(NNo){
+	var nNo = NNo;
+	  var inputField = document.createElement('input');
+	    inputField.type = 'hidden';
+	    inputField.name = 'nNo';
+	    inputField.value = nNo;
+	  var confirmed = confirm("정말로 삭제하시겠습니까?");
+	  if(confirmed){
+		  var form = document.createElement('form');
+		    form.method = 'POST';
+		    form.action = '/notice/remove';
+		    form.appendChild(inputField);
+		    document.body.appendChild(form);
+		    form.submit();
+	  }
+}
 </script>
 <%@include file="../include/lsupporter/foot.jspf"%>
  

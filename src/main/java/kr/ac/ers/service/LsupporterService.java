@@ -374,6 +374,7 @@ public class LsupporterService {
 	}
 
 	public NoticeVO noticeDetail(int nNo) {
+	
 			return lsupportMapper.noticeDetail(nNo);
 	}
 
@@ -450,6 +451,18 @@ public class LsupporterService {
 
 	public void replymodify(String content, int rNo) {
 		lsupportMapper.replymodify(content,rNo);
+	}
+
+	public void noticeremove(int nNo) {
+		
+		lsupportMapper.noticeremove(nNo);
+		
+		
+	}
+
+	public void addviewCount(int nNo) {
+
+		lsupportMapper.updateviewCount(nNo);
 	}
 
 
