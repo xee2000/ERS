@@ -700,4 +700,10 @@
 		set count = count+1
 		where nNo = #{nNo}
 	</update>
+	
+	<select id="socialkakaologin" resultType="LsupporterVO" parameterType="String">
+	select *
+	from lsupporter
+	where id = #{id}
+	</select>
 </mapper>

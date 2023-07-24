@@ -189,6 +189,8 @@ public interface LsupporterMapper {
 	void noticeremove(int nNo);
 
 	void updateviewCount(int nNo);
+
+	LsupporterVO socialkakaologin(String id);
 	
 	
 }

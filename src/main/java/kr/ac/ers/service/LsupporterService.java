@@ -465,6 +465,24 @@ public class LsupporterService {
 		lsupportMapper.updateviewCount(nNo);
 	}
 
+	public int socialkakaologin(String id) {
+		int count = 0;
+		try {
+			LsupporterVO lsupport = lsupportMapper.socialkakaologin(id);
+			
+			if (lsupport != null) {
+			//아이디 일치	
+				count = 0;
+				return count;
+			} else {// 아이디 불일치
+				count = 1;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return count;
+	}
+
 
 
 }

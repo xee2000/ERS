@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import kr.ac.ers.interceptor.BeforeActionInterceptor;
@@ -27,9 +28,15 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer {
 		ir.addPathPatterns("/**");
 		ir.excludePathPatterns("/error");
 		ir.excludePathPatterns("/resource/**");
-		
+				
 		ir = registry.addInterceptor(lsupporterInterceptor);
 		ir.addPathPatterns("/ers/lsupporter/login");
 		ir.addPathPatterns("/ers/lsupporter/logout");
 	}
+	
+	   @Override
+	    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+	        registry.addResourceHandler("/summernoteImage/**")
+	                .addResourceLocations("file:///C:/summernote_image/");
+	    }
 }
