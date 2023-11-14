@@ -109,3 +109,71 @@ public class MailContentSend {
 }
 
 
+
+#아이디 찾기시의 controller입니다
+
+@PostMapping("/ers/lsupporter/idcheck")
+public String Showidcheck(String name, String email, HttpServletRequest request, HttpServletResponse response) {
+	String url = null;
+
+	int result = lsupporterService.selectcountemail(name, email);
+	System.out.println("name :" + name);
+	if (result == 1) {
+
+		LsupporterVO lsupporterwid = lsupporterService.getLsupportByemail(email);
+		String mailSet_Server = "smtp.naver.com"; // 보내는 메일 server
+		String mailSet_ID = "xee2000"; // 보내는 메일 ID
+		String mailSet_PW = "dlwjdgh0**^"; // 보내는 메일 비밀번호
+
+		String mailFromName = "EmergencyService."; // 보내는 사람 이름
+		String mailFromAddress = "<xee2000@naver.com>"; // 보내는 메일 주소
+
+		String mailTo = (request).getParameter("email"); // 받는 메일 주소
+		String mailTitle = "응급안전안심서비스 아이디 찾기 관련 메일 보내드립니다."; // 메일 제목
+		String content = "고객님의 ID는 " + lsupporterwid.getWid() + "입니다"; // 메일내용
+
+		String mailFrom = "";
+		try {
+			mailFrom = new String(mailFromName.getBytes("utf-8"), "8859_1") + mailFromAddress;
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		MailContentSend ms = new MailContentSend();
+		ms.setMail(mailSet_Server, mailSet_ID, mailSet_PW);
+		try {
+			ms.sendMail(mailFrom, mailTo, mailTitle, content);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		response.setContentType("text/plain;charset=utf-8");
+		url = "/ers/lsupporter/loginForm";
+		PrintWriter out = null;
+		try {
+			out = response.getWriter();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		out.print(url);
+		out.close();
+
+	} else {
+		String error = "없는 정보입니다 다시 입력해주세요.";
+		url = "findLsupporterWidForm&error=" + error;
+		response.setContentType("text/plain;charset=utf-8");
+		PrintWriter out = null;
+		try {
+			out = response.getWriter();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		out.print(url);
+		out.close();
+	}
+
+	return url;
+}
