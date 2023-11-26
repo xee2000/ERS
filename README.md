@@ -2,7 +2,7 @@
 
 ## 프로젝트 소개
 
-본 프로젝트는 응급안전안심서비스를 주제로 진행되었으며, 담당한 파트는 생활지원사입니다. 주요 업무는 보고서 처리와 배정받은 고객에 대한 캘린더 기능을 담당하고 있습니다.
+본 프로젝트는 응급안전안심서비스를 주제로 진행되었으며, 담당한 파트는 생활지원사입니다. 주요 업무는 보고서처리에 대한 로직과 이메일기능을 주로 담당하였습니다.
 
 ## 주요 라이브러리 및 사용 기술
 
@@ -12,6 +12,10 @@
 ## 보고서 처리 로직
 
 아래는 보고서 작성 시 사용된 로직입니다.
+
+파일처리시에는 글에 대한 입력과 파일을 저장시키는 로직을 함께 적용하도록 하였습니다.
+세션을 통해 현재 접속한 유저에 대한 정보를 받아온 뒤 보고서 저장시에 파일과 함께해서 전달해줍니다.
+이때 MultipartFile이기에 다중파일 업로드를 위해서 List로 받도록 하였습니다.
 
 ```java
 @PostMapping(value = "/ers/lsupporter/reportregist", produces = "text/plain;charset=utf-8")
@@ -47,7 +51,8 @@ private List<ReportFileVO> saveFileToAttaches(List<MultipartFile> multiFiles, St
     }
     return reportfileList;
 }
-
+파일 저장시에는 동일한 파일에 대해서도 입력을 하기위해 UUID를 활용하여 고유하게 만들었으며 File을 통하여 경로와 이름을 함께 target에 저장한후에
+경로에 해당 폴더가 없는경우 mkdirs(); 로 생성후에 transferTo를 통하여 실제 파일 경로에 저장하도록 합니다.
 
 
 #파일경로을 위한 application.yml입니다.
