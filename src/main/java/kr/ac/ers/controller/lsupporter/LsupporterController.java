@@ -76,31 +76,7 @@ public class LsupporterController {
 	@Value("${noticefileuploadpath}")
 	private String noticefileuploadpath;
 
-	/*
-	 * @RequestMapping("/ers/lsupporter/main") public String Showmain(Model model,
-	 * HttpServletRequest request,HttpSession session) { session=
-	 * request.getSession(); LsupporterVO loginUser = (LsupporterVO)
-	 * session.getAttribute("loginUser"); LsupporterStatusVO lsupporterstatus =
-	 * lsupporterService.selectlsupporterStatus(loginUser.getWid()); int futureDate
-	 * = lsupporterService.getmaineducationfutureDate(loginUser.getWid()); int
-	 * clearDate = lsupporterService.getmaineducationclearDate(loginUser.getWid());
-	 * int notmachine =
-	 * lsupporterService.getmaineducationnotmachine(loginUser.getWid()); int
-	 * emergencyall = lsupporterService.getmainemergencyall(loginUser.getWid()); int
-	 * emergencymiss = lsupporterService.getmainemergencymiss(loginUser.getWid());
-	 * int emergencyclear =
-	 * lsupporterService.getmainemergencyclear(loginUser.getWid());
-	 * 
-	 * model.addAttribute("lsupporterstatus",lsupporterstatus);
-	 * model.addAttribute("futureDate",futureDate);
-	 * model.addAttribute("clearDate",clearDate);
-	 * model.addAttribute("notmachine",notmachine);
-	 * model.addAttribute("emergencyall",emergencyall);
-	 * model.addAttribute("emergencymiss",emergencymiss);
-	 * model.addAttribute("emergencyclear",emergencyclear);
-	 * 
-	 * return "lsupporter/main"; }
-	 */
+
 	@RequestMapping("/ers/lsupporter/loginForm")
 	public String Showlogin() {
 		return "lsupporter/loginForm";
@@ -474,7 +450,6 @@ public class LsupporterController {
 	public JsonObject createKakaoUser(String token) {
 	    String reqURL = "https://kapi.kakao.com/v2/user/me";
 
-	    // Retrieve user information using access_token
 	    try {
 	        URL url = new URL(reqURL);
 	        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -482,11 +457,9 @@ public class LsupporterController {
 	        conn.setRequestMethod("GET");
 	        conn.setRequestProperty("Authorization", "Bearer " + token); // Create header to be transmitted, transmit access_token
 
-	        // Success if the result code is 200
 	        int responseCode = conn.getResponseCode();
 	        System.out.println("responseCode : " + responseCode);
 
-	        // Read the JSON type response message obtained through the request
 	        BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 	        String line;
 	        StringBuilder result = new StringBuilder();
@@ -498,7 +471,6 @@ public class LsupporterController {
 
 	        System.out.println("response body : " + result);
 
-	        // Parsing JSON with the Gson library
 	        Gson gson = new Gson();
 	        JsonObject jsonObject = gson.fromJson(result.toString(), JsonObject.class);
 
