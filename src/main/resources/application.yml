@@ -1,0 +1,32 @@
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+
+spring:
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://127.0.0.1:3306/ers?autoReconnect=true&useSSL=false
+    username: root
+    password: java
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
+  mvc:
+    view:
+      suffix: .jsp
+      prefix: /WEB-INF/views/
+
+mybatis:
+  type-aliases-package: kr.ac.ers.dto
+  configuration:
+    map-underscore-to-camel-case: false
+    mapper-locations: classpath:mapper/*.xml
+
+file-upload:
+lsupporterpicturePath: c:/lsupporter/picture
+summernotepath: c:/summernote/upload
+lsupporterfileUploadPath: c:/report/fileupload/upload
+noticefileuploadpath: c:/notice/fileupload

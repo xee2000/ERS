@@ -1,4 +1,4 @@
-package kr.ac.ers.controller.lsupporter;
+package kr.ac.ers.controller;
 
 import java.util.List;
 

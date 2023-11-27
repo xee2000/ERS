@@ -6,7 +6,6 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan("kr.ac.ers.controller.lsupporter.lsupporterController")
 public class ErsApplication {
 
 	public static void main(String[] args) {

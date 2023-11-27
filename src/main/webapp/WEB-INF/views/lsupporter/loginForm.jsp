@@ -8,7 +8,7 @@
   <title>Life Supporter</title>
   <style>
     body.login-page {
-      background-image: url('/resources/lsupporter/img/생활지원사배경.jpg');
+      background-image: url('/lsupporter/img/생활지원사배경.jpg');
       background-size: cover;
       background-position: center;
     }
@@ -53,7 +53,7 @@
         <a href="#" class="h1"><b class="idcheck" style="font-size:1.5rem;">생활지원사 로그인</b></a>
       </div>
       <div class="card-body">
-        <img style="width: 200px; height: 200px;" src="/resources/lsupporter/img/사회복지사.jpg">
+        <img style="width: 200px; height: 200px;" src="/lsupporter/img/사회복지사.jpg">
         <p class="login-box-msg">로그인해주시기 바랍니다.</p>
         <form action="login" method="post" onsubmit="return logincheck()" id="loginForm">
           <div class="input-group mb-3">

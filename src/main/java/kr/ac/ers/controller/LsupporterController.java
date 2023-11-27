@@ -1,4 +1,4 @@
-package kr.ac.ers.controller.lsupporter;
+package kr.ac.ers.controller;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -68,16 +68,16 @@ public class LsupporterController {
 	@Autowired
 	private OauthService oauthService;
 
-	// 외부경로에 대한 사진파일경로(applicationproperties에 실제경로 value값)
 	@Value("${lsupporterpicturePath}")
 	private String lsupporterpicturePath;
 
-	// 외부경로에 대한 사진파일경로(applicationproperties에 실제경로 value값)
+	@Value("${lsupporterfileUploadPath}")
+	private String summernotepath;
+
 	@Value("${noticefileuploadpath}")
 	private String noticefileuploadpath;
 
-
-	@RequestMapping("/ers/lsupporter/loginForm")
+	@GetMapping("/ers/lsupporter/loginFormpage")
 	public String Showlogin() {
 		return "lsupporter/loginForm";
 	}
