@@ -61,6 +61,7 @@ import kr.ac.ers.utils.MakeFileName;
 import kr.ac.ers.view.FileDownloadView;
 
 @Controller
+@RequestMapping("/ers/lsupporter")
 public class LsupporterController {
 
 	@Autowired
@@ -77,17 +78,17 @@ public class LsupporterController {
 	@Value("${noticefileuploadpath}")
 	private String noticefileuploadpath;
 
-	@GetMapping("/ers/lsupporter/loginFormpage")
+	@GetMapping("/loginFormpage")
 	public String Showlogin() {
 		return "lsupporter/loginForm";
 	}
 
-	@RequestMapping("/ers/lsupporter/mypage")
+	@RequestMapping("/mypage")
 	public String Showmypage() {
 		return "lsupporter/mypage";
 	}
 
-	@RequestMapping("/ers/lsupporter/memberdetail")
+	@RequestMapping("/memberdetail")
 	public String Showmemberdetail(String searchType, String keyword, String perPageNum, String page, Model model,
 			String id, HttpServletRequest request, HttpSession session, String startday, String endday) {
 
@@ -126,7 +127,7 @@ public class LsupporterController {
 		return "lsupporter/memberdetail";
 	}
 
-	@RequestMapping("/ers/lsupporter/lifemodifyForm")
+	@RequestMapping("/lifemodifyForm")
 	public String Showlifeupdate(String id, HttpSession session, HttpServletRequest request, Model model) {
 		session = request.getSession();
 		LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");
@@ -138,7 +139,7 @@ public class LsupporterController {
 		return "lsupporter/lifemodifyForm";
 	}
 
-	@PostMapping("/ers/lsupporter/lifemodify")
+	@PostMapping("/lifemodify")
 	public String lifemodify(String orgdisease, String drug, String mentalstatus, String allergy, String id,
 			HttpSession session, HttpServletRequest request) throws Exception {
 		String url = "redirect:/ers/lsupporter/memberdetail?id=" + id;
@@ -148,17 +149,17 @@ public class LsupporterController {
 		return url;
 	}
 
-	@RequestMapping("/ers/lsupporter/idcheckForm")
+	@RequestMapping("/idcheckForm")
 	public String ShowidcheckForm() {
 		return "lsupporter/idcheckForm";
 	}
 
-	@RequestMapping("/ers/lsupporter/pwcheckForm")
+	@RequestMapping("/pwcheckForm")
 	public String ShowpwcheckForm() {
 		return "lsupporter/pwcheckForm";
 	}
 
-	@GetMapping("/ers/lsupporter/lsupporterstatus")
+	@GetMapping("/lsupporterstatus")
 	public String showLsupporterStatus(Model model, HttpSession session, HttpServletRequest request) {
 		session = request.getSession();
 		LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");
@@ -168,7 +169,7 @@ public class LsupporterController {
 		return "lsupporter/lsupporterstatus";
 	}
 
-	@GetMapping("/ers/lsupporter/lsupporterstatusModifyForm")
+	@GetMapping("/lsupporterstatusModifyForm")
 	public String showLsupporterStatusModifyForm(Model model, HttpSession session, HttpServletRequest request) {
 		session = request.getSession();
 		LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");
@@ -176,7 +177,7 @@ public class LsupporterController {
 		model.addAttribute("lsupporter", lsupporter);
 		return "lsupporter/lsupporterstatusModifyForm";
 	}
-
+//ssssss
 	public String savePicture(String oldPicture, MultipartFile multi) throws Exception {
 
 		String fileName = "";
@@ -212,17 +213,17 @@ public class LsupporterController {
 
 	}
 
-	@RequestMapping("/ers/lsupporter/emergancydetail")
+	@RequestMapping("/emergancydetail")
 	public String Showemergancydetail() {
 		return "lsupporter/emergancydetail";
 	}
 
-	@RequestMapping("/ers/lsupporter/sitemain")
+	@RequestMapping("/sitemain")
 	public String Showsitemain() {
 		return "lsupporter/sitemain";
 	}
 
-	@RequestMapping("/ers/lsupporter/calinder")
+	@RequestMapping("/calinder")
 	public String Showcalinder(HttpSession session, HttpServletRequest request, Model model) {
 
 		session = request.getSession();
@@ -233,7 +234,7 @@ public class LsupporterController {
 		return "lsupporter/calinder";
 	}
 
-	@RequestMapping("/ers/lsupporter/calinderdetail")
+	@RequestMapping("/calinderdetail")
 	public String Showcalinderdetail(HttpSession session, HttpServletRequest request, Model model, int id) {
 
 		session = request.getSession();
@@ -243,7 +244,7 @@ public class LsupporterController {
 		return "lsupporter/calinderdetail";
 	}
 
-	@RequestMapping("/ers/lsupporter/calinderregistForm")
+	@RequestMapping("/calinderregistForm")
 	public String ShowcalinderregistForm(HttpSession session, HttpServletRequest request, Model model) {
 
 		session = request.getSession();
@@ -252,7 +253,7 @@ public class LsupporterController {
 		return "lsupporter/calinderregistForm";
 	}
 
-	@RequestMapping("/ers/lsupporter/calindermodifyForm")
+	@RequestMapping("/calindermodifyForm")
 	public String ShowcalindermodfiyForm(HttpSession session, HttpServletRequest request, Model model, int id) {
 
 		session = request.getSession();
@@ -262,7 +263,7 @@ public class LsupporterController {
 		return "lsupporter/calindermodifyForm";
 	}
 
-	@PostMapping(value = "/ers/lsupporter/calinderregist", produces = "text/plain;charset=utf-8")
+	@PostMapping(value = "/calinderregist", produces = "text/plain;charset=utf-8")
 	public String Showcalinder(HttpSession session, HttpServletRequest request, Model model, String title,
 			String content, @DateTimeFormat(pattern = "yyyy-MM-dd") Date regDate) {
 		session = request.getSession();
@@ -272,7 +273,7 @@ public class LsupporterController {
 		return "lsupporter/calinder";
 	}
 
-	@PostMapping(value = "/ers/lsupporter/calindermodify", produces = "text/plain;charset=utf-8")
+	@PostMapping(value = "/calindermodify", produces = "text/plain;charset=utf-8")
 	public String Showcalindermodify(HttpSession session, HttpServletRequest request, Model model, int id, String title,
 			String content, @DateTimeFormat(pattern = "yyyy-MM-dd") Date regDate,
 			@DateTimeFormat(pattern = "yyyy-MM-dd") Date updateDate) {
@@ -282,7 +283,7 @@ public class LsupporterController {
 		return "lsupporter/calinder";
 	}
 
-	@PostMapping(value = "/ers/lsupporter/calinderremove", produces = "text/plain;charset=utf-8")
+	@PostMapping(value = "/calinderremove", produces = "text/plain;charset=utf-8")
 	public String Showcalinderremove(HttpSession session, HttpServletRequest request, Model model, int id) {
 		session = request.getSession();
 		LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");
@@ -290,7 +291,7 @@ public class LsupporterController {
 		return "lsupporter/calinder";
 	}
 
-	@PostMapping("/ers/lsupporter/idcheck")
+	@PostMapping("/idcheck")
 	public String Showidcheck(String name, String email, HttpServletRequest request, HttpServletResponse response) {
 		String url = null;
 
@@ -356,7 +357,7 @@ public class LsupporterController {
 		return url;
 	}
 
-	@PostMapping("/ers/lsupporter/pwcheck")
+	@PostMapping("/pwcheck")
 	public String Showpwcheck(String name, String email, String wid, HttpServletRequest request,
 			HttpServletResponse response) {
 		String url = null;
@@ -488,7 +489,7 @@ public class LsupporterController {
 		return null;
 	}
 
-	@PostMapping("/ers/lsupporter/login")
+	@PostMapping("/login")
 	public String login(String wid, String pwd, HttpSession session) throws Exception {
 		String url = "redirect:/ers/lsupporter/main";
 
@@ -510,7 +511,7 @@ public class LsupporterController {
 		return url;
 	}
 
-	@GetMapping("/ers/lsupporter/logout")
+	@GetMapping("/logout")
 	public String logout(HttpSession session) throws Exception {
 		String url = "redirect:/ers/lsupporter/loginForm";
 
@@ -519,7 +520,7 @@ public class LsupporterController {
 		return url;
 	}
 
-	@GetMapping("/ers/lsupporter/notice/detail")
+	@GetMapping("/notice/detail")
 	public String logout(Model model, HttpSession session, HttpServletRequest request, HttpServletResponse response,
 			int nNo) throws Exception {
 		session = request.getSession();
@@ -566,12 +567,12 @@ public class LsupporterController {
 		return "lsupporter/noticedetail";
 	}
 
-	@GetMapping("/ers/lsupporter/notice/writeForm")
+	@GetMapping("/notice/writeForm")
 	public String noticeWriteForm() {
 		return "lsupporter/noticewriteForm";
 	}
 
-	@PostMapping(value = "/ers/lsupporter/notice/write", produces = "text/plain;charset=utf-8")
+	@PostMapping(value = "/notice/write", produces = "text/plain;charset=utf-8")
 	public String noticewrrite(HttpSession session, HttpServletRequest request, NoticeFileWriteCommand noticeReq) {
 		String url = "redirect:/ers/lsupporter/notice";
 		session = request.getSession();
@@ -632,7 +633,7 @@ public class LsupporterController {
 		return noticeFileList;
 	}
 
-	@PostMapping("/ers/lsupporter/reply/write")
+	@PostMapping("/reply/write")
 	public String replyWrite(HttpSession session, Model model, ReplyVO reply) {
 		String url = "redirect:/ers/lsupporter/notice/detail?nNo=" + reply.getNNo();
 		LsupporterVO loginUser = (LsupporterVO) session.getAttribute("loginUser");
@@ -641,14 +642,14 @@ public class LsupporterController {
 		return url;
 	}
 
-	@PostMapping("/ers/lsupporter/reply/removereply")
+	@PostMapping("/reply/removereply")
 	public String replyWrite(int rNo, int nNo) {
 		String url = "redirect:/ers/lsupporter/notice/detail?nNo=" + nNo;
 		lsupporterService.replyRemove(rNo, nNo);
 		return url;
 	}
 
-	@GetMapping("/ers/lsupporter/notice/getFile")
+	@GetMapping("/notice/getFile")
 	public ModelAndView getFile(int fNo, Model model) throws Exception {
 		ModelAndView modelAndView = new ModelAndView(new FileDownloadView());
 
@@ -659,7 +660,7 @@ public class LsupporterController {
 		return modelAndView;
 	}
 
-	@GetMapping("/ers/lsupporter/notice/ModifyForm")
+	@GetMapping("/notice/ModifyForm")
 	public String noticemodifyForm(int nNo, Model model) {
 		NoticeVO notice = lsupporterService.noticeDetail(nNo);
 		List<NoticeFileVO> noticeFileList = lsupporterService.noticeFileList(nNo);
@@ -713,7 +714,7 @@ public class LsupporterController {
 		return url;
 	}
 
-	@PostMapping(value = "/ers/lsupporter/notice/modify", produces = "text/plain;charset=utf-8")
+	@PostMapping(value = "/notice/modify", produces = "text/plain;charset=utf-8")
 	public String modifyPOST(NoticeModifyCommand modifyReq, Model model) throws Exception {
 		String url = "redirect:/ers/lsupporter/notice/detail?nNo=" + modifyReq.getNNo();
 		// 파일 삭제

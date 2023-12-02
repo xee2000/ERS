@@ -1,10 +1,15 @@
 package kr.ac.ers.utils;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.http.MediaType;
 public class MediaUtils {
+
+
+
+
 	  private static Map<String, MediaType> mediaMap;
 	    
 	    static {
@@ -23,5 +28,6 @@ public class MediaUtils {
 	    public static boolean containsImageMediaType(String mediaType) {
 	        return mediaMap.values().contains(MediaType.valueOf(mediaType));
 	    }
+
 	    
 	}
