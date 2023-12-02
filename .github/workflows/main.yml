@@ -1,61 +1,76 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-# This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
-
-name: Java CI with Gradle
+name: ers CI/CD
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ master ]
   pull_request:
-    branches: [ "master" ]
-
-permissions:
-  contents: read
+    branches: [ master ]
 
 env:
-  S3_BUCKET_NAME: ers-cicd
-  CODE_DEPLOY_APP_NAME: ers_cicd
-  CODE_DEPLOY_GROUP_NAME: ers_instance  
+  S3_BUCKET_NAME: ers-deploy
 
 jobs:
   build:
+
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v2
+    
     - name: Set up JDK 17
-      uses: actions/setup-java@v3
+      uses: actions/setup-java@v2
       with:
         java-version: '17'
         distribution: 'temurin'
-    - name: Add permission
-      run: chmod +x ./gradlew
-    - name: Build with Gradle
-      uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
-      with:
-        arguments: build
         
-    # build한 후 webservice-deploy.zip 이라는 이름으로 프로젝트를 압축합니다.
-    - name: Make zip file
-      run: zip -r ./ersservice-deploy.zip .
-      shell: bash
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
     
-    # Access Key와 Secret Access Key를 통해 권한을 확인합니다.
-    # 아래 코드에 Access Key와 Secret Key를 직접 작성하지 않습니다.
+    - name: Build with Gradle
+      run: ./gradlew clean build
+      
+    # 디렉토리 생성
+    - name: Make Directory
+      run: mkdir -p deploy
+        
+    # Jar 파일 복사
+    - name: Copy Jar
+      run: cp ./build/libs/*.jar ./deploy
+      
+    # appspec.yml 파일 복사
+    - name: Copy appspec.yml
+      run: cp appspec.yml ./deploy
+
+
+    # script files 복사
+    - name: Copy script
+      run: cp ./scripts/*.sh ./deploy
+
+    - name: Make zip file
+      run: zip -r ./ers.zip ./deploy
+      shell: bash
+
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }} # 등록한 Github Secret이 자동으로 불려옵니다.
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }} # 등록한 Github Secret이 자동으로 불려옵니다.
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ap-northeast-2
-    
-    # 압축한 프로젝트를 S3로 전송합니다.
-    - name: Upload to S3
-      run: aws s3 cp --region ap-northeast-2 ./ersservice-deploy.zip s3://$S3_BUCKET_NAME/erservice-deploy.zip
 
-    - name: Code Deploy
-      run: aws deploy create-deployment --application-name $CODE_DEPLOY_APP_NAME --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name $CODE_DEPLOY_GROUP_NAME --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME.zip
+    - name: Upload to S3
+      run: aws s3 cp --region ap-northeast-2 ./ers.zip s3://$S3_BUCKET_NAME/
+
+
+
+    # Deploy
+    - name: Deploy
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      run: |
+        aws deploy create-deployment \
+        --application-name ers-cicd[만든 애플리케이션 이름] \
+        --deployment-group-name ers-group[만든 애플리케이션 그룹 이름] \
+        --file-exists-behavior OVERWRITE \
+        --s3-location bucket=ers-deploy[S3버킷이름],bundleType=zip,key=ers.zip[S3버킷 속 압축파일] \ 
+        --region ap-northeast-2
